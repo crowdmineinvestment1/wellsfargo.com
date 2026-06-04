@@ -476,6 +476,15 @@
             }
         });
 
+        // Account Lock Status Controls
+        document.getElementById('btnLockAccount').addEventListener('click', async function() {
+            await setSyncItem('accountLocked', true);
+        });
+
+        document.getElementById('btnUnlockAccount').addEventListener('click', async function() {
+            await setSyncItem('accountLocked', false);
+        });
+
         // AI Toggle
         document.getElementById('aiToggleBtn').addEventListener('click', async function() {
             var currentState = getSyncItem('aiAutoReply') || false;
